@@ -8,7 +8,7 @@ contribution, in order of how common they'll be:
 3. **Add a dataset** (an attack set, a benign source, or an indirect set).
 
 By contributing you agree to the [Code of Conduct](CODE_OF_CONDUCT.md) and that
-your contribution is licensed under the repo's [Apache-2.0](LICENSE).
+your contribution is licensed under the repo's [MIT License](LICENSE).
 
 ## Setup
 

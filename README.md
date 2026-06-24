@@ -1,5 +1,9 @@
 # Prompt Injection Detector Benchmark
 
+[![lint](https://github.com/bastion-soft/pi-detector-bench/actions/workflows/ci.yml/badge.svg)](https://github.com/bastion-soft/pi-detector-bench/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/bastion-soft/pi-detector-bench/blob/main/notebooks/benchmark_colab.ipynb)
+
 **An open, model-agnostic benchmark for prompt-injection *detectors* — measured on both axes (attack catch-rate **and** false positives on real traffic), threshold-agnostically, and reproducible from raw scores.**
 
 Most prompt-injection benchmarks measure one thing: can a detector spot an attack? That's half the story. A detector that flags one in four *normal* user messages is an outage, not a guardrail — and a detector tuned to look great at one threshold can fall apart at another. This benchmark measures **both axes** and compares detectors **at the same catch rate**, so the ranking doesn't depend on where any model's 0.5 happens to fall.
@@ -29,6 +33,10 @@ Ten open detectors, four held-out adversarial benchmarks. Full tables + latency 
 | meta prompt-guard† | 86M | 0.314 | 88.30% | 85.77% |
 
 What this table is *for*: notice that detectors close on AUC are nowhere close on false positives, and that some low-FPR-at-0.5 numbers are bought by under-catching (visible in the "@95% catch" column). **Read [`results/FINDINGS.md`](results/FINDINGS.md) for the honest interpretation** — including each detector's weak spots. † `meta prompt-guard` is a deprecated, over-firing model kept for context (see FINDINGS).
+
+![False-positive rate vs decision threshold](results/fpr_vs_threshold.png)
+
+*False positives on real traffic as the decision threshold moves — a flat line is threshold-robust, a steep one is brittle. This is why a single fixed-threshold number can mislead, and why we also compare at a fixed catch rate. Full reading + the operating curve: [`results/FINDINGS.md`](results/FINDINGS.md).*
 
 ## Why this benchmark exists
 
@@ -81,4 +89,4 @@ It's a one-file PR. Append your model to [`models.yaml`](models.yaml):
 
 ## License
 
-Code: **Apache-2.0** (see [`LICENSE`](LICENSE)). Evaluation datasets retain their own licenses — some are gated and require accepting terms on the HuggingFace Hub.
+Code: **MIT** (see [`LICENSE`](LICENSE)). Evaluation datasets retain their own licenses — some are gated and require accepting terms on the HuggingFace Hub. Committed results contain only per-prompt scores and labels, never dataset prompt text.
