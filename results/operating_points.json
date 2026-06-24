@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-06-24T16:38:36Z",
+  "mode": "cross-benign",
+  "tprs": [
+    0.95,
+    0.99
+  ],
+  "thresholds": [
+    0.2,
+    0.45,
+    0.5,
+    0.55,
+    0.8
+  ],
+  "rows": [
+    {
+      "auc": 0.99077,
+      "eer": 0.04741,
+      "eer_threshold": 0.05529,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.05858,
+          "fpr_benign": 0.0771
+        },
+        "0.99": {
+          "threshold": 0.01282,
+          "fpr_benign": 0.2313
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0244,
+          "recall_attacks": 0.90825
+        },
+        "0.45": {
+          "fpr_benign": 0.0127,
+          "recall_attacks": 0.89196
+        },
+        "0.5": {
+          "fpr_benign": 0.0124,
+          "recall_attacks": 0.8909
+        },
+        "0.55": {
+          "fpr_benign": 0.0122,
+          "recall_attacks": 0.88906
+        },
+        "0.8": {
+          "fpr_benign": 0.0089,
+          "recall_attacks": 0.86698
+        }
+      },
+      "runner": "bastion-prompt-protection (70M)"
+    },
+    {
+      "auc": 0.71044,
+      "eer": 0.37152,
+      "eer_threshold": 0.99837,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.13962,
+          "fpr_benign": 0.6944
+        },
+        "0.99": {
+          "threshold": 0.00176,
+          "fpr_benign": 0.8429
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.6873,
+          "recall_attacks": 0.94742
+        },
+        "0.45": {
+          "fpr_benign": 0.6714,
+          "recall_attacks": 0.93901
+        },
+        "0.5": {
+          "fpr_benign": 0.6589,
+          "recall_attacks": 0.93665
+        },
+        "0.55": {
+          "fpr_benign": 0.6565,
+          "recall_attacks": 0.93402
+        },
+        "0.8": {
+          "fpr_benign": 0.6425,
+          "recall_attacks": 0.92403
+        }
+      },
+      "runner": "deepset injection (184M)"
+    },
+    {
+      "auc": 0.67669,
+      "eer": 0.40922,
+      "eer_threshold": 0.99952,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00503,
+          "fpr_benign": 0.7464
+        },
+        "0.99": {
+          "threshold": 0.0007,
+          "fpr_benign": 0.8664
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.6681,
+          "recall_attacks": 0.9164
+        },
+        "0.45": {
+          "fpr_benign": 0.6528,
+          "recall_attacks": 0.90484
+        },
+        "0.5": {
+          "fpr_benign": 0.6498,
+          "recall_attacks": 0.90195
+        },
+        "0.55": {
+          "fpr_benign": 0.6464,
+          "recall_attacks": 0.89958
+        },
+        "0.8": {
+          "fpr_benign": 0.6328,
+          "recall_attacks": 0.88591
+        }
+      },
+      "runner": "fmops distilbert (67M)"
+    },
+    {
+      "auc": 0.96056,
+      "eer": 0.11089,
+      "eer_threshold": 0.00365,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00097,
+          "fpr_benign": 0.7712
+        },
+        "0.99": {
+          "threshold": 0.00074,
+          "fpr_benign": 0.8566
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.5058,
+          "recall_attacks": 0.84043
+        },
+        "0.45": {
+          "fpr_benign": 0.3476,
+          "recall_attacks": 0.75762
+        },
+        "0.5": {
+          "fpr_benign": 0.2167,
+          "recall_attacks": 0.58728
+        },
+        "0.55": {
+          "fpr_benign": 0.0561,
+          "recall_attacks": 0.29574
+        },
+        "0.8": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        }
+      },
+      "runner": "hlyn judge (70M)"
+    },
+    {
+      "auc": 0.30904,
+      "eer": 0.63077,
+      "eer_threshold": 0.99997,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.81558,
+          "fpr_benign": 0.8577
+        },
+        "0.99": {
+          "threshold": 0.00161,
+          "fpr_benign": 0.9796
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.891,
+          "recall_attacks": 0.96583
+        },
+        "0.45": {
+          "fpr_benign": 0.8843,
+          "recall_attacks": 0.9603
+        },
+        "0.5": {
+          "fpr_benign": 0.883,
+          "recall_attacks": 0.95899
+        },
+        "0.55": {
+          "fpr_benign": 0.8813,
+          "recall_attacks": 0.95846
+        },
+        "0.8": {
+          "fpr_benign": 0.8583,
+          "recall_attacks": 0.9511
+        }
+      },
+      "runner": "meta prompt-guard (86M)"
+    },
+    {
+      "auc": 0.88372,
+      "eer": 0.19138,
+      "eer_threshold": 0.00098,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.0,
+          "fpr_benign": 1.0
+        },
+        "0.99": {
+          "threshold": 0.0,
+          "fpr_benign": 1.0
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0974,
+          "recall_attacks": 0.69769
+        },
+        "0.45": {
+          "fpr_benign": 0.0898,
+          "recall_attacks": 0.6877
+        },
+        "0.5": {
+          "fpr_benign": 0.0882,
+          "recall_attacks": 0.68533
+        },
+        "0.55": {
+          "fpr_benign": 0.087,
+          "recall_attacks": 0.68297
+        },
+        "0.8": {
+          "fpr_benign": 0.0796,
+          "recall_attacks": 0.67061
+        }
+      },
+      "runner": "protectai v2 (184M)"
+    },
+    {
+      "auc": 0.85984,
+      "eer": 0.20425,
+      "eer_threshold": 0.00133,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00019,
+          "fpr_benign": 0.8222
+        },
+        "0.99": {
+          "threshold": 0.00016,
+          "fpr_benign": 0.9692
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.2299,
+          "recall_attacks": 0.69769
+        },
+        "0.45": {
+          "fpr_benign": 0.2193,
+          "recall_attacks": 0.68244
+        },
+        "0.5": {
+          "fpr_benign": 0.2183,
+          "recall_attacks": 0.67955
+        },
+        "0.55": {
+          "fpr_benign": 0.2175,
+          "recall_attacks": 0.67797
+        },
+        "0.8": {
+          "fpr_benign": 0.2065,
+          "recall_attacks": 0.66036
+        }
+      },
+      "runner": "proventra mdeberta (280M)"
+    },
+    {
+      "auc": 0.98045,
+      "eer": 0.05354,
+      "eer_threshold": 0.00065,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00042,
+          "fpr_benign": 0.463
+        },
+        "0.99": {
+          "threshold": 0.0,
+          "fpr_benign": 1.0
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.2662,
+          "recall_attacks": 0.89301
+        },
+        "0.45": {
+          "fpr_benign": 0.2415,
+          "recall_attacks": 0.87802
+        },
+        "0.5": {
+          "fpr_benign": 0.236,
+          "recall_attacks": 0.87513
+        },
+        "0.55": {
+          "fpr_benign": 0.2311,
+          "recall_attacks": 0.87224
+        },
+        "0.8": {
+          "fpr_benign": 0.2065,
+          "recall_attacks": 0.85594
+        }
+      },
+      "runner": "sentinel (qualifire, 395M)"
+    },
+    {
+      "auc": 0.98571,
+      "eer": 0.05714,
+      "eer_threshold": 0.07035,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.06607,
+          "fpr_benign": 0.3463
+        },
+        "0.99": {
+          "threshold": 0.05379,
+          "fpr_benign": 0.5497
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.2578,
+          "recall_attacks": 0.9051
+        },
+        "0.45": {
+          "fpr_benign": 0.2427,
+          "recall_attacks": 0.89432
+        },
+        "0.5": {
+          "fpr_benign": 0.2403,
+          "recall_attacks": 0.89274
+        },
+        "0.55": {
+          "fpr_benign": 0.2384,
+          "recall_attacks": 0.89222
+        },
+        "0.8": {
+          "fpr_benign": 0.2252,
+          "recall_attacks": 0.88565
+        }
+      },
+      "runner": "wolf-defender (0.3B)"
+    },
+    {
+      "auc": 0.9781,
+      "eer": 0.07236,
+      "eer_threshold": 0.10969,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.07242,
+          "fpr_benign": 0.4379
+        },
+        "0.99": {
+          "threshold": 0.05202,
+          "fpr_benign": 0.6921
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.3343,
+          "recall_attacks": 0.90878
+        },
+        "0.45": {
+          "fpr_benign": 0.2921,
+          "recall_attacks": 0.89511
+        },
+        "0.5": {
+          "fpr_benign": 0.2879,
+          "recall_attacks": 0.89248
+        },
+        "0.55": {
+          "fpr_benign": 0.2858,
+          "recall_attacks": 0.89143
+        },
+        "0.8": {
+          "fpr_benign": 0.2529,
+          "recall_attacks": 0.88091
+        }
+      },
+      "runner": "wolf-defender-small (0.1B)"
+    }
+  ]
+}

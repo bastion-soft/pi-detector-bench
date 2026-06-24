@@ -1,0 +1,75 @@
+# ─────────────────────────────────────────────────────────────────────────
+# Detectors evaluated by pi-detector-bench.
+#
+# ADD YOUR DETECTOR: open a PR that appends an entry here, run the harness, and
+# include the result rows + raw scores. See CONTRIBUTING.md.
+#
+# Each entry:
+#   name          display name shown in the results tables
+#   hf_id         HuggingFace AutoModelForSequenceClassification id (scored the
+#                 same generic way for every model — no special paths)
+#   attack_label  softmax index that means "attack" (int), or a list of indices
+#                 to sum for multi-class models (e.g. Prompt-Guard's
+#                 INJECTION + JAILBREAK → [1, 2])
+#   params        parameter count, for the tables (optional)
+#   gated         true if the model needs HF access approval; skipped cleanly
+#                 without it (optional)
+#   notes         freeform (optional)
+#
+# Note: PIGuard (leolee99/PIGuard) is intentionally not listed — it requires
+# trust_remote_code=True, and a reproducible security benchmark should not
+# execute arbitrary remote code. PRs that need trust_remote_code are declined.
+# ─────────────────────────────────────────────────────────────────────────
+models:
+  - name: "bastion-prompt-protection (70M)"
+    hf_id: "bastionsoft/binary-bastion-prompt-protection-deberta-v3-xsmall-v1"
+    attack_label: 1
+    params: "70M"
+    notes: "maintainer's model (Bastion Soft) — disclosed; runs the identical generic path as every other entry."
+
+  - name: "wolf-defender (0.3B)"
+    hf_id: "patronus-studio/wolf-defender-prompt-injection"
+    attack_label: 1
+    params: "0.3B"
+
+  - name: "wolf-defender-small (0.1B)"
+    hf_id: "patronus-studio/wolf-defender-prompt-injection-small"
+    attack_label: 1
+    params: "0.1B"
+
+  - name: "sentinel (qualifire, 395M)"
+    hf_id: "qualifire/prompt-injection-sentinel"
+    attack_label: 1
+    params: "395M"
+
+  - name: "proventra mdeberta (280M)"
+    hf_id: "proventra/mdeberta-v3-base-prompt-injection"
+    attack_label: 1
+    params: "280M"
+
+  - name: "fmops distilbert (67M)"
+    hf_id: "fmops/distilbert-prompt-injection"
+    attack_label: 1
+    params: "67M"
+
+  - name: "protectai v2 (184M)"
+    hf_id: "protectai/deberta-v3-base-prompt-injection-v2"
+    attack_label: 1
+    params: "184M"
+
+  - name: "deepset injection (184M)"
+    hf_id: "deepset/deberta-v3-base-injection"
+    attack_label: 1
+    params: "184M"
+
+  - name: "hlyn judge (70M)"
+    hf_id: "hlyn-labs/prompt-injection-judge-deberta-70m"
+    attack_label: 1
+    params: "70M"
+
+  - name: "meta prompt-guard (86M)"
+    hf_id: "meta-llama/Prompt-Guard-86M"
+    attack_label: [1, 2]
+    params: "86M"
+    gated: true
+    notes: "3-class (0=BENIGN, 1=INJECTION, 2=JAILBREAK); sum INJECTION+JAILBREAK. Deprecated v1 (replaced by Prompt-Guard-2), over-fires — shown for context. Needs HF gated-access approval."
