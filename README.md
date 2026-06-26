@@ -9,7 +9,7 @@
 Most prompt-injection benchmarks measure one thing: can a detector spot an attack? That's half the story. A detector that flags one in four *normal* user messages is an outage, not a guardrail — and a detector tuned to look great at one threshold can fall apart at another. This benchmark measures **both axes** and compares detectors **at the same catch rate**, so the ranking doesn't depend on where any model's 0.5 happens to fall.
 
 > ### Disclosure
-> This benchmark is maintained by **[Bastion Soft](https://github.com/bastion-soft)**, who also ship one of the evaluated detectors (`bastion-prompt-protection`). We keep it honest by design:
+> This benchmark is maintained by **[Bastion Soft](https://bastionsoft.com)**, who also ship one of the evaluated detectors (`bastion-prompt-protection`). We keep it honest by design:
 > - **Every number is reproducible from committed raw scores** with no GPU — rerun and check.
 > - Bastion's model is scored through the **identical generic path** as every other model (a plain HuggingFace classifier — no special handling).
 > - The interpretation doc **documents where our own model is weak** (see [`results/FINDINGS.md`](results/FINDINGS.md)).
