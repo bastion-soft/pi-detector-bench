@@ -15,6 +15,16 @@ Most prompt-injection benchmarks measure one thing: can a detector spot an attac
 > - The interpretation doc **documents where our own model is weak** (see [`results/FINDINGS.md`](results/FINDINGS.md)).
 > - **Contributions and criticism are welcome** — add your detector, propose a methodology change, or challenge a result.
 
+## Detector performance
+
+![False-positive rate vs AUC](results/operating_curve.png)
+
+The false-alarm rate (X axis) vs detection rate (Y axis) for different detectors. You want to benchmark against attack datasets that make sense for your domain and against your real historic traffic.
+
+## Discussion
+
+An [article on Medium](https://medium.com/@mantas.urbonas/measuring-prompt-injection-defences-e79b79471846) provides more context about the need for LLM prompt injection detectors in 2026 and motivation behind this kind of benchmarks.
+
 ## Leaderboard (seed results)
 
 Ten open detectors, four held-out adversarial benchmarks. Full tables + latency in [`results/leaderboard.md`](results/leaderboard.md); these are **seed results** — [add your model](CONTRIBUTING.md).
