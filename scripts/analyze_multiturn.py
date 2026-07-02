@@ -43,8 +43,12 @@ FAMILY_ORDER = ["cross_step", "jailbreak", "agent_jailbreak"]
 
 # length buckets on rendered chars (~4 chars/token): the boundaries bracket the
 # common detector windows (256-tok ~1k chars, 512-tok ~2k chars).
-LEN_BUCKETS = [(0, 1024, "≤256tok"), (1024, 2048, "256–512tok"),
-               (2048, 4096, "512–1k tok"), (4096, 10**9, ">1k tok")]
+LEN_BUCKETS = [
+    (0, 1024, "≤256tok"),
+    (1024, 2048, "256–512tok"),
+    (2048, 4096, "512–1k tok"),
+    (4096, 10**9, ">1k tok"),
+]
 
 
 def _bucket(n_chars: int) -> str:
@@ -65,7 +69,10 @@ def main() -> int:
     files = load_all_scores(args.scores_dir)
     files = [f for f in files if f.get("meta")]  # multi-turn files carry meta
     if not files:
-        print(f"no multi-turn score files with meta in {args.scores_dir} — run scripts.eval_multiturn --dump-scores first", file=sys.stderr)
+        print(
+            f"no multi-turn score files with meta in {args.scores_dir} — run scripts.eval_multiturn --dump-scores first",
+            file=sys.stderr,
+        )
         return 1
 
     # index: family -> model -> dataset -> {scores, labels, meta}
@@ -74,11 +81,16 @@ def main() -> int:
         fam = f["meta"][0].get("family", "?")
         fam_rows[fam][f["runner"]][f["dataset"]] = f
 
-    out_json: dict = {"generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "families": {}}
+    out_json: dict = {
+        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "families": {},
+    }
     lines: list[str] = ["# Multi-turn / cross-step prompt-injection results", ""]
-    lines.append("Conversations scored at natural length; each model truncates to its own "
-                 "window (**max_len** column). Families are reported separately — different "
-                 "threat models, never averaged together.\n")
+    lines.append(
+        "Conversations scored at natural length; each model truncates to its own "
+        "window (**max_len** column). Families are reported separately — different "
+        "threat models, never averaged together.\n"
+    )
 
     for fam in FAMILY_ORDER:
         if fam not in fam_rows:
@@ -105,8 +117,15 @@ def main() -> int:
                 eers.append(eer(s, y)[0])
                 window = rec["meta"][0].get("model_max_length", window)
             if aucs:
-                head.append((model, statistics.mean(aucs), statistics.mean(fpr95s),
-                             statistics.mean(eers), window))
+                head.append(
+                    (
+                        model,
+                        statistics.mean(aucs),
+                        statistics.mean(fpr95s),
+                        statistics.mean(eers),
+                        window,
+                    )
+                )
         head.sort(key=lambda r: r[1], reverse=True)
         lines.append("| Model | max_len | AUC | FPR@95%-catch | EER |")
         lines.append("|---|---|---|---|---|")
@@ -114,17 +133,25 @@ def main() -> int:
             lines.append(f"| {model} | {window or '?'} | {auc:.3f} | {fpr95:.3f} | {e:.3f} |")
         lines.append("")
         out_json["families"].setdefault(fam, {})["headline"] = [
-            {"model": m, "auc": round(a, 4), "fpr_at_95": round(fp, 4), "eer": round(e, 4), "max_len": w}
+            {
+                "model": m,
+                "auc": round(a, 4),
+                "fpr_at_95": round(fp, 4),
+                "eer": round(e, 4),
+                "max_len": w,
+            }
             for m, a, fp, e, w in head
         ]
 
         # ---- stratified: detection rate (recall@0.5) by length bucket & position ----
         # pooled across the family's datasets, attack rows only.
         strat = defaultdict(lambda: defaultdict(lambda: [0, 0]))  # model -> key -> [hit, total]
-        benign = defaultdict(lambda: defaultdict(lambda: [0, 0]))  # model -> lenbucket -> [fp, total]
+        benign = defaultdict(
+            lambda: defaultdict(lambda: [0, 0])
+        )  # model -> lenbucket -> [fp, total]
         for model, by_ds in models.items():
             for rec in by_ds.values():
-                for s, y, mo in zip(rec["scores"], rec["labels"], rec["meta"]):
+                for s, y, mo in zip(rec["scores"], rec["labels"], rec["meta"], strict=False):
                     lb = _bucket(int(mo.get("n_chars", 0)))
                     if y == 1:
                         pos = _position(mo.get("injection_turn"), mo.get("n_turns"))
@@ -137,19 +164,20 @@ def main() -> int:
 
         len_keys = [f"len:{b[2]}" for b in LEN_BUCKETS]
         pos_keys = ["pos:early", "pos:late"]
-        cols = [k for k in len_keys + pos_keys
-                if any(strat[m].get(k, [0, 0])[1] for m in strat)]
+        cols = [k for k in len_keys + pos_keys if any(strat[m].get(k, [0, 0])[1] for m in strat)]
         if cols:
-            lines.append("**Detection rate (recall @0.5) — by conversation length and injection position.** "
-                         "A recall cliff on long conversations or early injections = the model's window "
-                         "can't see the poison.\n")
+            lines.append(
+                "**Detection rate (recall @0.5) — by conversation length and injection position.** "
+                "A recall cliff on long conversations or early injections = the model's window "
+                "can't see the poison.\n"
+            )
             lines.append("| Model | " + " | ".join(c.split(":", 1)[1] for c in cols) + " |")
             lines.append("|" + "---|" * (len(cols) + 1))
             for model, _auc, *_ in head:
                 cells = []
                 for k in cols:
                     hit, tot = strat[model].get(k, [0, 0])
-                    cells.append(f"{hit/tot:.2f}" if tot else "—")
+                    cells.append(f"{hit / tot:.2f}" if tot else "—")
                 lines.append(f"| {model} | " + " | ".join(cells) + " |")
             lines.append("")
             out_json["families"][fam]["stratified"] = {
@@ -160,13 +188,18 @@ def main() -> int:
     out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "multiturn.json").write_text(json.dumps(out_json, indent=2))
-    lines.append("Held-out, never-trained (dedup-checked against the training corpus). Static "
-                 "assembly — no agent execution. Scored pure-model via the same path as every "
-                 "other leaderboard.")
-    lines.append(f"\n_Generated {time.strftime('%Y-%m-%d')} via `python -m scripts.analyze_multiturn`._")
+    lines.append(
+        "Held-out public benchmarks (held out by construction for detectors that "
+        "didn't train on them). Static "
+        "assembly — no agent execution. Scored pure-model via the same path as every "
+        "other leaderboard."
+    )
+    lines.append(
+        f"\n_Generated {time.strftime('%Y-%m-%d')} via `python -m scripts.analyze_multiturn`._"
+    )
     (out_dir / "multiturn.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
-    print(f"\n✓ wrote {out_dir/'multiturn.md'} and multiturn.json")
+    print(f"\n✓ wrote {out_dir / 'multiturn.md'} and multiturn.json")
     return 0
 
 

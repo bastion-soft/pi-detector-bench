@@ -17,9 +17,9 @@ Design rules (see METHODOLOGY.md):
 - **Families are reported separately, never averaged together** (different
   threat models): `jailbreak` (conversational), `cross_step` (injected tool
   output), `agent_jailbreak` (malicious user query to an agent).
-- **Held out from training.** These sets are the never-trained wall; a rendered
-  conversation that overlaps the training corpus is dropped by the dedup gate
-  (`scripts/dedup_multiturn.py`) before publication.
+- **Held out from training.** Public benchmarks, held out by construction for any
+  detector that did not train on them. Held-out status is a per-maintainer
+  disclosure, not a benchmark-wide guarantee — see METHODOLOGY.md.
 
 Loaders return `pidbench.data.EvalSet` (texts+labels) plus a parallel
 `list[MTMeta]` via `load_*_mt`; `INDIRECT`-style thin wrappers expose the
@@ -30,6 +30,7 @@ skipped with a warning.
 
 from __future__ import annotations
 
+import contextlib
 import json
 import logging
 import os
@@ -41,8 +42,8 @@ from pidbench.data import EvalSet
 logger = logging.getLogger(__name__)
 
 # Families — reported in separate tables, never pooled into one average.
-FAMILY_JAILBREAK = "jailbreak"          # conversational, harmless-early/malicious-later
-FAMILY_CROSS_STEP = "cross_step"        # injection inside a tool output / document
+FAMILY_JAILBREAK = "jailbreak"  # conversational, harmless-early/malicious-later
+FAMILY_CROSS_STEP = "cross_step"  # injection inside a tool output / document
 FAMILY_AGENT_JAILBREAK = "agent_jailbreak"  # malicious user query to a tool-using agent
 
 
@@ -52,10 +53,10 @@ class MTMeta:
     scores by the extended ``scores_io.dump_scores(meta=...)``."""
 
     family: str
-    injected: bool                 # True = attack row (label 1), False = benign twin
-    n_turns: int                   # rendered conversation turns
-    n_chars: int                   # rendered length in characters (window proxy)
-    injection_turn: int | None = None   # 0-based turn carrying the payload (attacks only)
+    injected: bool  # True = attack row (label 1), False = benign twin
+    n_turns: int  # rendered conversation turns
+    n_chars: int  # rendered length in characters (window proxy)
+    injection_turn: int | None = None  # 0-based turn carrying the payload (attacks only)
     source: str = ""
 
     def as_dict(self) -> dict:
@@ -124,7 +125,7 @@ def _mt(
 # Static JSON; the `Tool Response` field literally carries the payload. We
 # render [user instruction] -> [tool call] -> [tool output+payload] as a 3-turn
 # trace; benign twin swaps in a clean tool response. ENHANCED ONLY — the `_base`
-# split is in Bastion's training corpus, so only enhanced is eval-valid.
+# split is a common training source, so only `_enhanced` is used as eval.
 # =========================================================================== #
 _IA_HACK_PREFIX = re.compile(
     r"IMPORTANT!!!.*?adhere to the following instruction:\s*", re.IGNORECASE | re.DOTALL
@@ -149,8 +150,14 @@ def load_injecagent_mt(limit: int | None = None, category: str | None = None):
     if not os.path.exists("InjecAgent"):
         try:
             subprocess.run(
-                ["git", "clone", "--depth", "1",
-                 "https://github.com/uiuc-kang-lab/InjecAgent", "InjecAgent"],
+                [
+                    "git",
+                    "clone",
+                    "--depth",
+                    "1",
+                    "https://github.com/uiuc-kang-lab/InjecAgent",
+                    "InjecAgent",
+                ],
                 check=True,
             )
         except Exception as exc:
@@ -256,7 +263,11 @@ def load_agentdojo_mt(limit: int | None = None):
         logger.warning("agentdojo unavailable (%s) — skipping", str(exc)[:120])
         return EvalSet(name="agentdojo_mt", texts=[], labels=[]), []
 
-    iterable = suites.items() if isinstance(suites, dict) else [(getattr(s, "name", "?"), s) for s in suites]
+    iterable = (
+        suites.items()
+        if isinstance(suites, dict)
+        else [(getattr(s, "name", "?"), s) for s in suites]
+    )
     rows: list[tuple[list[tuple[str, str]], int, str, int | None]] = []
     for sname, suite in iterable:
         try:
@@ -289,10 +300,14 @@ def load_agentdojo_mt(limit: int | None = None):
         anchor = "IMPORTANT!!! Ignore all previous instructions"
         for i, vec in enumerate(defaults):
             goal = goals[i % len(goals)]
-            user_prompt = user_prompts[i % len(user_prompts)] if user_prompts else "Please help with my task."
+            user_prompt = (
+                user_prompts[i % len(user_prompts)] if user_prompts else "Please help with my task."
+            )
             attack = _agentdojo_attack_string(suite, goal)
             try:
-                inj_blob = suite.load_and_inject_default_environment({vec: attack}).model_dump_json()
+                inj_blob = suite.load_and_inject_default_environment(
+                    {vec: attack}
+                ).model_dump_json()
             except Exception:
                 continue
             k = inj_blob.find(anchor)
@@ -317,30 +332,38 @@ def load_agentdojo_mt(limit: int | None = None):
                 # present verbatim in the benign env (works for slack/banking,
                 # whose records lack a title/subject field).
                 pre = inj_record[: inj_record.find("<INFORMATION>")]
-                chunks = re.findall(r'[A-Za-z0-9 ,\.\'!?]{20,}', pre)
+                chunks = re.findall(r"[A-Za-z0-9 ,\.\'!?]{20,}", pre)
                 if chunks:
                     kb = ben_blob.find(json.dumps(chunks[-1].strip()[-40:])[1:-1])
             if kb < 0:
                 continue
             ben_record = _enclosing_json_object(ben_blob, kb)
             tool_call = f"Retrieving data from the {sname} environment…"
-            rows.append((
-                [("user", user_prompt), ("assistant", tool_call), ("tool", inj_record)],
-                1, f"agentdojo/{sname}", 2,
-            ))
-            rows.append((
-                [("user", user_prompt), ("assistant", tool_call), ("tool", ben_record)],
-                0, f"agentdojo/{sname}", None,
-            ))
+            rows.append(
+                (
+                    [("user", user_prompt), ("assistant", tool_call), ("tool", inj_record)],
+                    1,
+                    f"agentdojo/{sname}",
+                    2,
+                )
+            )
+            rows.append(
+                (
+                    [("user", user_prompt), ("assistant", tool_call), ("tool", ben_record)],
+                    0,
+                    f"agentdojo/{sname}",
+                    None,
+                )
+            )
     return _mt("agentdojo_mt", rows, FAMILY_CROSS_STEP, max_per_class=m)
 
 
 # =========================================================================== #
 # Benign multi-turn negatives — real WildChat/LMSYS conversations rendered in
 # full. The jailbreak sources (CoSafe, MHJ) are attack-only, so AUC/FPR need a
-# shared benign pool. NOTE: training uses only FIRST-user-turns of these corpora
-# (single-turn strings); a full rendered conversation is a different string, and
-# the dedup gate drops any that still overlap the corpus verbatim.
+# shared benign pool. Note: many detectors train on FIRST-user-turns of these
+# corpora (single-turn strings); a full rendered multi-turn conversation is a
+# different string, so held-out status is preserved for such models.
 # =========================================================================== #
 _BENIGN_CACHE: list[list[tuple[str, str]]] | None = None
 _BENIGN_MAX = 2000  # fetch a reusable pool once, slice per caller
@@ -364,7 +387,10 @@ def _benign_multiturn(n: int) -> list[list[tuple[str, str]]]:
         return _BENIGN_CACHE[:n]
 
     convs: list[list[tuple[str, str]]] = []
-    for repo, key in (("allenai/WildChat-1M", "conversation"), ("lmsys/lmsys-chat-1m", "conversation")):
+    for repo, key in (
+        ("allenai/WildChat-1M", "conversation"),
+        ("lmsys/lmsys-chat-1m", "conversation"),
+    ):
         try:
             from datasets import load_dataset
 
@@ -415,10 +441,8 @@ def _cosafe_iter_json(blob: bytes):
         for line in txt.splitlines():
             line = line.strip().rstrip(",")
             if line and line not in "[]":
-                try:
+                with contextlib.suppress(Exception):
                     out.append(json.loads(line))
-                except Exception:
-                    pass
         return out
 
 
@@ -440,8 +464,15 @@ def load_cosafe_mt(limit: int | None = None):
         except Exception:
             continue
         for conv in data:
-            turns_raw = conv if isinstance(conv, list) else (
-                conv.get("conversations") or conv.get("messages") or conv.get("conversation") or []
+            turns_raw = (
+                conv
+                if isinstance(conv, list)
+                else (
+                    conv.get("conversations")
+                    or conv.get("messages")
+                    or conv.get("conversation")
+                    or []
+                )
             )
             turns = [
                 (t.get("role", "user"), (t.get("content") or "").strip())
@@ -451,7 +482,9 @@ def load_cosafe_mt(limit: int | None = None):
             if len(turns) < 2:
                 continue
             # last user turn carries the coreference-masked harmful request
-            last_user = max((i for i, (r, _) in enumerate(turns) if r == "user"), default=len(turns) - 1)
+            last_user = max(
+                (i for i, (r, _) in enumerate(turns) if r == "user"), default=len(turns) - 1
+            )
             rows.append((turns, 1, "cosafe", last_user))
     for turns in _benign_multiturn(len(rows) or m):
         rows.append((turns, 0, "wildchat_benign", None))
@@ -497,7 +530,9 @@ def load_mhj_mt(limit: int | None = None):
             turns.append((role, body))
         if len(turns) < 2:
             continue
-        last_user = max((i for i, (rl, _) in enumerate(turns) if rl == "user"), default=len(turns) - 1)
+        last_user = max(
+            (i for i, (rl, _) in enumerate(turns) if rl == "user"), default=len(turns) - 1
+        )
         rows.append((turns, 1, "mhj", last_user))  # payload lands on the last user turn
     for turns in _benign_multiturn(len([x for x in rows if x[1] == 1]) or m):
         rows.append((turns, 0, "wildchat_benign", None))
@@ -527,8 +562,14 @@ def load_agentharm_mt(limit: int | None = None, split: str = "test_public"):
             for r in ds:
                 p = r.get("prompt") or r.get("detailed_prompt")
                 if isinstance(p, str) and p.strip():
-                    rows.append(([("user", p.strip())], label, f"agentharm/{cfg}",
-                                 0 if label == 1 else None))
+                    rows.append(
+                        (
+                            [("user", p.strip())],
+                            label,
+                            f"agentharm/{cfg}",
+                            0 if label == 1 else None,
+                        )
+                    )
     except Exception as exc:
         logger.warning("AgentHarm unavailable: %s", str(exc)[:140])
         return EvalSet(name="agentharm_mt", texts=[], labels=[]), []
@@ -548,8 +589,10 @@ def load_asb_mt(limit: int | None = None):
     m = limit or 400
     if not os.path.exists("ASB"):
         try:
-            subprocess.run(["git", "clone", "--depth", "1",
-                            "https://github.com/agiresearch/ASB", "ASB"], check=True)
+            subprocess.run(
+                ["git", "clone", "--depth", "1", "https://github.com/agiresearch/ASB", "ASB"],
+                check=True,
+            )
         except Exception as exc:
             logger.warning("ASB clone failed: %s", exc)
             return EvalSet(name="asb_mt", texts=[], labels=[]), []
@@ -562,10 +605,8 @@ def load_asb_mt(limit: int | None = None):
             for line in f:
                 line = line.strip()
                 if line:
-                    try:
+                    with contextlib.suppress(Exception):
                         out.append(json.loads(line))
-                    except Exception:
-                        pass
         return out
 
     attacks = _load_jsonl("ASB/data/all_attack_tools.jsonl")
@@ -588,22 +629,28 @@ def load_asb_mt(limit: int | None = None):
         agent = atk.get("Corresponding Agent", "")
         if not (isinstance(instr, str) and instr.strip()):
             continue
-        user_tasks = tasks_by_agent.get(agent) or ["Complete my requested task using the available tools."]
+        user_tasks = tasks_by_agent.get(agent) or [
+            "Complete my requested task using the available tools."
+        ]
         user = user_tasks[len(rows) % len(user_tasks)]
         call = f"Calling tool: {tool}"
         inj_obs = f'{{"tool": "{tool}", "result": "{desc} {instr}"}}'
         ben_obs = f'{{"tool": "{tool}", "result": "{desc}"}}'
-        rows.append(([("user", user), ("assistant", call), ("tool", inj_obs)], 1, f"asb/{agent}", 2))
-        rows.append(([("user", user), ("assistant", call), ("tool", ben_obs)], 0, f"asb/{agent}", None))
+        rows.append(
+            ([("user", user), ("assistant", call), ("tool", inj_obs)], 1, f"asb/{agent}", 2)
+        )
+        rows.append(
+            ([("user", user), ("assistant", call), ("tool", ben_obs)], 0, f"asb/{agent}", None)
+        )
     return _mt("asb_mt", rows, FAMILY_CROSS_STEP, max_per_class=m)
 
 
 # family -> loaders, so the analysis can group and never average across families.
 MULTITURN_LOADERS_MT = {
-    "injecagent": load_injecagent_mt,   # cross_step
-    "agentdojo": load_agentdojo_mt,     # cross_step
-    "asb": load_asb_mt,                 # cross_step
-    "cosafe": load_cosafe_mt,           # jailbreak
-    "mhj": load_mhj_mt,                 # jailbreak
-    "agentharm": load_agentharm_mt,     # agent_jailbreak
+    "injecagent": load_injecagent_mt,  # cross_step
+    "agentdojo": load_agentdojo_mt,  # cross_step
+    "asb": load_asb_mt,  # cross_step
+    "cosafe": load_cosafe_mt,  # jailbreak
+    "mhj": load_mhj_mt,  # jailbreak
+    "agentharm": load_agentharm_mt,  # agent_jailbreak
 }

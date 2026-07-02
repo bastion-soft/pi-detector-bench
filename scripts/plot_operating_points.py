@@ -47,10 +47,10 @@ def main() -> int:
 
     # Legend-only display overrides. The curve KEYS stay tied to the committed
     # scores/slugs; this just clarifies labels (e.g. flags the deprecated model).
-    _LABELS = {"meta prompt-guard (86M)": "meta prompt-guard v1 (86M, deprecated)"}
+    label_overrides = {"meta prompt-guard (86M)": "meta prompt-guard v1 (86M, deprecated)"}
 
     def _label(name: str) -> str:
-        return _LABELS.get(name, name)
+        return label_overrides.get(name, name)
 
     def _style(name: str) -> dict:
         return {"linewidth": 1.6, "alpha": 0.9}

@@ -40,7 +40,9 @@ def main() -> int:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
     except ImportError:
-        print("matplotlib not installed — `pip install matplotlib` to render plots", file=sys.stderr)
+        print(
+            "matplotlib not installed — `pip install matplotlib` to render plots", file=sys.stderr
+        )
         return 1
 
     data = json.loads(Path(args.multiturn_json).read_text())
@@ -101,8 +103,11 @@ def main() -> int:
         written.append(p)
 
     if not written:
-        print("no stratified data in multiturn.json — run scripts.eval_multiturn + "
-              "scripts.analyze_multiturn first", file=sys.stderr)
+        print(
+            "no stratified data in multiturn.json — run scripts.eval_multiturn + "
+            "scripts.analyze_multiturn first",
+            file=sys.stderr,
+        )
         return 1
     for p in written:
         print(f"✓ wrote {p} (+ .png)")

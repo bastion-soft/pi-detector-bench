@@ -28,3 +28,9 @@ hf_cache/
 /InjecAgent/
 /BIPIA/
 /ASB/
+
+# Private dedup self-audit (checks eval sets vs Bastion's private training corpus;
+# kept local — the public benchmark is model-agnostic and doesn't ship it)
+/pidbench/dedup.py
+/scripts/dedup_multiturn.py
+/results/multiturn_dedup.json

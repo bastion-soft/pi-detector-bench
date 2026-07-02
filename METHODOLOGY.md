@@ -94,19 +94,16 @@ tool-output content a detector would see; we do **not** execute an agent, becaus
 this measures *detection*, not attack success. No LLM driver, deterministic,
 reproducible.
 
-**The never-trained wall, as a published number.** These sets are held out from
-training. Because several share behavior seeds with training sources (e.g. MHJ and
-HarmBench-derived corpus rows), we don't trust lineage — we **measure** it: every
-rendered eval conversation is checked for near-duplication against the full training
-corpus (`scripts/dedup_multiturn.py`), rows at/above a Jaccard threshold are dropped,
-and the overlap rate is reported per set. Verbatim contamination is ≈0% across the
-sets (the human/structured multi-turn wrappers are novel text even when a seed
-behavior overlaps); the committed drop manifest (`results/multiturn_dedup.json`,
-fingerprints only) makes the wall reproducible without corpus access.
-
-Contamination note per source: InjecAgent uses the **`_enhanced` split only** (its
-`_base` split is in training); it shows elevated *fuzzy* (paraphrase-level) overlap
-with training but ≈0% verbatim, which is disclosed rather than hidden.
+**Held out from training.** Every set here is a public benchmark, held out by
+construction for any detector that did not train on it. A benchmark can't inspect
+each model's training data, so held-out status is a **per-maintainer disclosure**,
+not a benchmark-wide guarantee — the same posture the direct/indirect axes already
+take. Contributors should confirm their detector didn't train on these sets. As the
+maintainer that also ships a detector, Bastion self-audits its own corpus for overlap
+against these conversations and reports the result in
+[`results/FINDINGS.md`](results/FINDINGS.md) (a conflict-of-interest disclosure, kept
+out of the model-agnostic scoring path). InjecAgent uses the **`_enhanced` split
+only**, since its `_base` split is a common training source.
 
 ## Scoring protocol — the same for everyone
 

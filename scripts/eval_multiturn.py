@@ -20,12 +20,9 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
-import time
-from pathlib import Path
 
 import numpy as np
 
-from pidbench.dedup import fingerprint
 from pidbench.metrics import binary_metrics
 from pidbench.models import load_models
 from pidbench.multiturn_data import MULTITURN_LOADERS_MT
@@ -43,19 +40,14 @@ def main() -> int:
     args = _parse_args()
     logging.basicConfig(level=logging.INFO, format="%(message)s")
 
-    # drop manifest from the dedup gate — fingerprints of eval rows that overlap
-    # the training corpus (keeps the never-trained wall honest).
-    drop: set[str] = set()
-    if args.dedup_manifest and Path(args.dedup_manifest).exists():
-        drop = set(json.loads(Path(args.dedup_manifest).read_text()).get("dropped_fingerprints", []))
-        logger.info("dedup manifest: %d contaminated fingerprints will be dropped", len(drop))
-
     keys = args.dataset or DEFAULT_DATASETS
     sets: list[tuple[str, object, list]] = []
     for key in keys:
         loader = MULTITURN_LOADERS_MT.get(key)
         if loader is None:
-            logger.warning("unknown multi-turn set %s (known: %s)", key, ", ".join(MULTITURN_LOADERS_MT))
+            logger.warning(
+                "unknown multi-turn set %s (known: %s)", key, ", ".join(MULTITURN_LOADERS_MT)
+            )
             continue
         try:
             eval_set, meta = loader(limit=args.limit)
@@ -65,18 +57,6 @@ def main() -> int:
         if not eval_set.texts:
             logger.warning("skip %s — empty (unavailable / gated / not installed)", key)
             continue
-        if drop:
-            keep = [i for i, t in enumerate(eval_set.texts) if fingerprint(t) not in drop]
-            n_drop = len(eval_set.texts) - len(keep)
-            if n_drop:
-                from pidbench.data import EvalSet
-                eval_set = EvalSet(
-                    name=eval_set.name,
-                    texts=[eval_set.texts[i] for i in keep],
-                    labels=[eval_set.labels[i] for i in keep],
-                )
-                meta = [meta[i] for i in keep]
-                logger.info("  %s: dropped %d contaminated rows (dedup)", key, n_drop)
         sets.append((key, eval_set, meta))
     if not sets:
         logger.error("no multi-turn sets loaded")
@@ -113,16 +93,31 @@ def main() -> int:
             # tag each row with the scoring model's window for offline analysis
             meta_out = [{**m.as_dict(), "model_max_length": model_window} for m in meta]
             if dump_dir:
-                dump_scores(dump_dir, spec.name, eval_set.name, "attack",
-                            scores, labels, meta=meta_out)
+                dump_scores(
+                    dump_dir, spec.name, eval_set.name, "attack", scores, labels, meta=meta_out
+                )
             m = binary_metrics(scores, labels, threshold=args.threshold)
-            summary.append({
-                "model": spec.name, "dataset": key, "family": meta[0].family if meta else "?",
-                "n": len(labels), "auc": round(m.auc, 4), "f1": round(m.f1, 4),
-                "fpr_at_95": round(m.fpr_at_tpr_95, 4), "model_max_length": model_window,
-            })
-            logger.info("  %-12s %-11s n=%-4d AUC=%.3f F1=%.3f FPR@95=%.3f",
-                        spec.name[:12], key, len(labels), m.auc, m.f1, m.fpr_at_tpr_95)
+            summary.append(
+                {
+                    "model": spec.name,
+                    "dataset": key,
+                    "family": meta[0].family if meta else "?",
+                    "n": len(labels),
+                    "auc": round(m.auc, 4),
+                    "f1": round(m.f1, 4),
+                    "fpr_at_95": round(m.fpr_at_tpr_95, 4),
+                    "model_max_length": model_window,
+                }
+            )
+            logger.info(
+                "  %-12s %-11s n=%-4d AUC=%.3f F1=%.3f FPR@95=%.3f",
+                spec.name[:12],
+                key,
+                len(labels),
+                m.auc,
+                m.f1,
+                m.fpr_at_tpr_95,
+            )
 
     if not summary:
         logger.error("no rows produced (all models skipped?)")
@@ -141,12 +136,18 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--limit", type=int, default=None, help="cap rows per set (smoke testing)")
     p.add_argument("--threshold", type=float, default=0.5)
     p.add_argument("--batch-size", type=int, default=16)
-    p.add_argument("--max-length", type=int, default=MODEL_MAX_LENGTH,
-                   help="upper token bound passed to the tokenizer; each model truncates within it")
-    p.add_argument("--dump-scores", default="results/scores_multiturn", metavar="DIR",
-                   help="write raw per-conversation scores+labels+meta per (model,set) for offline analysis")
-    p.add_argument("--dedup-manifest", default="results/multiturn_dedup.json", metavar="FILE",
-                   help="drop eval rows whose fingerprint is in this dedup manifest (from scripts.dedup_multiturn)")
+    p.add_argument(
+        "--max-length",
+        type=int,
+        default=MODEL_MAX_LENGTH,
+        help="upper token bound passed to the tokenizer; each model truncates within it",
+    )
+    p.add_argument(
+        "--dump-scores",
+        default="results/scores_multiturn",
+        metavar="DIR",
+        help="write raw per-conversation scores+labels+meta per (model,set) for offline analysis",
+    )
     return p.parse_args()
 
 
