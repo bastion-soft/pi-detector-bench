@@ -37,8 +37,15 @@ def dump_scores(
     scores: Sequence[float],
     labels: Sequence[int] | None = None,
     ndigits: int = 5,
+    meta: Sequence[dict] | None = None,
 ) -> Path:
-    """Write one (runner, dataset) score file; returns its path."""
+    """Write one (runner, dataset) score file; returns its path.
+
+    ``meta`` (optional) is a per-example list of small dicts persisted verbatim
+    alongside scores/labels — used by the multi-turn axis to carry length
+    buckets and injection position so the analysis can stratify offline. Older
+    readers ignore the extra key; it's absent for sets that don't supply it.
+    """
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -48,6 +55,8 @@ def dump_scores(
         "scores": [round(float(s), ndigits) for s in scores],
         "labels": [int(x) for x in labels] if labels is not None else None,
     }
+    if meta is not None:
+        payload["meta"] = list(meta)
     path = out_dir / f"{slugify(runner)}__{slugify(dataset)}.json"
     path.write_text(json.dumps(payload))
     return path

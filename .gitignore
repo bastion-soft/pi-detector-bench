@@ -23,3 +23,8 @@ Thumbs.db
 hf_cache/
 *.safetensors
 *.onnx
+
+# Cloned eval datasets (fetched at runtime by indirect_data.py / multiturn_data.py)
+/InjecAgent/
+/BIPIA/
+/ASB/

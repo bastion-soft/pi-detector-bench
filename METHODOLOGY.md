@@ -51,9 +51,62 @@ All evaluation sets are **held out** — they are not training data for the dete
   capability. Each set is matched injected-vs-benign, so we can also measure the
   false-positive rate on **benign structured records** at a fixed catch rate
   (`--within-set`).
+- **Multi-turn / cross-step injection** (separate axis): whole *conversations*,
+  not single messages — the attacks a single-prompt classifier structurally cannot
+  see. Three families, reported separately (distinct threat models, never averaged):
+  *jailbreak* (harmless-early / malicious-later, CoSafe + MHJ), *cross-step*
+  (injection inside a tool output that poisons a later step, InjecAgent-enhanced +
+  AgentDojo + ASB), and *agent-jailbreak* (a malicious user query to a tool-using
+  agent, AgentHarm). See the dedicated section below.
 
-Some datasets are gated (LMSYS, HackAPrompt) — the harness skips them cleanly if you
-don't have access.
+Some datasets are gated (LMSYS, HackAPrompt, MHJ) — the harness skips them cleanly if
+you don't have access.
+
+## Multi-turn / cross-step injection
+
+A single-prompt classifier has no conversation state, so it cannot, on its own,
+catch an attack that builds across turns or a payload planted in an earlier tool
+output. The architectural answer (which the maintainers argue for publicly) is to
+**feed the whole accumulated conversation to the filter** — at which point "can it
+catch this" becomes a measurable detection question. This axis measures exactly
+that, under one rule:
+
+**Eval the task, not the model.** Each conversation is rendered (role-tagged) at
+its **natural length** and scored as one input. We do **not** cap length to fit any
+detector's context window — every model truncates per its own `max_length`, and we
+report that window as a column. A detector too small to see the poisoned turn
+*should* score worse; hiding that by trimming the input would measure the harness,
+not the model. (Rendered lengths span from a few hundred to tens of thousands of
+characters, so the short-window cliff is exercised, not assumed away.)
+
+**Stratified reporting.** Beyond AUC / FPR@95%-catch / EER per family, the decisive
+cut is **detection rate by conversation-length bucket × injection position**
+(early vs late turn). This is the direct test of "does the filter fire before the
+agent acts on the poison": a recall cliff on long conversations or early injections
+means the window can't reach the payload. It converts the abstract "cross-step
+injection" objection into a number.
+
+**Matched pairs, static assembly.** Every injected conversation has a benign twin
+that differs only by the payload (e.g. the same AgentDojo record or InjecAgent tool
+output with the injection removed), so the signal is the injection, not surface
+structure. Cross-step traces are assembled **statically** — we render the untrusted
+tool-output content a detector would see; we do **not** execute an agent, because
+this measures *detection*, not attack success. No LLM driver, deterministic,
+reproducible.
+
+**The never-trained wall, as a published number.** These sets are held out from
+training. Because several share behavior seeds with training sources (e.g. MHJ and
+HarmBench-derived corpus rows), we don't trust lineage — we **measure** it: every
+rendered eval conversation is checked for near-duplication against the full training
+corpus (`scripts/dedup_multiturn.py`), rows at/above a Jaccard threshold are dropped,
+and the overlap rate is reported per set. Verbatim contamination is ≈0% across the
+sets (the human/structured multi-turn wrappers are novel text even when a seed
+behavior overlaps); the committed drop manifest (`results/multiturn_dedup.json`,
+fingerprints only) makes the wall reproducible without corpus access.
+
+Contamination note per source: InjecAgent uses the **`_enhanced` split only** (its
+`_base` split is in training); it shows elevated *fuzzy* (paraphrase-level) overlap
+with training but ≈0% verbatim, which is disclosed rather than hidden.
 
 ## Scoring protocol — the same for everyone
 
@@ -78,9 +131,11 @@ don't have access.
 ## Reproducibility
 
 - **Raw scores are committed.** Each scoring run can `--dump-scores` the per-prompt
-  scores (`results/scores/`, `results/scores_indirect/` — scores + labels only, no
-  prompt text). Every table, curve, and operating point is then recomputed from those
-  with **no GPU** (`rebuild_results_from_scores`, `analyze_operating_points`).
+  scores (`results/scores/`, `results/scores_indirect/`, `results/scores_multiturn/` —
+  scores + labels only, no prompt text; the multi-turn files also carry per-example
+  `meta` for length/injection-position stratification). Every table, curve, and
+  operating point is then recomputed from those with **no GPU**
+  (`rebuild_results_from_scores`, `analyze_operating_points`, `analyze_multiturn`).
 - **GPU runs aren't bit-stable; the committed numbers are.** PyTorch detectors vary
   slightly run-to-run on a GPU (most visibly on small sets and near-0.5-AUC models).
   So the *published* numbers are pinned by the committed scores, not by trusting any
@@ -90,10 +145,14 @@ don't have access.
 ## What this benchmark does *not* claim
 
 Detectors catch the patterns they were trained on. No detector here addresses
-domain-specific abuse (e.g. "give me a 100% discount" is valid user language),
-multi-step/contextual attacks (a single-prompt classifier has no conversation
-state), or tool misuse (an infrastructure/authorization concern). A detector is one
-layer of defense-in-depth, not the whole wall. See [`results/FINDINGS.md`](results/FINDINGS.md).
+domain-specific abuse (e.g. "give me a 100% discount" is valid user language) or
+tool misuse (an infrastructure/authorization concern). **Multi-step / contextual
+attacks** used to be out of scope entirely; the multi-turn axis above now *measures*
+them — but only when the filter is given the whole conversation, and only as
+detection (not attack prevention). A single message scored in isolation still has no
+conversation state, and no classifier catches a brand-new exploit absent from its
+training set. A detector is one layer of defense-in-depth, not the whole wall. See
+[`results/FINDINGS.md`](results/FINDINGS.md).
 
 ## Changing the methodology
 
