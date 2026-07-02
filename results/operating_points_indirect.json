@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-24T16:46:51Z",
+  "generated_at": "2026-07-02T14:08:42Z",
   "mode": "within-set",
   "tprs": [
     0.95,
@@ -56,41 +56,41 @@
       "dataset": "agentdojo/agent"
     },
     {
-      "auc": 0.82971,
-      "eer": 0.24,
-      "eer_threshold": 0.03616,
+      "auc": 0.86861,
+      "eer": 0.2125,
+      "eer_threshold": 0.15007,
       "n_attack": 200,
       "n_benign": 200,
       "fpr_at_tpr": {
         "0.95": {
-          "threshold": 0.0066,
-          "fpr_benign": 0.685
+          "threshold": 0.00928,
+          "fpr_benign": 0.46
         },
         "0.99": {
-          "threshold": 0.0033,
-          "fpr_benign": 0.935
+          "threshold": 0.00401,
+          "fpr_benign": 0.89
         }
       },
       "threshold_sweep": {
         "0.2": {
           "fpr_benign": 0.185,
-          "recall_attacks": 0.67
+          "recall_attacks": 0.755
         },
         "0.45": {
           "fpr_benign": 0.165,
-          "recall_attacks": 0.65
+          "recall_attacks": 0.7
         },
         "0.5": {
           "fpr_benign": 0.165,
-          "recall_attacks": 0.65
+          "recall_attacks": 0.7
         },
         "0.55": {
           "fpr_benign": 0.165,
-          "recall_attacks": 0.65
+          "recall_attacks": 0.695
         },
         "0.8": {
           "fpr_benign": 0.15,
-          "recall_attacks": 0.645
+          "recall_attacks": 0.67
         }
       },
       "runner": "bastion-prompt-protection (70M)",
@@ -302,19 +302,19 @@
       "dataset": "agentdojo/agent"
     },
     {
-      "auc": 0.59448,
+      "auc": 0.5974,
       "eer": 0.475,
       "eer_threshold": 0.99831,
       "n_attack": 200,
       "n_benign": 200,
       "fpr_at_tpr": {
         "0.95": {
-          "threshold": 0.98046,
-          "fpr_benign": 0.815
+          "threshold": 0.97825,
+          "fpr_benign": 0.83
         },
         "0.99": {
-          "threshold": 0.95465,
-          "fpr_benign": 0.965
+          "threshold": 0.96792,
+          "fpr_benign": 0.89
         }
       },
       "threshold_sweep": {
@@ -548,19 +548,19 @@
       "dataset": "agentdojo/agent"
     },
     {
-      "auc": 0.65809,
-      "eer": 0.38,
+      "auc": 0.64747,
+      "eer": 0.3825,
       "eer_threshold": 0.99958,
       "n_attack": 200,
       "n_benign": 200,
       "fpr_at_tpr": {
         "0.95": {
-          "threshold": 0.99944,
-          "fpr_benign": 0.835
+          "threshold": 0.99945,
+          "fpr_benign": 0.815
         },
         "0.99": {
-          "threshold": 0.99941,
-          "fpr_benign": 0.895
+          "threshold": 0.99934,
+          "fpr_benign": 0.91
         }
       },
       "threshold_sweep": {
@@ -1040,41 +1040,41 @@
       "dataset": "agentdojo/agent"
     },
     {
-      "auc": 0.91028,
-      "eer": 0.18,
-      "eer_threshold": 0.58772,
+      "auc": 0.91715,
+      "eer": 0.175,
+      "eer_threshold": 0.66339,
       "n_attack": 200,
       "n_benign": 200,
       "fpr_at_tpr": {
         "0.95": {
-          "threshold": 0.00744,
-          "fpr_benign": 0.285
+          "threshold": 0.00763,
+          "fpr_benign": 0.28
         },
         "0.99": {
-          "threshold": 0.00096,
-          "fpr_benign": 0.37
+          "threshold": 0.00067,
+          "fpr_benign": 0.375
         }
       },
       "threshold_sweep": {
         "0.2": {
           "fpr_benign": 0.195,
-          "recall_attacks": 0.835
+          "recall_attacks": 0.87
         },
         "0.45": {
           "fpr_benign": 0.185,
-          "recall_attacks": 0.83
+          "recall_attacks": 0.835
         },
         "0.5": {
           "fpr_benign": 0.185,
-          "recall_attacks": 0.83
+          "recall_attacks": 0.835
         },
         "0.55": {
           "fpr_benign": 0.18,
-          "recall_attacks": 0.82
+          "recall_attacks": 0.835
         },
         "0.8": {
           "fpr_benign": 0.16,
-          "recall_attacks": 0.785
+          "recall_attacks": 0.815
         }
       },
       "runner": "meta prompt-guard (86M)",
@@ -1245,6 +1245,498 @@
       "dataset": "zedgar/structured"
     },
     {
+      "auc": 0.38297,
+      "eer": 0.55613,
+      "eer_threshold": 0.00184,
+      "n_attack": 27,
+      "n_benign": 97,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00104,
+          "fpr_benign": 0.96907
+        },
+        "0.99": {
+          "threshold": 0.00088,
+          "fpr_benign": 0.98969
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.45": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.5": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.55": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.8": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        }
+      },
+      "runner": "meta prompt-guard v2 (22M)",
+      "dataset": "agentdojo/agent"
+    },
+    {
+      "auc": 0.63931,
+      "eer": 0.3925,
+      "eer_threshold": 0.0035,
+      "n_attack": 200,
+      "n_benign": 200,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00193,
+          "fpr_benign": 0.9
+        },
+        "0.99": {
+          "threshold": 0.00163,
+          "fpr_benign": 0.96
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.005
+        },
+        "0.45": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.5": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.55": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.8": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        }
+      },
+      "runner": "meta prompt-guard v2 (22M)",
+      "dataset": "bipia/indirect"
+    },
+    {
+      "auc": 0.99603,
+      "eer": 0.03286,
+      "eer_threshold": 0.00951,
+      "n_attack": 400,
+      "n_benign": 56,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.0124,
+          "fpr_benign": 0.01786
+        },
+        "0.99": {
+          "threshold": 0.00519,
+          "fpr_benign": 0.05357
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.61
+        },
+        "0.45": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.4775
+        },
+        "0.5": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.47
+        },
+        "0.55": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.4625
+        },
+        "0.8": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.3475
+        }
+      },
+      "runner": "meta prompt-guard v2 (22M)",
+      "dataset": "hackaprompt/direct"
+    },
+    {
+      "auc": 0.7166,
+      "eer": 0.35125,
+      "eer_threshold": 0.00293,
+      "n_attack": 400,
+      "n_benign": 400,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.002,
+          "fpr_benign": 0.765
+        },
+        "0.99": {
+          "threshold": 0.00165,
+          "fpr_benign": 0.94
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.45": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.5": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.55": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.8": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        }
+      },
+      "runner": "meta prompt-guard v2 (22M)",
+      "dataset": "injecagent/enhanced"
+    },
+    {
+      "auc": 0.96522,
+      "eer": 0.07125,
+      "eer_threshold": 0.00384,
+      "n_attack": 400,
+      "n_benign": 400,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00262,
+          "fpr_benign": 0.2025
+        },
+        "0.99": {
+          "threshold": 0.00153,
+          "fpr_benign": 0.685
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0075,
+          "recall_attacks": 0.5975
+        },
+        "0.45": {
+          "fpr_benign": 0.0025,
+          "recall_attacks": 0.375
+        },
+        "0.5": {
+          "fpr_benign": 0.0025,
+          "recall_attacks": 0.355
+        },
+        "0.55": {
+          "fpr_benign": 0.0025,
+          "recall_attacks": 0.325
+        },
+        "0.8": {
+          "fpr_benign": 0.0025,
+          "recall_attacks": 0.2575
+        }
+      },
+      "runner": "meta prompt-guard v2 (22M)",
+      "dataset": "tensortrust/direct"
+    },
+    {
+      "auc": 0.92792,
+      "eer": 0.15,
+      "eer_threshold": 0.00409,
+      "n_attack": 600,
+      "n_benign": 600,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00297,
+          "fpr_benign": 0.29667
+        },
+        "0.99": {
+          "threshold": 0.00213,
+          "fpr_benign": 0.64833
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.00333,
+          "recall_attacks": 0.14667
+        },
+        "0.45": {
+          "fpr_benign": 0.00167,
+          "recall_attacks": 0.07
+        },
+        "0.5": {
+          "fpr_benign": 0.00167,
+          "recall_attacks": 0.06333
+        },
+        "0.55": {
+          "fpr_benign": 0.00167,
+          "recall_attacks": 0.05833
+        },
+        "0.8": {
+          "fpr_benign": 0.00167,
+          "recall_attacks": 0.02333
+        }
+      },
+      "runner": "meta prompt-guard v2 (22M)",
+      "dataset": "zedgar/structured"
+    },
+    {
+      "auc": 0.5315,
+      "eer": 0.53246,
+      "eer_threshold": 0.00058,
+      "n_attack": 27,
+      "n_benign": 97,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00046,
+          "fpr_benign": 0.83505
+        },
+        "0.99": {
+          "threshold": 0.00045,
+          "fpr_benign": 0.90722
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.45": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.5": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.55": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        },
+        "0.8": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0
+        }
+      },
+      "runner": "meta prompt-guard v2 (86M)",
+      "dataset": "agentdojo/agent"
+    },
+    {
+      "auc": 0.67068,
+      "eer": 0.39,
+      "eer_threshold": 0.00176,
+      "n_attack": 200,
+      "n_benign": 200,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00088,
+          "fpr_benign": 0.81
+        },
+        "0.99": {
+          "threshold": 0.00076,
+          "fpr_benign": 0.9
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.01
+        },
+        "0.45": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.01
+        },
+        "0.5": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.01
+        },
+        "0.55": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.01
+        },
+        "0.8": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.005
+        }
+      },
+      "runner": "meta prompt-guard v2 (86M)",
+      "dataset": "bipia/indirect"
+    },
+    {
+      "auc": 1.0,
+      "eer": 0.0,
+      "eer_threshold": 0.01532,
+      "n_attack": 400,
+      "n_benign": 56,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.99705,
+          "fpr_benign": 0.0
+        },
+        "0.99": {
+          "threshold": 0.96221,
+          "fpr_benign": 0.0
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.9925
+        },
+        "0.45": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.9925
+        },
+        "0.5": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.9925
+        },
+        "0.55": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.9925
+        },
+        "0.8": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.99
+        }
+      },
+      "runner": "meta prompt-guard v2 (86M)",
+      "dataset": "hackaprompt/direct"
+    },
+    {
+      "auc": 0.59908,
+      "eer": 0.45375,
+      "eer_threshold": 0.00197,
+      "n_attack": 400,
+      "n_benign": 400,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00101,
+          "fpr_benign": 0.7625
+        },
+        "0.99": {
+          "threshold": 0.00089,
+          "fpr_benign": 0.8825
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.005
+        },
+        "0.45": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0025
+        },
+        "0.5": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0025
+        },
+        "0.55": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0025
+        },
+        "0.8": {
+          "fpr_benign": 0.0,
+          "recall_attacks": 0.0025
+        }
+      },
+      "runner": "meta prompt-guard v2 (86M)",
+      "dataset": "injecagent/enhanced"
+    },
+    {
+      "auc": 0.97015,
+      "eer": 0.0575,
+      "eer_threshold": 0.002,
+      "n_attack": 400,
+      "n_benign": 400,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.002,
+          "fpr_benign": 0.065
+        },
+        "0.99": {
+          "threshold": 0.00074,
+          "fpr_benign": 0.2625
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.025,
+          "recall_attacks": 0.615
+        },
+        "0.45": {
+          "fpr_benign": 0.02,
+          "recall_attacks": 0.6075
+        },
+        "0.5": {
+          "fpr_benign": 0.02,
+          "recall_attacks": 0.6075
+        },
+        "0.55": {
+          "fpr_benign": 0.02,
+          "recall_attacks": 0.6075
+        },
+        "0.8": {
+          "fpr_benign": 0.02,
+          "recall_attacks": 0.5875
+        }
+      },
+      "runner": "meta prompt-guard v2 (86M)",
+      "dataset": "tensortrust/direct"
+    },
+    {
+      "auc": 0.96347,
+      "eer": 0.08917,
+      "eer_threshold": 0.00104,
+      "n_attack": 600,
+      "n_benign": 600,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.0009,
+          "fpr_benign": 0.11333
+        },
+        "0.99": {
+          "threshold": 0.00076,
+          "fpr_benign": 0.455
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.00167,
+          "recall_attacks": 0.46
+        },
+        "0.45": {
+          "fpr_benign": 0.00167,
+          "recall_attacks": 0.42333
+        },
+        "0.5": {
+          "fpr_benign": 0.00167,
+          "recall_attacks": 0.42167
+        },
+        "0.55": {
+          "fpr_benign": 0.00167,
+          "recall_attacks": 0.41833
+        },
+        "0.8": {
+          "fpr_benign": 0.00167,
+          "recall_attacks": 0.4
+        }
+      },
+      "runner": "meta prompt-guard v2 (86M)",
+      "dataset": "zedgar/structured"
+    },
+    {
       "auc": 0.79859,
       "eer": 0.27396,
       "eer_threshold": 4e-05,
@@ -1286,9 +1778,9 @@
       "dataset": "agentdojo/agent"
     },
     {
-      "auc": 0.41427,
-      "eer": 0.5825,
-      "eer_threshold": 0.00466,
+      "auc": 0.41231,
+      "eer": 0.59,
+      "eer_threshold": 0.00414,
       "n_attack": 200,
       "n_benign": 200,
       "fpr_at_tpr": {
@@ -1308,7 +1800,7 @@
         },
         "0.45": {
           "fpr_benign": 0.175,
-          "recall_attacks": 0.135
+          "recall_attacks": 0.14
         },
         "0.5": {
           "fpr_benign": 0.175,
@@ -1532,29 +2024,29 @@
       "dataset": "agentdojo/agent"
     },
     {
-      "auc": 0.67912,
-      "eer": 0.4025,
+      "auc": 0.66921,
+      "eer": 0.3975,
       "eer_threshold": 0.00121,
       "n_attack": 200,
       "n_benign": 200,
       "fpr_at_tpr": {
         "0.95": {
-          "threshold": 0.00033,
-          "fpr_benign": 0.85
+          "threshold": 0.0003,
+          "fpr_benign": 0.87
         },
         "0.99": {
-          "threshold": 0.00027,
-          "fpr_benign": 0.915
+          "threshold": 0.0002,
+          "fpr_benign": 0.97
         }
       },
       "threshold_sweep": {
         "0.2": {
           "fpr_benign": 0.0,
-          "recall_attacks": 0.21
+          "recall_attacks": 0.225
         },
         "0.45": {
           "fpr_benign": 0.0,
-          "recall_attacks": 0.195
+          "recall_attacks": 0.2
         },
         "0.5": {
           "fpr_benign": 0.0,
@@ -1566,7 +2058,7 @@
         },
         "0.8": {
           "fpr_benign": 0.0,
-          "recall_attacks": 0.155
+          "recall_attacks": 0.18
         }
       },
       "runner": "proventra mdeberta (280M)",
@@ -1778,9 +2270,9 @@
       "dataset": "agentdojo/agent"
     },
     {
-      "auc": 0.5694,
-      "eer": 0.4425,
-      "eer_threshold": 6e-05,
+      "auc": 0.5984,
+      "eer": 0.41,
+      "eer_threshold": 9e-05,
       "n_attack": 200,
       "n_benign": 200,
       "fpr_at_tpr": {
@@ -1796,23 +2288,23 @@
       "threshold_sweep": {
         "0.2": {
           "fpr_benign": 0.205,
-          "recall_attacks": 0.245
+          "recall_attacks": 0.255
         },
         "0.45": {
           "fpr_benign": 0.185,
-          "recall_attacks": 0.24
+          "recall_attacks": 0.215
         },
         "0.5": {
           "fpr_benign": 0.185,
-          "recall_attacks": 0.24
+          "recall_attacks": 0.215
         },
         "0.55": {
           "fpr_benign": 0.175,
-          "recall_attacks": 0.24
+          "recall_attacks": 0.21
         },
         "0.8": {
           "fpr_benign": 0.15,
-          "recall_attacks": 0.23
+          "recall_attacks": 0.18
         }
       },
       "runner": "sentinel (qualifire, 395M)",
@@ -2024,41 +2516,41 @@
       "dataset": "agentdojo/agent"
     },
     {
-      "auc": 0.61124,
-      "eer": 0.4375,
-      "eer_threshold": 0.06137,
+      "auc": 0.60774,
+      "eer": 0.445,
+      "eer_threshold": 0.06135,
       "n_attack": 200,
       "n_benign": 200,
       "fpr_at_tpr": {
         "0.95": {
-          "threshold": 0.05235,
-          "fpr_benign": 0.905
+          "threshold": 0.05296,
+          "fpr_benign": 0.87
         },
         "0.99": {
-          "threshold": 0.05133,
-          "fpr_benign": 0.955
+          "threshold": 0.05058,
+          "fpr_benign": 0.99
         }
       },
       "threshold_sweep": {
         "0.2": {
           "fpr_benign": 0.065,
-          "recall_attacks": 0.235
+          "recall_attacks": 0.22
         },
         "0.45": {
           "fpr_benign": 0.045,
-          "recall_attacks": 0.2
+          "recall_attacks": 0.175
         },
         "0.5": {
           "fpr_benign": 0.04,
-          "recall_attacks": 0.2
+          "recall_attacks": 0.165
         },
         "0.55": {
           "fpr_benign": 0.04,
-          "recall_attacks": 0.2
+          "recall_attacks": 0.15
         },
         "0.8": {
           "fpr_benign": 0.02,
-          "recall_attacks": 0.18
+          "recall_attacks": 0.13
         }
       },
       "runner": "wolf-defender (0.3B)",
@@ -2270,41 +2762,41 @@
       "dataset": "agentdojo/agent"
     },
     {
-      "auc": 0.62828,
-      "eer": 0.405,
-      "eer_threshold": 0.1752,
+      "auc": 0.61457,
+      "eer": 0.425,
+      "eer_threshold": 0.163,
       "n_attack": 200,
       "n_benign": 200,
       "fpr_at_tpr": {
         "0.95": {
-          "threshold": 0.05008,
-          "fpr_benign": 0.935
+          "threshold": 0.05271,
+          "fpr_benign": 0.86
         },
         "0.99": {
-          "threshold": 0.04754,
+          "threshold": 0.04847,
           "fpr_benign": 0.97
         }
       },
       "threshold_sweep": {
         "0.2": {
           "fpr_benign": 0.385,
-          "recall_attacks": 0.57
+          "recall_attacks": 0.54
         },
         "0.45": {
           "fpr_benign": 0.195,
-          "recall_attacks": 0.39
+          "recall_attacks": 0.335
         },
         "0.5": {
           "fpr_benign": 0.17,
-          "recall_attacks": 0.37
+          "recall_attacks": 0.32
         },
         "0.55": {
           "fpr_benign": 0.16,
-          "recall_attacks": 0.355
+          "recall_attacks": 0.3
         },
         "0.8": {
           "fpr_benign": 0.095,
-          "recall_attacks": 0.24
+          "recall_attacks": 0.245
         }
       },
       "runner": "wolf-defender-small (0.1B)",

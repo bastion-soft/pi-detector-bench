@@ -33,7 +33,9 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_DATASETS = ["injecagent", "agentdojo", "asb", "cosafe", "mhj", "agentharm"]
 # Each model scores conversations truncated to ITS OWN window — recorded per row.
-MODEL_MAX_LENGTH = 512  # upper bound we pass to the tokenizer; model truncates within
+# Each model is scored at its OWN context window (auto-detected from the model
+# config, or a per-model override in models.yaml) — not a global cap — so a
+# long-context detector isn't silently truncated to a short window.
 
 
 def main() -> int:
@@ -67,21 +69,25 @@ def main() -> int:
     for spec in load_models():
         logger.info("=" * 60)
         logger.info("loading %s (%s)", spec.name, spec.hf_id)
+        # per-model window: explicit models.yaml override, else CLI --max-length,
+        # else None -> the runner auto-detects from config.max_position_embeddings.
+        window = spec.max_length if spec.max_length is not None else args.max_length
         try:
             runner = TransformersRunner(
                 model_id=spec.hf_id,
                 attack_label_id=spec.attack_label,
-                max_length=args.max_length,
+                max_length=window,
                 batch_size=args.batch_size,
                 name=spec.name,
+                truncation_side="left",  # keep the most recent turns (deployment-faithful)
             )
         except Exception as exc:
             level = "commercial/gated — need a license + token" if spec.gated else str(exc)
             logger.warning("skip %s (%s)", spec.name, level)
             continue
 
-        # each model's actual window, for the truncation-cliff column
-        model_window = int(getattr(runner, "max_length", args.max_length))
+        # the model's resolved window, recorded per row for the length analysis
+        model_window = int(runner.max_length)
         for key, eval_set, meta in sets:
             try:
                 out = runner.score_batch(list(eval_set.texts))
@@ -139,8 +145,9 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--max-length",
         type=int,
-        default=MODEL_MAX_LENGTH,
-        help="upper token bound passed to the tokenizer; each model truncates within it",
+        default=None,
+        help="force a fixed token window for every model; default None = each model's "
+        "own window (config.max_position_embeddings, or its models.yaml override)",
     )
     p.add_argument(
         "--dump-scores",

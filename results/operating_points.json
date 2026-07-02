@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-24T16:38:36Z",
+  "generated_at": "2026-07-02T14:08:40Z",
   "mode": "cross-benign",
   "tprs": [
     0.95,
@@ -213,6 +213,86 @@
         }
       },
       "runner": "meta prompt-guard (86M)"
+    },
+    {
+      "auc": 0.82342,
+      "eer": 0.26334,
+      "eer_threshold": 0.02809,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.0027,
+          "fpr_benign": 0.4039
+        },
+        "0.99": {
+          "threshold": 0.00166,
+          "fpr_benign": 0.6788
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0305,
+          "recall_attacks": 0.35568
+        },
+        "0.45": {
+          "fpr_benign": 0.0091,
+          "recall_attacks": 0.17455
+        },
+        "0.5": {
+          "fpr_benign": 0.0077,
+          "recall_attacks": 0.16325
+        },
+        "0.55": {
+          "fpr_benign": 0.0074,
+          "recall_attacks": 0.15379
+        },
+        "0.8": {
+          "fpr_benign": 0.0047,
+          "recall_attacks": 0.11435
+        }
+      },
+      "runner": "meta prompt-guard v2 (22M)"
+    },
+    {
+      "auc": 0.90599,
+      "eer": 0.17926,
+      "eer_threshold": 0.00781,
+      "n_attack": 3804,
+      "n_benign": 10000,
+      "fpr_at_tpr": {
+        "0.95": {
+          "threshold": 0.00129,
+          "fpr_benign": 0.2552
+        },
+        "0.99": {
+          "threshold": 0.00058,
+          "fpr_benign": 0.5437
+        }
+      },
+      "threshold_sweep": {
+        "0.2": {
+          "fpr_benign": 0.0571,
+          "recall_attacks": 0.57913
+        },
+        "0.45": {
+          "fpr_benign": 0.0492,
+          "recall_attacks": 0.52287
+        },
+        "0.5": {
+          "fpr_benign": 0.0488,
+          "recall_attacks": 0.51209
+        },
+        "0.55": {
+          "fpr_benign": 0.0484,
+          "recall_attacks": 0.50421
+        },
+        "0.8": {
+          "fpr_benign": 0.0452,
+          "recall_attacks": 0.46714
+        }
+      },
+      "runner": "meta prompt-guard v2 (86M)"
     },
     {
       "auc": 0.88372,

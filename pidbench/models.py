@@ -21,6 +21,7 @@ class ModelSpec:
     params: str | None = None
     gated: bool = False
     notes: str | None = None
+    max_length: int | None = None  # None = auto-detect from config.max_position_embeddings
 
 
 def load_models(path: str | Path | None = None) -> list[ModelSpec]:

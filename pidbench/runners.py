@@ -30,11 +30,21 @@ class TransformersRunner:
         self,
         model_id: str,
         attack_label_id: int | list[int] = 1,
-        max_length: int = 512,
+        max_length: int | None = 512,
         batch_size: int = 16,
         device: str | None = None,
         name: str | None = None,
+        truncation_side: str = "right",
     ) -> None:
+        """``max_length=None`` auto-detects the model's own context window from
+        ``config.max_position_embeddings`` (clamped to a sane range) — so a
+        long-context detector isn't silently capped and a short one isn't
+        over-fed. Pass an int to force a fixed window for all models.
+
+        ``truncation_side="left"`` keeps the most RECENT tokens (drops the oldest)
+        — the deployment-faithful choice for multi-turn conversations, where a
+        real filter sees the latest turns. The default ``"right"`` keeps the start
+        (fine for single-message direct/indirect sets)."""
         """`attack_label_id` may be an int (single class) or a list of ints
         (sum of softmax probabilities across those classes — useful for
         multi-class detectors like Meta Prompt-Guard where both
@@ -49,7 +59,6 @@ class TransformersRunner:
         self.model_id = model_id
         self.name = name or model_id
         self.attack_label_id = attack_label_id
-        self.max_length = max_length
         self.batch_size = batch_size
 
         if device is None:
@@ -57,6 +66,8 @@ class TransformersRunner:
         self.device = device
 
         self.tokenizer = AutoTokenizer.from_pretrained(model_id)
+        # keep-recent truncation for multi-turn (drop oldest turns, not newest)
+        self.tokenizer.truncation_side = truncation_side
         if self.tokenizer.pad_token is None:
             # Qwen / Llama-style decoders don't define a pad token by default.
             # Reusing eos for padding is the conventional fix and won't affect
@@ -66,6 +77,13 @@ class TransformersRunner:
         if self.model.config.pad_token_id is None and self.tokenizer.pad_token_id is not None:
             self.model.config.pad_token_id = self.tokenizer.pad_token_id
         self.model.eval()
+
+        # Resolve the context window. None -> the model's own, from config; else fixed.
+        # Clamp against absurd config sentinels (some models set 1e30 / 0).
+        if max_length is None:
+            mpe = getattr(self.model.config, "max_position_embeddings", 0) or 0
+            max_length = mpe if 16 <= mpe <= 16384 else 512
+        self.max_length = int(max_length)
 
         # Auto-load temperature scalar if the model repo ships `temperature.json`.
         # Models that ship one get calibrated probability output; models that don't

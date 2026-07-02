@@ -1,0 +1,430 @@
+{
+  "generated_at": "2026-07-02T14:08:28Z",
+  "families": {
+    "cross_step": {
+      "headline": [
+        {
+          "model": "wolf-defender (0.3B)",
+          "auc": 0.8809,
+          "fpr_at_95": 0.2446,
+          "eer": 0.1538,
+          "max_len": 512
+        },
+        {
+          "model": "wolf-defender-small (0.1B)",
+          "auc": 0.8482,
+          "fpr_at_95": 0.3225,
+          "eer": 0.154,
+          "max_len": 512
+        },
+        {
+          "model": "sentinel (qualifire, 395M)",
+          "auc": 0.8394,
+          "fpr_at_95": 0.5304,
+          "eer": 0.2414,
+          "max_len": 512
+        },
+        {
+          "model": "bastion-prompt-protection (70M)",
+          "auc": 0.8369,
+          "fpr_at_95": 0.5116,
+          "eer": 0.192,
+          "max_len": 512
+        },
+        {
+          "model": "deepset injection (184M)",
+          "auc": 0.8199,
+          "fpr_at_95": 0.5418,
+          "eer": 0.2386,
+          "max_len": 512
+        },
+        {
+          "model": "meta prompt-guard v2 (86M)",
+          "auc": 0.8175,
+          "fpr_at_95": 0.3572,
+          "eer": 0.1984,
+          "max_len": 512
+        },
+        {
+          "model": "proventra mdeberta (280M)",
+          "auc": 0.8089,
+          "fpr_at_95": 0.34,
+          "eer": 0.1944,
+          "max_len": 512
+        },
+        {
+          "model": "protectai v2 (184M)",
+          "auc": 0.7734,
+          "fpr_at_95": 0.4857,
+          "eer": 0.2992,
+          "max_len": 512
+        },
+        {
+          "model": "fmops distilbert (67M)",
+          "auc": 0.7576,
+          "fpr_at_95": 0.6234,
+          "eer": 0.2879,
+          "max_len": 512
+        },
+        {
+          "model": "meta prompt-guard (86M)",
+          "auc": 0.7576,
+          "fpr_at_95": 0.5071,
+          "eer": 0.2304,
+          "max_len": 512
+        },
+        {
+          "model": "meta prompt-guard v2 (22M)",
+          "auc": 0.7378,
+          "fpr_at_95": 0.4675,
+          "eer": 0.2982,
+          "max_len": 512
+        }
+      ],
+      "stratified": {
+        "wolf-defender (0.3B)": {
+          "len:\u2264256tok": 0.7681874229346486,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 0.8333333333333334,
+          "pos:late": 0.7744630071599046
+        },
+        "wolf-defender-small (0.1B)": {
+          "len:\u2264256tok": 0.6732429099876696,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 0.8333333333333334,
+          "pos:late": 0.6825775656324582
+        },
+        "sentinel (qualifire, 395M)": {
+          "len:\u2264256tok": 0.5721331689272503,
+          "len:256\u2013512tok": 0.9047619047619048,
+          "len:512\u20131k tok": 0.8333333333333334,
+          "pos:late": 0.5823389021479713
+        },
+        "bastion-prompt-protection (70M)": {
+          "len:\u2264256tok": 0.8618988902589396,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 0.6666666666666666,
+          "pos:late": 0.863961813842482
+        },
+        "deepset injection (184M)": {
+          "len:\u2264256tok": 1.0,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 1.0,
+          "pos:late": 1.0
+        },
+        "meta prompt-guard v2 (86M)": {
+          "len:\u2264256tok": 0.5585696670776819,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 0.6666666666666666,
+          "pos:late": 0.5704057279236276
+        },
+        "proventra mdeberta (280M)": {
+          "len:\u2264256tok": 1.0,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 0.8333333333333334,
+          "pos:late": 0.9988066825775657
+        },
+        "protectai v2 (184M)": {
+          "len:\u2264256tok": 0.2836004932182491,
+          "len:256\u2013512tok": 0.38095238095238093,
+          "len:512\u20131k tok": 0.0,
+          "pos:late": 0.2840095465393795
+        },
+        "fmops distilbert (67M)": {
+          "len:\u2264256tok": 1.0,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 1.0,
+          "pos:late": 1.0
+        },
+        "meta prompt-guard (86M)": {
+          "len:\u2264256tok": 0.5474722564734895,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 0.6666666666666666,
+          "pos:late": 0.5596658711217184
+        },
+        "meta prompt-guard v2 (22M)": {
+          "len:\u2264256tok": 0.025893958076448828,
+          "len:256\u2013512tok": 0.0,
+          "len:512\u20131k tok": 0.0,
+          "pos:late": 0.025059665871121718
+        }
+      }
+    },
+    "jailbreak": {
+      "headline": [
+        {
+          "model": "bastion-prompt-protection (70M)",
+          "auc": 0.8054,
+          "fpr_at_95": 0.6675,
+          "eer": 0.2619,
+          "max_len": 512
+        },
+        {
+          "model": "wolf-defender (0.3B)",
+          "auc": 0.6643,
+          "fpr_at_95": 0.76,
+          "eer": 0.3531,
+          "max_len": 512
+        },
+        {
+          "model": "protectai v2 (184M)",
+          "auc": 0.656,
+          "fpr_at_95": 0.7063,
+          "eer": 0.3838,
+          "max_len": 512
+        },
+        {
+          "model": "wolf-defender-small (0.1B)",
+          "auc": 0.6264,
+          "fpr_at_95": 0.7087,
+          "eer": 0.4113,
+          "max_len": 512
+        },
+        {
+          "model": "sentinel (qualifire, 395M)",
+          "auc": 0.5883,
+          "fpr_at_95": 0.8838,
+          "eer": 0.44,
+          "max_len": 512
+        },
+        {
+          "model": "meta prompt-guard v2 (22M)",
+          "auc": 0.5582,
+          "fpr_at_95": 0.7625,
+          "eer": 0.4587,
+          "max_len": 512
+        },
+        {
+          "model": "fmops distilbert (67M)",
+          "auc": 0.5052,
+          "fpr_at_95": 0.9237,
+          "eer": 0.4956,
+          "max_len": 512
+        },
+        {
+          "model": "meta prompt-guard (86M)",
+          "auc": 0.469,
+          "fpr_at_95": 0.8638,
+          "eer": 0.5169,
+          "max_len": 512
+        },
+        {
+          "model": "deepset injection (184M)",
+          "auc": 0.4402,
+          "fpr_at_95": 0.9025,
+          "eer": 0.5656,
+          "max_len": 512
+        },
+        {
+          "model": "proventra mdeberta (280M)",
+          "auc": 0.4384,
+          "fpr_at_95": 0.9788,
+          "eer": 0.5469,
+          "max_len": 512
+        },
+        {
+          "model": "meta prompt-guard v2 (86M)",
+          "auc": 0.3364,
+          "fpr_at_95": 0.9888,
+          "eer": 0.6038,
+          "max_len": 512
+        }
+      ],
+      "stratified": {
+        "bastion-prompt-protection (70M)": {
+          "len:\u2264256tok": 0.2921615201900237,
+          "len:256\u2013512tok": 0.35315985130111527,
+          "len:512\u20131k tok": 0.36470588235294116,
+          "len:>1k tok": 0.32,
+          "pos:late": 0.32125
+        },
+        "wolf-defender (0.3B)": {
+          "len:\u2264256tok": 0.3847980997624703,
+          "len:256\u2013512tok": 0.379182156133829,
+          "len:512\u20131k tok": 0.6352941176470588,
+          "len:>1k tok": 0.52,
+          "pos:late": 0.41375
+        },
+        "protectai v2 (184M)": {
+          "len:\u2264256tok": 0.34441805225653205,
+          "len:256\u2013512tok": 0.15985130111524162,
+          "len:512\u20131k tok": 0.21176470588235294,
+          "len:>1k tok": 0.24,
+          "pos:late": 0.265
+        },
+        "wolf-defender-small (0.1B)": {
+          "len:\u2264256tok": 0.37292161520190026,
+          "len:256\u2013512tok": 0.3159851301115242,
+          "len:512\u20131k tok": 0.5294117647058824,
+          "len:>1k tok": 0.56,
+          "pos:late": 0.37625
+        },
+        "sentinel (qualifire, 395M)": {
+          "len:\u2264256tok": 0.45605700712589076,
+          "len:256\u2013512tok": 0.45724907063197023,
+          "len:512\u20131k tok": 0.6235294117647059,
+          "len:>1k tok": 0.56,
+          "pos:late": 0.4775
+        },
+        "meta prompt-guard v2 (22M)": {
+          "len:\u2264256tok": 0.0,
+          "len:256\u2013512tok": 0.0,
+          "len:512\u20131k tok": 0.0,
+          "len:>1k tok": 0.0,
+          "pos:late": 0.0
+        },
+        "fmops distilbert (67M)": {
+          "len:\u2264256tok": 1.0,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 1.0,
+          "len:>1k tok": 1.0,
+          "pos:late": 1.0
+        },
+        "meta prompt-guard (86M)": {
+          "len:\u2264256tok": 0.5463182897862233,
+          "len:256\u2013512tok": 0.516728624535316,
+          "len:512\u20131k tok": 0.6823529411764706,
+          "len:>1k tok": 0.84,
+          "pos:late": 0.56
+        },
+        "deepset injection (184M)": {
+          "len:\u2264256tok": 1.0,
+          "len:256\u2013512tok": 1.0,
+          "len:512\u20131k tok": 1.0,
+          "len:>1k tok": 1.0,
+          "pos:late": 1.0
+        },
+        "proventra mdeberta (280M)": {
+          "len:\u2264256tok": 0.39429928741092635,
+          "len:256\u2013512tok": 0.35315985130111527,
+          "len:512\u20131k tok": 0.4,
+          "len:>1k tok": 0.48,
+          "pos:late": 0.38375
+        },
+        "meta prompt-guard v2 (86M)": {
+          "len:\u2264256tok": 0.1995249406175772,
+          "len:256\u2013512tok": 0.15985130111524162,
+          "len:512\u20131k tok": 0.1411764705882353,
+          "len:>1k tok": 0.36,
+          "pos:late": 0.185
+        }
+      }
+    },
+    "agent_jailbreak": {
+      "headline": [
+        {
+          "model": "wolf-defender (0.3B)",
+          "auc": 0.8519,
+          "fpr_at_95": 0.6705,
+          "eer": 0.2358,
+          "max_len": 512
+        },
+        {
+          "model": "wolf-defender-small (0.1B)",
+          "auc": 0.7821,
+          "fpr_at_95": 0.8125,
+          "eer": 0.267,
+          "max_len": 512
+        },
+        {
+          "model": "sentinel (qualifire, 395M)",
+          "auc": 0.7794,
+          "fpr_at_95": 0.7955,
+          "eer": 0.2557,
+          "max_len": 512
+        },
+        {
+          "model": "meta prompt-guard v2 (86M)",
+          "auc": 0.7307,
+          "fpr_at_95": 0.8182,
+          "eer": 0.3153,
+          "max_len": 512
+        },
+        {
+          "model": "bastion-prompt-protection (70M)",
+          "auc": 0.698,
+          "fpr_at_95": 0.8864,
+          "eer": 0.3409,
+          "max_len": 512
+        },
+        {
+          "model": "deepset injection (184M)",
+          "auc": 0.6412,
+          "fpr_at_95": 0.9091,
+          "eer": 0.3807,
+          "max_len": 512
+        },
+        {
+          "model": "meta prompt-guard v2 (22M)",
+          "auc": 0.6386,
+          "fpr_at_95": 0.875,
+          "eer": 0.4091,
+          "max_len": 512
+        },
+        {
+          "model": "proventra mdeberta (280M)",
+          "auc": 0.6241,
+          "fpr_at_95": 0.8239,
+          "eer": 0.4233,
+          "max_len": 512
+        },
+        {
+          "model": "protectai v2 (184M)",
+          "auc": 0.5739,
+          "fpr_at_95": 1.0,
+          "eer": 0.4347,
+          "max_len": 512
+        },
+        {
+          "model": "fmops distilbert (67M)",
+          "auc": 0.5735,
+          "fpr_at_95": 0.9545,
+          "eer": 0.4517,
+          "max_len": 512
+        },
+        {
+          "model": "meta prompt-guard (86M)",
+          "auc": 0.5485,
+          "fpr_at_95": 0.9034,
+          "eer": 0.4631,
+          "max_len": 512
+        }
+      ],
+      "stratified": {
+        "wolf-defender (0.3B)": {
+          "len:\u2264256tok": 0.7840909090909091
+        },
+        "wolf-defender-small (0.1B)": {
+          "len:\u2264256tok": 0.9034090909090909
+        },
+        "sentinel (qualifire, 395M)": {
+          "len:\u2264256tok": 0.9318181818181818
+        },
+        "meta prompt-guard v2 (86M)": {
+          "len:\u2264256tok": 0.03977272727272727
+        },
+        "bastion-prompt-protection (70M)": {
+          "len:\u2264256tok": 0.8977272727272727
+        },
+        "deepset injection (184M)": {
+          "len:\u2264256tok": 1.0
+        },
+        "meta prompt-guard v2 (22M)": {
+          "len:\u2264256tok": 0.0
+        },
+        "proventra mdeberta (280M)": {
+          "len:\u2264256tok": 0.8352272727272727
+        },
+        "protectai v2 (184M)": {
+          "len:\u2264256tok": 0.056818181818181816
+        },
+        "fmops distilbert (67M)": {
+          "len:\u2264256tok": 1.0
+        },
+        "meta prompt-guard (86M)": {
+          "len:\u2264256tok": 0.9431818181818182
+        }
+      }
+    }
+  }
+}

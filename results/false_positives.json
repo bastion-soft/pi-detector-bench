@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-22T20:32:50Z",
+  "generated_at": "2026-07-02T13:57:52Z",
   "threshold": 0.5,
   "samples_per_dataset": {
     "wildchat": 5000,
@@ -19,7 +19,7 @@
       "risk_band_safe": 4886,
       "risk_band_uncertain": 80,
       "risk_band_attack": 34,
-      "wall_seconds": 19.51891195899998
+      "wall_seconds": 20.36152841399985
     },
     {
       "runner": "bastion-prompt-protection (70M)",
@@ -33,7 +33,7 @@
       "risk_band_safe": 4870,
       "risk_band_uncertain": 90,
       "risk_band_attack": 40,
-      "wall_seconds": 17.378719775000036
+      "wall_seconds": 18.074043248999942
     },
     {
       "runner": "wolf-defender (0.3B)",
@@ -47,7 +47,7 @@
       "risk_band_safe": 3959,
       "risk_band_uncertain": 192,
       "risk_band_attack": 849,
-      "wall_seconds": 38.21537135699987
+      "wall_seconds": 38.661196561
     },
     {
       "runner": "wolf-defender (0.3B)",
@@ -61,7 +61,7 @@
       "risk_band_safe": 3463,
       "risk_band_uncertain": 175,
       "risk_band_attack": 1362,
-      "wall_seconds": 37.593429342000036
+      "wall_seconds": 37.986132977000125
     },
     {
       "runner": "wolf-defender-small (0.1B)",
@@ -75,7 +75,7 @@
       "risk_band_safe": 3574,
       "risk_band_uncertain": 504,
       "risk_band_attack": 922,
-      "wall_seconds": 18.291809271000147
+      "wall_seconds": 18.499914882999974
     },
     {
       "runner": "wolf-defender-small (0.1B)",
@@ -89,7 +89,7 @@
       "risk_band_safe": 3083,
       "risk_band_uncertain": 463,
       "risk_band_attack": 1454,
-      "wall_seconds": 17.96325918699995
+      "wall_seconds": 18.169489642999906
     },
     {
       "runner": "sentinel (qualifire, 395M)",
@@ -103,7 +103,7 @@
       "risk_band_safe": 3629,
       "risk_band_uncertain": 438,
       "risk_band_attack": 933,
-      "wall_seconds": 104.448917919
+      "wall_seconds": 105.28582414899984
     },
     {
       "runner": "sentinel (qualifire, 395M)",
@@ -117,7 +117,7 @@
       "risk_band_safe": 3709,
       "risk_band_uncertain": 223,
       "risk_band_attack": 1068,
-      "wall_seconds": 99.95899643500002
+      "wall_seconds": 100.74015127400003
     },
     {
       "runner": "proventra mdeberta (280M)",
@@ -131,7 +131,7 @@
       "risk_band_safe": 4041,
       "risk_band_uncertain": 158,
       "risk_band_attack": 801,
-      "wall_seconds": 43.51862595599982
+      "wall_seconds": 45.24825723799995
     },
     {
       "runner": "proventra mdeberta (280M)",
@@ -145,7 +145,7 @@
       "risk_band_safe": 3660,
       "risk_band_uncertain": 186,
       "risk_band_attack": 1154,
-      "wall_seconds": 42.15720524199969
+      "wall_seconds": 43.85234977899995
     },
     {
       "runner": "fmops distilbert (67M)",
@@ -159,7 +159,7 @@
       "risk_band_safe": 1616,
       "risk_band_uncertain": 270,
       "risk_band_attack": 3114,
-      "wall_seconds": 15.166647963999822
+      "wall_seconds": 15.183819671000037
     },
     {
       "runner": "fmops distilbert (67M)",
@@ -173,7 +173,7 @@
       "risk_band_safe": 1703,
       "risk_band_uncertain": 134,
       "risk_band_attack": 3163,
-      "wall_seconds": 14.5525101180001
+      "wall_seconds": 14.509964911999987
     },
     {
       "runner": "protectai v2 (184M)",
@@ -187,7 +187,7 @@
       "risk_band_safe": 4566,
       "risk_band_uncertain": 111,
       "risk_band_attack": 323,
-      "wall_seconds": 43.359542880999925
+      "wall_seconds": 45.087228590999985
     },
     {
       "runner": "protectai v2 (184M)",
@@ -201,7 +201,7 @@
       "risk_band_safe": 4460,
       "risk_band_uncertain": 82,
       "risk_band_attack": 458,
-      "wall_seconds": 40.521230736000234
+      "wall_seconds": 42.07441044300003
     },
     {
       "runner": "deepset injection (184M)",
@@ -215,7 +215,7 @@
       "risk_band_safe": 1476,
       "risk_band_uncertain": 283,
       "risk_band_attack": 3241,
-      "wall_seconds": 43.44539600200005
+      "wall_seconds": 45.21012916099994
     },
     {
       "runner": "deepset injection (184M)",
@@ -229,35 +229,7 @@
       "risk_band_safe": 1651,
       "risk_band_uncertain": 218,
       "risk_band_attack": 3131,
-      "wall_seconds": 40.634238389000075
-    },
-    {
-      "runner": "hlyn judge (70M)",
-      "dataset": "wildchat",
-      "n_samples": 5000,
-      "n_classified_attack": 1150,
-      "fpr": 0.23,
-      "mean_risk": 0.2778589024448302,
-      "median_risk": 0.37447962164878845,
-      "p95_risk": 0.551489531993866,
-      "risk_band_safe": 2103,
-      "risk_band_uncertain": 2897,
-      "risk_band_attack": 0,
-      "wall_seconds": 18.624248693000027
-    },
-    {
-      "runner": "hlyn judge (70M)",
-      "dataset": "lmsys",
-      "n_samples": 5000,
-      "n_classified_attack": 1017,
-      "fpr": 0.2034,
-      "mean_risk": 0.21163079060971504,
-      "median_risk": 0.019358264282345772,
-      "p95_risk": 0.5536490678787231,
-      "risk_band_safe": 2839,
-      "risk_band_uncertain": 2161,
-      "risk_band_attack": 0,
-      "wall_seconds": 17.397574590000204
+      "wall_seconds": 42.16976392299989
     },
     {
       "runner": "meta prompt-guard (86M)",
@@ -271,7 +243,7 @@
       "risk_band_safe": 681,
       "risk_band_uncertain": 195,
       "risk_band_attack": 4124,
-      "wall_seconds": 43.6385327779999
+      "wall_seconds": 45.28525244499997
     },
     {
       "runner": "meta prompt-guard (86M)",
@@ -285,7 +257,63 @@
       "risk_band_safe": 409,
       "risk_band_uncertain": 163,
       "risk_band_attack": 4428,
-      "wall_seconds": 42.29215800200018
+      "wall_seconds": 43.895232937999936
+    },
+    {
+      "runner": "meta prompt-guard v2 (86M)",
+      "dataset": "wildchat",
+      "n_samples": 5000,
+      "n_classified_attack": 90,
+      "fpr": 0.018,
+      "mean_risk": 0.02342964780391776,
+      "median_risk": 0.0005979571142233908,
+      "p95_risk": 0.033486831933259964,
+      "risk_band_safe": 4867,
+      "risk_band_uncertain": 59,
+      "risk_band_attack": 74,
+      "wall_seconds": 45.33198917999994
+    },
+    {
+      "runner": "meta prompt-guard v2 (86M)",
+      "dataset": "lmsys",
+      "n_samples": 5000,
+      "n_classified_attack": 398,
+      "fpr": 0.0796,
+      "mean_risk": 0.08283268408661824,
+      "median_risk": 0.0006493509572464973,
+      "p95_risk": 0.9911899566650391,
+      "risk_band_safe": 4562,
+      "risk_band_uncertain": 71,
+      "risk_band_attack": 367,
+      "wall_seconds": 43.94064682299995
+    },
+    {
+      "runner": "meta prompt-guard v2 (22M)",
+      "dataset": "wildchat",
+      "n_samples": 5000,
+      "n_classified_attack": 43,
+      "fpr": 0.0086,
+      "mean_risk": 0.022408438065927475,
+      "median_risk": 0.002245733398012817,
+      "p95_risk": 0.11110059171915054,
+      "risk_band_safe": 4843,
+      "risk_band_uncertain": 132,
+      "risk_band_attack": 25,
+      "wall_seconds": 19.485227848000022
+    },
+    {
+      "runner": "meta prompt-guard v2 (22M)",
+      "dataset": "lmsys",
+      "n_samples": 5000,
+      "n_classified_attack": 34,
+      "fpr": 0.0068,
+      "mean_risk": 0.022696372186718508,
+      "median_risk": 0.002134986571036279,
+      "p95_risk": 0.12783606350421906,
+      "risk_band_safe": 4852,
+      "risk_band_uncertain": 129,
+      "risk_band_attack": 19,
+      "wall_seconds": 18.141723103999993
     }
   ]
 }

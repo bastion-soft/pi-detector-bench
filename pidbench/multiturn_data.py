@@ -55,9 +55,11 @@ class MTMeta:
     family: str
     injected: bool  # True = attack row (label 1), False = benign twin
     n_turns: int  # rendered conversation turns
-    n_chars: int  # rendered length in characters (window proxy)
+    n_chars: int  # rendered length in characters (absolute, model-agnostic)
     injection_turn: int | None = None  # 0-based turn carrying the payload (attacks only)
     source: str = ""
+    chars_after: int = 0  # chars AFTER the injection turn = how deep the poison is
+    # buried from the conversation end (absolute; the cross-step "distance" axis)
 
     def as_dict(self) -> dict:
         return {
@@ -67,6 +69,7 @@ class MTMeta:
             "n_chars": self.n_chars,
             "injection_turn": self.injection_turn,
             "source": self.source,
+            "chars_after": self.chars_after,
         }
 
 
@@ -78,12 +81,39 @@ def render_turns(turns: list[tuple[str, str]]) -> str:
     return "\n".join(f"[{role.upper()}] {content}".strip() for role, content in turns if content)
 
 
-def _position(injection_turn: int | None, n_turns: int) -> str:
-    """Coarse early/late label for the analysis (kept out of MTMeta so the
-    bucket boundary can change without re-scoring)."""
-    if injection_turn is None or n_turns <= 1:
-        return "n/a"
-    return "early" if injection_turn < n_turns / 2 else "late"
+# Absolute depth targets (chars of benign context appended AFTER the poison) for
+# the cross-step "distance" probe. Model-AGNOSTIC: fixed for every detector; each
+# model then reads the same conversations through its own window (left-truncated),
+# so a small-window model loses a deeply-buried poison while a long-context one
+# keeps it — the cliff emerges per-model without tailoring the data to any model.
+# ~4 chars/token, so these bracket 0 / 256 / 512 / 1k / 2k tokens of burial.
+_DEPTH_TARGETS_CHARS = [0, 1024, 2048, 4096, 8192]
+
+
+def _depth_expand(
+    rows: list[tuple[list[tuple[str, str]], int, str, int | None]],
+    targets: list[int] = _DEPTH_TARGETS_CHARS,
+) -> list[tuple[list[tuple[str, str]], int, str, int | None]]:
+    """Expand each cross-step trace into variants that bury the injection turn
+    under increasing benign context (absolute char depths). Both the injected
+    row and its benign twin are padded the same way, so length can't leak the
+    label — only the presence of the payload differs at each depth."""
+    pool = [t for conv in _benign_multiturn(500) for t in conv]  # flat benign turns
+    if not pool:
+        return rows  # no benign filler available → leave traces at depth 0
+    out: list[tuple[list[tuple[str, str]], int, str, int | None]] = []
+    pi = 0
+    for turns, label, source, inj in rows:
+        for d in targets:
+            padded = list(turns)
+            added = 0
+            while added < d:
+                role, content = pool[pi % len(pool)]
+                pi += 1
+                padded.append((role, content))
+                added += len(content)
+            out.append((padded, label, source, inj))
+    return out
 
 
 def _mt(
@@ -105,6 +135,10 @@ def _mt(
         rendered = render_turns(turns)
         if not rendered.strip():
             continue
+        # depth of the poison: chars of context AFTER the injection turn
+        chars_after = 0
+        if label == 1 and inj_turn is not None:
+            chars_after = sum(len(c) for _, c in turns[inj_turn + 1 :])
         texts.append(rendered)
         labels.append(label)
         meta.append(
@@ -115,6 +149,7 @@ def _mt(
                 n_chars=len(rendered),
                 injection_turn=inj_turn if label == 1 else None,
                 source=source,
+                chars_after=chars_after,
             )
         )
     return EvalSet(name=name, texts=texts, labels=labels), meta
@@ -196,7 +231,7 @@ def load_injecagent_mt(limit: int | None = None, category: str | None = None):
             ben_resp = _ia_clean_response(resp, atk if isinstance(atk, str) else "")
             ben_turns = [("user", user), ("assistant", tool_call), ("tool", ben_resp)]
             rows.append((ben_turns, 0, "injecagent", None))
-    return _mt(name, rows, FAMILY_CROSS_STEP, max_per_class=m)
+    return _mt(name, _depth_expand(rows), FAMILY_CROSS_STEP, max_per_class=m)
 
 
 # =========================================================================== #
@@ -355,7 +390,7 @@ def load_agentdojo_mt(limit: int | None = None):
                     None,
                 )
             )
-    return _mt("agentdojo_mt", rows, FAMILY_CROSS_STEP, max_per_class=m)
+    return _mt("agentdojo_mt", _depth_expand(rows), FAMILY_CROSS_STEP, max_per_class=m)
 
 
 # =========================================================================== #
@@ -642,7 +677,7 @@ def load_asb_mt(limit: int | None = None):
         rows.append(
             ([("user", user), ("assistant", call), ("tool", ben_obs)], 0, f"asb/{agent}", None)
         )
-    return _mt("asb_mt", rows, FAMILY_CROSS_STEP, max_per_class=m)
+    return _mt("asb_mt", _depth_expand(rows), FAMILY_CROSS_STEP, max_per_class=m)
 
 
 # family -> loaders, so the analysis can group and never average across families.

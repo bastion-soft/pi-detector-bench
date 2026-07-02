@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-24T16:46:50Z",
+  "generated_at": "2026-07-02T14:08:38Z",
   "rows": [
     {
       "benchmark_key": "rogue",
@@ -15,9 +15,9 @@
       "recall": 0.871193210184723,
       "fpr_at_tpr_99": 0.20553887220553888,
       "fpr_at_tpr_95": 0.08508508508508508,
-      "p50_latency_ms": 4.154952937501122,
-      "p95_latency_ms": 4.272878156250215,
-      "total_seconds": 20.148462214999995
+      "p50_latency_ms": 4.346333406250125,
+      "p95_latency_ms": 4.4891217812503825,
+      "total_seconds": 21.030177938999998
     },
     {
       "benchmark_key": "jailbreakbench",
@@ -32,9 +32,9 @@
       "recall": 0.96,
       "fpr_at_tpr_99": 0.16,
       "fpr_at_tpr_95": 0.04,
-      "p50_latency_ms": 0.8767924687482775,
-      "p95_latency_ms": 1.0987856562501008,
-      "total_seconds": 0.20022052900003473
+      "p50_latency_ms": 0.860670812500075,
+      "p95_latency_ms": 1.1511734999993806,
+      "total_seconds": 0.20041845300002592
     },
     {
       "benchmark_key": "xtram1_test",
@@ -49,9 +49,9 @@
       "recall": 0.9015384615384615,
       "fpr_at_tpr_99": 0.04113475177304964,
       "fpr_at_tpr_95": 0.009219858156028368,
-      "p50_latency_ms": 4.116213531251134,
-      "p95_latency_ms": 4.22634218750062,
-      "total_seconds": 7.2013900050000075
+      "p50_latency_ms": 4.306808062500167,
+      "p95_latency_ms": 4.439217343749746,
+      "total_seconds": 7.498825788000005
     },
     {
       "benchmark_key": "slabs_test",
@@ -66,9 +66,9 @@
       "recall": 0.9153187440532826,
       "fpr_at_tpr_99": 0.11523809523809524,
       "fpr_at_tpr_95": 0.012380952380952381,
-      "p50_latency_ms": 0.822877343747308,
-      "p95_latency_ms": 0.8907926250003584,
-      "total_seconds": 1.75441162300001
+      "p50_latency_ms": 0.837473749999873,
+      "p95_latency_ms": 0.8961391562491983,
+      "total_seconds": 1.7821115369999916
     },
     {
       "benchmark_key": "rogue",
@@ -83,9 +83,9 @@
       "recall": 0.9321018472291562,
       "fpr_at_tpr_99": 0.17717717717717718,
       "fpr_at_tpr_95": 0.05472138805472139,
-      "p50_latency_ms": 8.587046468747417,
-      "p95_latency_ms": 8.667852999998615,
-      "total_seconds": 39.266245310000045
+      "p50_latency_ms": 8.689932312500481,
+      "p95_latency_ms": 8.772747093749977,
+      "total_seconds": 39.75955444499999
     },
     {
       "benchmark_key": "jailbreakbench",
@@ -100,9 +100,9 @@
       "recall": 0.88,
       "fpr_at_tpr_99": 0.85,
       "fpr_at_tpr_95": 0.46,
-      "p50_latency_ms": 0.735136531247349,
-      "p95_latency_ms": 0.7755820937518365,
-      "total_seconds": 0.16403208900010213
+      "p50_latency_ms": 0.7125912500001164,
+      "p95_latency_ms": 0.740088187499488,
+      "total_seconds": 0.15931937400000606
     },
     {
       "benchmark_key": "xtram1_test",
@@ -117,9 +117,9 @@
       "recall": 0.9815384615384616,
       "fpr_at_tpr_99": 0.02695035460992908,
       "fpr_at_tpr_95": 0.00425531914893617,
-      "p50_latency_ms": 8.549728312502225,
-      "p95_latency_ms": 8.61458921875169,
-      "total_seconds": 15.279163531999984
+      "p50_latency_ms": 8.657111156249897,
+      "p95_latency_ms": 8.764711687499371,
+      "total_seconds": 15.453671634000017
     },
     {
       "benchmark_key": "slabs_test",
@@ -134,9 +134,9 @@
       "recall": 0.764034253092293,
       "fpr_at_tpr_99": 0.24666666666666667,
       "fpr_at_tpr_95": 0.06285714285714286,
-      "p50_latency_ms": 0.6940088437517034,
-      "p95_latency_ms": 0.7599715937516294,
-      "total_seconds": 1.4740686420000202
+      "p50_latency_ms": 0.6887501874999202,
+      "p95_latency_ms": 0.7341479062503709,
+      "total_seconds": 1.4566407899999945
     },
     {
       "benchmark_key": "rogue",
@@ -151,9 +151,9 @@
       "recall": 0.9051422865701447,
       "fpr_at_tpr_99": 0.31698365031698367,
       "fpr_at_tpr_95": 0.11611611611611612,
-      "p50_latency_ms": 4.0975696875023,
-      "p95_latency_ms": 4.195266187501545,
-      "total_seconds": 18.812992847000032
+      "p50_latency_ms": 4.155679124998812,
+      "p95_latency_ms": 4.240200999999999,
+      "total_seconds": 19.035667786999966
     },
     {
       "benchmark_key": "jailbreakbench",
@@ -168,9 +168,9 @@
       "recall": 0.83,
       "fpr_at_tpr_99": 0.84,
       "fpr_at_tpr_95": 0.61,
-      "p50_latency_ms": 0.7240210625027999,
-      "p95_latency_ms": 0.7373885625057142,
-      "total_seconds": 0.15915198099992267
+      "p50_latency_ms": 0.7140108124996658,
+      "p95_latency_ms": 0.7370566562503456,
+      "total_seconds": 0.15929632099999935
     },
     {
       "benchmark_key": "xtram1_test",
@@ -185,9 +185,9 @@
       "recall": 0.9753846153846154,
       "fpr_at_tpr_99": 0.07304964539007092,
       "fpr_at_tpr_95": 0.012056737588652482,
-      "p50_latency_ms": 4.067385968745896,
-      "p95_latency_ms": 4.155960843753803,
-      "total_seconds": 7.310888814999998
+      "p50_latency_ms": 4.12372618750112,
+      "p95_latency_ms": 4.204211156249471,
+      "total_seconds": 7.406735684000012
     },
     {
       "benchmark_key": "slabs_test",
@@ -202,9 +202,9 @@
       "recall": 0.8230256898192198,
       "fpr_at_tpr_99": 0.3523809523809524,
       "fpr_at_tpr_95": 0.08666666666666667,
-      "p50_latency_ms": 0.6966140624982131,
-      "p95_latency_ms": 0.7417015312469744,
-      "total_seconds": 1.475899464999884
+      "p50_latency_ms": 0.7080915625010675,
+      "p95_latency_ms": 0.7598351249988866,
+      "total_seconds": 1.5061424009999769
     },
     {
       "benchmark_key": "rogue",
@@ -219,9 +219,9 @@
       "recall": 0.9740389415876186,
       "fpr_at_tpr_99": 0.03837170503837171,
       "fpr_at_tpr_95": 0.005005005005005005,
-      "p50_latency_ms": 22.524537968749314,
-      "p95_latency_ms": 22.623957562501573,
-      "total_seconds": 103.440105313
+      "p50_latency_ms": 22.709034000000017,
+      "p95_latency_ms": 22.79412831250127,
+      "total_seconds": 104.27410152599998
     },
     {
       "benchmark_key": "jailbreakbench",
@@ -236,9 +236,9 @@
       "recall": 0.6,
       "fpr_at_tpr_99": 0.67,
       "fpr_at_tpr_95": 0.41,
-      "p50_latency_ms": 1.5806991874995902,
-      "p95_latency_ms": 1.7193083125022213,
-      "total_seconds": 0.30822122500012483
+      "p50_latency_ms": 1.5249689062510896,
+      "p95_latency_ms": 1.7187159374998373,
+      "total_seconds": 0.3029089700000327
     },
     {
       "benchmark_key": "xtram1_test",
@@ -253,9 +253,9 @@
       "recall": 0.8969230769230769,
       "fpr_at_tpr_99": 0.1574468085106383,
       "fpr_at_tpr_95": 0.031914893617021274,
-      "p50_latency_ms": 22.49902109375057,
-      "p95_latency_ms": 22.625644499996156,
-      "total_seconds": 40.34290802800001
+      "p50_latency_ms": 22.672028281249368,
+      "p95_latency_ms": 22.756706281249706,
+      "total_seconds": 40.645095175999984
     },
     {
       "benchmark_key": "slabs_test",
@@ -270,9 +270,9 @@
       "recall": 0.6993339676498572,
       "fpr_at_tpr_99": 1.0,
       "fpr_at_tpr_95": 1.0,
-      "p50_latency_ms": 1.181383687502091,
-      "p95_latency_ms": 1.5305892812449429,
-      "total_seconds": 2.510404173000097
+      "p50_latency_ms": 1.1744480937494473,
+      "p95_latency_ms": 1.517461093749617,
+      "total_seconds": 2.499682451999945
     },
     {
       "benchmark_key": "rogue",
@@ -287,9 +287,9 @@
       "recall": 0.7918122815776335,
       "fpr_at_tpr_99": 0.45045045045045046,
       "fpr_at_tpr_95": 0.3763763763763764,
-      "p50_latency_ms": 9.670809562500438,
-      "p95_latency_ms": 9.78434203125289,
-      "total_seconds": 45.97249507099991
+      "p50_latency_ms": 10.066103499998036,
+      "p95_latency_ms": 10.17596378125063,
+      "total_seconds": 47.75190874400005
     },
     {
       "benchmark_key": "jailbreakbench",
@@ -304,9 +304,9 @@
       "recall": 0.3,
       "fpr_at_tpr_99": 0.86,
       "fpr_at_tpr_95": 0.75,
-      "p50_latency_ms": 0.9437275000010459,
-      "p95_latency_ms": 0.9851009062487037,
-      "total_seconds": 0.19984846800002742
+      "p50_latency_ms": 0.9385773124996888,
+      "p95_latency_ms": 0.9787750312497678,
+      "total_seconds": 0.2031807729999855
     },
     {
       "benchmark_key": "xtram1_test",
@@ -321,9 +321,9 @@
       "recall": 0.7246153846153847,
       "fpr_at_tpr_99": 0.8879432624113475,
       "fpr_at_tpr_95": 0.6581560283687943,
-      "p50_latency_ms": 9.63264615624837,
-      "p95_latency_ms": 9.81541203125147,
-      "total_seconds": 17.888147677999996
+      "p50_latency_ms": 10.039877156248878,
+      "p95_latency_ms": 10.114959687498981,
+      "total_seconds": 18.55375584400008
     },
     {
       "benchmark_key": "slabs_test",
@@ -338,9 +338,9 @@
       "recall": 0.4738344433872502,
       "fpr_at_tpr_99": 0.5876190476190476,
       "fpr_at_tpr_95": 0.30666666666666664,
-      "p50_latency_ms": 0.8416287187458238,
-      "p95_latency_ms": 0.9991182812498778,
-      "total_seconds": 1.8115975040000194
+      "p50_latency_ms": 0.8540030000006027,
+      "p95_latency_ms": 0.9340147187479886,
+      "total_seconds": 1.8256656140000587
     },
     {
       "benchmark_key": "rogue",
@@ -355,9 +355,9 @@
       "recall": 0.9960059910134798,
       "fpr_at_tpr_99": 0.6389723056389723,
       "fpr_at_tpr_95": 0.5395395395395396,
-      "p50_latency_ms": 3.3148368749991164,
-      "p95_latency_ms": 3.4006565312552084,
-      "total_seconds": 15.182123623000052
+      "p50_latency_ms": 3.301085312497065,
+      "p95_latency_ms": 3.3878828749998036,
+      "total_seconds": 15.123425828999984
     },
     {
       "benchmark_key": "jailbreakbench",
@@ -372,9 +372,9 @@
       "recall": 0.95,
       "fpr_at_tpr_99": 0.95,
       "fpr_at_tpr_95": 0.89,
-      "p50_latency_ms": 0.2978274999989594,
-      "p95_latency_ms": 0.31493143750083163,
-      "total_seconds": 0.060890577000009216
+      "p50_latency_ms": 0.2835387812467616,
+      "p95_latency_ms": 0.3009499999997445,
+      "total_seconds": 0.05916477300002043
     },
     {
       "benchmark_key": "xtram1_test",
@@ -389,9 +389,9 @@
       "recall": 0.98,
       "fpr_at_tpr_99": 0.7921985815602837,
       "fpr_at_tpr_95": 0.7673758865248227,
-      "p50_latency_ms": 3.2670419687477192,
-      "p95_latency_ms": 3.3814370624938306,
-      "total_seconds": 5.8847626100000525
+      "p50_latency_ms": 3.2669641562499407,
+      "p95_latency_ms": 3.3725577499978954,
+      "total_seconds": 5.884021859000086
     },
     {
       "benchmark_key": "slabs_test",
@@ -406,9 +406,9 @@
       "recall": 0.6698382492863939,
       "fpr_at_tpr_99": 0.7857142857142857,
       "fpr_at_tpr_95": 0.4895238095238095,
-      "p50_latency_ms": 0.24400553125047963,
-      "p95_latency_ms": 0.3056086874977382,
-      "total_seconds": 0.5134609819999696
+      "p50_latency_ms": 0.24509118750160042,
+      "p95_latency_ms": 0.31031575000284306,
+      "total_seconds": 0.517249723999953
     },
     {
       "benchmark_key": "rogue",
@@ -423,9 +423,9 @@
       "recall": 0.6575137294058911,
       "fpr_at_tpr_99": 1.0,
       "fpr_at_tpr_95": 0.4427761094427761,
-      "p50_latency_ms": 9.655043718744594,
-      "p95_latency_ms": 9.765446687495682,
-      "total_seconds": 43.048110180000094
+      "p50_latency_ms": 10.044500531250833,
+      "p95_latency_ms": 10.142081062500807,
+      "total_seconds": 44.65583758299999
     },
     {
       "benchmark_key": "jailbreakbench",
@@ -440,9 +440,9 @@
       "recall": 0.0,
       "fpr_at_tpr_99": 1.0,
       "fpr_at_tpr_95": 1.0,
-      "p50_latency_ms": 0.8354131249959096,
-      "p95_latency_ms": 0.8779250937536176,
-      "total_seconds": 0.18907773800015093
+      "p50_latency_ms": 0.8700160312500316,
+      "p95_latency_ms": 0.8912463124985948,
+      "total_seconds": 0.1932908569999654
     },
     {
       "benchmark_key": "xtram1_test",
@@ -457,9 +457,9 @@
       "recall": 0.8415384615384616,
       "fpr_at_tpr_99": 1.0,
       "fpr_at_tpr_95": 0.02624113475177305,
-      "p50_latency_ms": 9.624227312500011,
-      "p95_latency_ms": 9.772109218751268,
-      "total_seconds": 16.715922465000176
+      "p50_latency_ms": 10.01414225000019,
+      "p95_latency_ms": 10.145772531249264,
+      "total_seconds": 17.33292227600009
     },
     {
       "benchmark_key": "slabs_test",
@@ -474,9 +474,9 @@
       "recall": 0.7069457659372027,
       "fpr_at_tpr_99": 1.0,
       "fpr_at_tpr_95": 1.0,
-      "p50_latency_ms": 0.8246119062462753,
-      "p95_latency_ms": 0.8880346874988732,
-      "total_seconds": 1.7542789090000497
+      "p50_latency_ms": 0.8310145312471207,
+      "p95_latency_ms": 0.8863002812518062,
+      "total_seconds": 1.761960713999997
     },
     {
       "benchmark_key": "rogue",
@@ -491,9 +491,9 @@
       "recall": 0.9965052421367948,
       "fpr_at_tpr_99": 0.6379713046379714,
       "fpr_at_tpr_95": 0.5085085085085085,
-      "p50_latency_ms": 9.677910062499961,
-      "p95_latency_ms": 9.78407965624939,
-      "total_seconds": 43.18391093399987
+      "p50_latency_ms": 10.069221718751464,
+      "p95_latency_ms": 10.171656187502265,
+      "total_seconds": 44.796700568999995
     },
     {
       "benchmark_key": "jailbreakbench",
@@ -508,9 +508,9 @@
       "recall": 0.81,
       "fpr_at_tpr_99": 0.87,
       "fpr_at_tpr_95": 0.81,
-      "p50_latency_ms": 0.8657475312503493,
-      "p95_latency_ms": 0.9025945000047386,
-      "total_seconds": 0.18899450899994008
+      "p50_latency_ms": 0.8414857187517555,
+      "p95_latency_ms": 0.8556014687499669,
+      "total_seconds": 0.18705221499999425
     },
     {
       "benchmark_key": "xtram1_test",
@@ -525,9 +525,9 @@
       "recall": 0.9892307692307692,
       "fpr_at_tpr_99": 0.7531914893617021,
       "fpr_at_tpr_95": 0.7035460992907802,
-      "p50_latency_ms": 9.649313593747877,
-      "p95_latency_ms": 9.73153743750288,
-      "total_seconds": 16.787669939000125
+      "p50_latency_ms": 10.042273875001229,
+      "p95_latency_ms": 10.197662781251893,
+      "total_seconds": 17.405599119000044
     },
     {
       "benchmark_key": "slabs_test",
@@ -542,77 +542,9 @@
       "recall": 0.80209324452902,
       "fpr_at_tpr_99": 0.6390476190476191,
       "fpr_at_tpr_95": 0.23904761904761904,
-      "p50_latency_ms": 0.8272126249977418,
-      "p95_latency_ms": 0.8986068124983149,
-      "total_seconds": 1.7655099940000127
-    },
-    {
-      "benchmark_key": "rogue",
-      "runner": "hlyn judge (70M)",
-      "benchmark": "rogue-security/prompt-injections-benchmark",
-      "n_samples": 5000,
-      "n_attack": 2003,
-      "n_benign": 2997,
-      "auc": 0.9795104640336793,
-      "f1": 0.8350837354527392,
-      "precision": 0.9677631578947369,
-      "recall": 0.7343984023964054,
-      "fpr_at_tpr_99": 0.4537871204537871,
-      "fpr_at_tpr_95": 0.0667334000667334,
-      "p50_latency_ms": 4.164213906250325,
-      "p95_latency_ms": 4.285588999998424,
-      "total_seconds": 18.680903231000002
-    },
-    {
-      "benchmark_key": "jailbreakbench",
-      "runner": "hlyn judge (70M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.9335500000000001,
-      "f1": 0.8287292817679558,
-      "precision": 0.9259259259259259,
-      "recall": 0.75,
-      "fpr_at_tpr_99": 0.69,
-      "fpr_at_tpr_95": 0.28,
-      "p50_latency_ms": 0.8447035624996602,
-      "p95_latency_ms": 0.8584464687473314,
-      "total_seconds": 0.1886447560000306
-    },
-    {
-      "benchmark_key": "xtram1_test",
-      "runner": "hlyn judge (70M)",
-      "benchmark": "xTRam1/test",
-      "n_samples": 2060,
-      "n_attack": 650,
-      "n_benign": 1410,
-      "auc": 0.9951991271140207,
-      "f1": 0.8481123792800702,
-      "precision": 0.9877300613496932,
-      "recall": 0.7430769230769231,
-      "fpr_at_tpr_99": 0.08156028368794327,
-      "fpr_at_tpr_95": 0.009929078014184398,
-      "p50_latency_ms": 4.116073375001861,
-      "p95_latency_ms": 4.210910343751095,
-      "total_seconds": 7.211014675000115
-    },
-    {
-      "benchmark_key": "slabs_test",
-      "runner": "hlyn judge (70M)",
-      "benchmark": "S-Labs/test",
-      "n_samples": 2101,
-      "n_attack": 1051,
-      "n_benign": 1050,
-      "auc": 0.891223324724752,
-      "f1": 0.32643312101910826,
-      "precision": 1.0,
-      "recall": 0.1950523311132255,
-      "fpr_at_tpr_99": 0.7476190476190476,
-      "fpr_at_tpr_95": 0.41714285714285715,
-      "p50_latency_ms": 0.8459955000006403,
-      "p95_latency_ms": 1.0101059999954032,
-      "total_seconds": 1.8176219090000814
+      "p50_latency_ms": 0.8310400000013374,
+      "p95_latency_ms": 0.8591071562484842,
+      "total_seconds": 1.761269427000002
     },
     {
       "benchmark_key": "rogue",
@@ -627,9 +559,9 @@
       "recall": 0.927109335996006,
       "fpr_at_tpr_99": 0.986986986986987,
       "fpr_at_tpr_95": 0.9606272939606273,
-      "p50_latency_ms": 9.693745562501022,
-      "p95_latency_ms": 9.80135268749649,
-      "total_seconds": 46.103705597000044
+      "p50_latency_ms": 10.073823625003087,
+      "p95_latency_ms": 10.170062656250423,
+      "total_seconds": 47.769342263
     },
     {
       "benchmark_key": "jailbreakbench",
@@ -644,9 +576,9 @@
       "recall": 1.0,
       "fpr_at_tpr_99": 0.99,
       "fpr_at_tpr_95": 0.97,
-      "p50_latency_ms": 0.9524840000025847,
-      "p95_latency_ms": 0.9960816250043081,
-      "total_seconds": 0.2023990469999717
+      "p50_latency_ms": 0.942447781252298,
+      "p95_latency_ms": 0.9678079687525099,
+      "total_seconds": 0.19846483100002388
     },
     {
       "benchmark_key": "xtram1_test",
@@ -661,9 +593,9 @@
       "recall": 0.9984615384615385,
       "fpr_at_tpr_99": 0.9652482269503546,
       "fpr_at_tpr_95": 0.9560283687943263,
-      "p50_latency_ms": 9.669101437502547,
-      "p95_latency_ms": 9.837861625001665,
-      "total_seconds": 17.936474389000068
+      "p50_latency_ms": 10.047942968750334,
+      "p95_latency_ms": 10.130382406249083,
+      "total_seconds": 18.575866442000006
     },
     {
       "benchmark_key": "slabs_test",
@@ -678,9 +610,145 @@
       "recall": 0.9914367269267365,
       "fpr_at_tpr_99": 0.9504761904761905,
       "fpr_at_tpr_95": 0.9047619047619048,
-      "p50_latency_ms": 0.83535181249772,
-      "p95_latency_ms": 0.9398515000000884,
-      "total_seconds": 1.799659894000115
+      "p50_latency_ms": 0.8444213125002875,
+      "p95_latency_ms": 0.9326137499989784,
+      "total_seconds": 1.8087336579999373
+    },
+    {
+      "benchmark_key": "rogue",
+      "runner": "meta prompt-guard v2 (86M)",
+      "benchmark": "rogue-security/prompt-injections-benchmark",
+      "n_samples": 5000,
+      "n_attack": 2003,
+      "n_benign": 2997,
+      "auc": 0.8818980404934806,
+      "f1": 0.656985187336625,
+      "precision": 0.7854166666666667,
+      "recall": 0.5646530204692961,
+      "fpr_at_tpr_99": 0.4444444444444444,
+      "fpr_at_tpr_95": 0.3663663663663664,
+      "p50_latency_ms": 10.083670625000707,
+      "p95_latency_ms": 10.216316968751471,
+      "total_seconds": 47.848198432000004
+    },
+    {
+      "benchmark_key": "jailbreakbench",
+      "runner": "meta prompt-guard v2 (86M)",
+      "benchmark": "JailbreakBench",
+      "n_samples": 200,
+      "n_attack": 100,
+      "n_benign": 100,
+      "auc": 0.75445,
+      "f1": 0.44776119402985076,
+      "precision": 0.8823529411764706,
+      "recall": 0.3,
+      "fpr_at_tpr_99": 0.92,
+      "fpr_at_tpr_95": 0.76,
+      "p50_latency_ms": 0.9404667187489224,
+      "p95_latency_ms": 0.9719427499987887,
+      "total_seconds": 0.1996425799999315
+    },
+    {
+      "benchmark_key": "xtram1_test",
+      "runner": "meta prompt-guard v2 (86M)",
+      "benchmark": "xTRam1/test",
+      "n_samples": 2060,
+      "n_attack": 650,
+      "n_benign": 1410,
+      "auc": 0.9734440807419531,
+      "f1": 0.6808510638297872,
+      "precision": 0.9970326409495549,
+      "recall": 0.5169230769230769,
+      "fpr_at_tpr_99": 0.5148936170212766,
+      "fpr_at_tpr_95": 0.11773049645390071,
+      "p50_latency_ms": 10.057638437501737,
+      "p95_latency_ms": 10.198858437501457,
+      "total_seconds": 18.614909959999977
+    },
+    {
+      "benchmark_key": "slabs_test",
+      "runner": "meta prompt-guard v2 (86M)",
+      "benchmark": "S-Labs/test",
+      "n_samples": 2101,
+      "n_attack": 1051,
+      "n_benign": 1050,
+      "auc": 0.9219056680712246,
+      "f1": 0.5965608465608465,
+      "precision": 0.9783080260303688,
+      "recall": 0.4291151284490961,
+      "fpr_at_tpr_99": 0.7590476190476191,
+      "fpr_at_tpr_95": 0.38571428571428573,
+      "p50_latency_ms": 0.8436004062524205,
+      "p95_latency_ms": 0.9325443125014488,
+      "total_seconds": 1.8067700670000022
+    },
+    {
+      "benchmark_key": "rogue",
+      "runner": "meta prompt-guard v2 (22M)",
+      "benchmark": "rogue-security/prompt-injections-benchmark",
+      "n_samples": 5000,
+      "n_attack": 2003,
+      "n_benign": 2997,
+      "auc": 0.8200980144731185,
+      "f1": 0.1846989588048891,
+      "precision": 0.9902912621359223,
+      "recall": 0.1018472291562656,
+      "fpr_at_tpr_99": 0.5305305305305306,
+      "fpr_at_tpr_95": 0.4457791124457791,
+      "p50_latency_ms": 4.347802531249556,
+      "p95_latency_ms": 4.462403156249906,
+      "total_seconds": 19.435921965000034
+    },
+    {
+      "benchmark_key": "jailbreakbench",
+      "runner": "meta prompt-guard v2 (22M)",
+      "benchmark": "JailbreakBench",
+      "n_samples": 200,
+      "n_attack": 100,
+      "n_benign": 100,
+      "auc": 0.75575,
+      "f1": 0.2833333333333333,
+      "precision": 0.85,
+      "recall": 0.17,
+      "fpr_at_tpr_99": 0.92,
+      "fpr_at_tpr_95": 0.76,
+      "p50_latency_ms": 0.849902562499949,
+      "p95_latency_ms": 0.8532940937477917,
+      "total_seconds": 0.1890819970000166
+    },
+    {
+      "benchmark_key": "xtram1_test",
+      "runner": "meta prompt-guard v2 (22M)",
+      "benchmark": "xTRam1/test",
+      "n_samples": 2060,
+      "n_attack": 650,
+      "n_benign": 1410,
+      "auc": 0.8927975995635571,
+      "f1": 0.43937575030012005,
+      "precision": 1.0,
+      "recall": 0.2815384615384615,
+      "fpr_at_tpr_99": 0.5588652482269504,
+      "fpr_at_tpr_95": 0.36028368794326243,
+      "p50_latency_ms": 4.317851374999293,
+      "p95_latency_ms": 4.393915281248439,
+      "total_seconds": 7.529474178999976
+    },
+    {
+      "benchmark_key": "slabs_test",
+      "runner": "meta prompt-guard v2 (22M)",
+      "benchmark": "S-Labs/test",
+      "n_samples": 2101,
+      "n_attack": 1051,
+      "n_benign": 1050,
+      "auc": 0.7716129763037469,
+      "f1": 0.3403921568627451,
+      "precision": 0.96875,
+      "recall": 0.20647002854424357,
+      "fpr_at_tpr_99": 0.9866666666666667,
+      "fpr_at_tpr_95": 0.86,
+      "p50_latency_ms": 0.8452642187535275,
+      "p95_latency_ms": 0.8721605937438426,
+      "total_seconds": 1.782246127999997
     }
   ]
 }
