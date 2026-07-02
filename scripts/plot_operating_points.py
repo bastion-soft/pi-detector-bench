@@ -45,6 +45,13 @@ def main() -> int:
     # Stable ordering; every detector drawn the same way (no model singled out).
     names = sorted(curves)
 
+    # Legend-only display overrides. The curve KEYS stay tied to the committed
+    # scores/slugs; this just clarifies labels (e.g. flags the deprecated model).
+    _LABELS = {"meta prompt-guard (86M)": "meta prompt-guard v1 (86M, deprecated)"}
+
+    def _label(name: str) -> str:
+        return _LABELS.get(name, name)
+
     def _style(name: str) -> dict:
         return {"linewidth": 1.6, "alpha": 0.9}
 
@@ -52,7 +59,7 @@ def main() -> int:
     fig, ax = plt.subplots(figsize=(7, 5))
     for name in names:
         c = curves[name]
-        ax.plot(c["fpr_benign"], c["tpr_attacks"], label=name, **_style(name))
+        ax.plot(c["fpr_benign"], c["tpr_attacks"], label=_label(name), **_style(name))
     ax.set_xlabel("False-positive rate on real benign traffic")
     ax.set_ylabel("Detection rate on attacks (TPR)")
     ax.set_title("Operating curve — catch rate vs false alarms on real traffic")
@@ -70,7 +77,7 @@ def main() -> int:
     fig, ax = plt.subplots(figsize=(7, 5))
     for name in names:
         c = curves[name]
-        ax.plot(c["threshold"], c["fpr_benign"], label=name, **_style(name))
+        ax.plot(c["threshold"], c["fpr_benign"], label=_label(name), **_style(name))
     ax.set_xlabel("Decision threshold")
     ax.set_ylabel("False-positive rate on real benign traffic")
     ax.set_title("Threshold sensitivity — flat = robust, steep = brittle")
