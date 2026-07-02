@@ -44,6 +44,7 @@ def main() -> int:
 
     keys = args.dataset or DEFAULT_DATASETS
     sets: list[tuple[str, object, list]] = []
+    missing: list[str] = []  # requested sets that came back empty / failed to load
     for key in keys:
         loader = MULTITURN_LOADERS_MT.get(key)
         if loader is None:
@@ -55,11 +56,25 @@ def main() -> int:
             eval_set, meta = loader(limit=args.limit)
         except Exception as exc:
             logger.warning("could not load %s: %s", key, exc)
+            missing.append(key)
             continue
         if not eval_set.texts:
             logger.warning("skip %s — empty (unavailable / gated / not installed)", key)
+            missing.append(key)
             continue
         sets.append((key, eval_set, meta))
+
+    # No silent shrinkage: a requested set coming back empty (missing dep, gated
+    # without a token, schema drift) would quietly reduce the eval — e.g. agentdojo
+    # vanishing from cross-step. Fail loudly unless the caller opts into partial.
+    if missing and not args.allow_missing:
+        logger.error(
+            "MISSING sets: %s — refusing a partial run. Install deps (e.g. `pip install "
+            "agentdojo`) / accept gated terms + set HF_TOKEN, or pass --allow-missing "
+            "to score only what's available.",
+            ", ".join(missing),
+        )
+        return 1
     if not sets:
         logger.error("no multi-turn sets loaded")
         return 1
@@ -154,6 +169,13 @@ def _parse_args() -> argparse.Namespace:
         default="results/scores_multiturn",
         metavar="DIR",
         help="write raw per-conversation scores+labels+meta per (model,set) for offline analysis",
+    )
+    p.add_argument(
+        "--allow-missing",
+        action="store_true",
+        help="score only the sets that load instead of erroring when a requested set "
+        "is empty (missing dep / gated without token). Off by default so a partial "
+        "run can't silently pass as complete.",
     )
     return p.parse_args()
 
