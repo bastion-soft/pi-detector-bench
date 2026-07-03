@@ -19,8 +19,9 @@ with no GPU — see [METHODOLOGY.md](../METHODOLOGY.md) and [CONTRIBUTING.md](..
 - **Detection:** Bastion leads average ROC-AUC (**0.991**) and F1@0.5 (**0.943**) across the four held-out adversarial benchmarks — ahead of detectors 4–6× its size. It does **not** win every column (sentinel beats it on `rogue`; wolf-defender on `xTRam1` F1).
 - **False positives on real traffic:** **1.24%** at the default threshold — lowest of every detector measured, by a wide margin. This is the axis that breaks detectors in production.
 - **The fair, threshold-agnostic comparison** (hold catch-rate constant, compare false alarms): forcing every detector to catch 95% of attacks, Bastion flags **7.71%** of real benign traffic vs the next-best **34.63%**. The "you only win because of where 0.5 falls" objection does not survive this.
-- **Indirect / structured injection:** Bastion leads average AUC (**0.945** vs next-best 0.866) **and** the within-set false-alarm rate (**20.34%** vs 46.36%) — but it has **real weak spots** (BIPIA, AgentDojo; see below).
-- **What no classifier here can do:** catch domain-specific abuse, multi-step/context attacks, or tool misuse. A detector is one layer, not the whole defense.
+- **Indirect / structured injection:** Bastion leads average AUC (**0.952** vs next-best 0.865) **and** the within-set false-alarm rate (**16.59%** vs 45.78%) — but it has **real weak spots** (BIPIA, AgentDojo; see below).
+- **Multi-turn / cross-step:** Bastion leads conversational jailbreak (AUC **0.795**) and nails *recent* cross-step injections, but its **512-token window** is a real weakness on *deeply-buried* cross-step attacks (recall falls to **0.08**) — where long-context detectors (wolf-defender, 8k) hold up. Detection only reaches as far as the window (§6).
+- **What no classifier here can do:** catch domain-specific abuse or tool misuse. A detector is one layer, not the whole defense.
 
 ---
 
@@ -60,7 +61,7 @@ The axis most comparisons skip, and the one that turns a detector into an outage
 |---|---|
 | **bastion (70M)** | **1.24%** |
 | protectai v2 (184M) | 8.82% |
-| hlyn judge (70M) | 21.67% |
+| hlyn judge (70M) | 21.53% |
 | sentinel (395M) | 23.60% |
 | wolf-defender (0.3B) | 24.03% |
 | … meta prompt-guard | 88.30% |
@@ -105,9 +106,9 @@ A detector in the top-left corner catches attacks while sparing users. Bastion's
 
 ## 4. The hlyn judge case — high AUC is not the same as usable
 
-hlyn deserves its own note because its numbers are easy to misread. It posts a strong **0.950 AUC** and a middling **21.67% FPR@0.5**, which looks like a decent detector with a slightly aggressive threshold. The threshold-agnostic data says otherwise:
+hlyn deserves its own note because its numbers are easy to misread (and it is now **gated** on HF — its row is reproduced from committed scores). It posts a strong **0.950 AUC** and a middling **21.53% FPR@0.5**, which looks like a decent detector with a slightly aggressive threshold. The threshold-agnostic data says otherwise:
 
-- At 0.5 it catches **only 58.7%** of attacks (it hedges — its scores cluster in a narrow band around 0.5, topping out ~0.55).
+- At 0.5 it catches **only 58.5%** of attacks (it hedges — its scores cluster in a narrow band around 0.5, topping out ~0.55).
 - To catch 95% of attacks it floods **77%** of real benign traffic (worse than at 0.5).
 - So **hlyn has no usable operating point on real traffic** — there is no threshold where it both catches attacks and spares users.
 
@@ -121,27 +122,84 @@ Injection hidden inside the *data* an app trusts — JSON tool results, document
 
 | | Avg AUC | Avg FPR @ 95% catch |
 |---|---|---|
-| **bastion (70M)** | **0.945** | **20.34%** |
-| wolf-defender (0.3B) | 0.866 | 46.36% |
-| deepset injection (184M) | 0.787 | 48.80% |
+| **bastion (70M)** | **0.952** | **16.59%** |
+| wolf-defender (0.3B) | 0.865 | 45.78% |
+| deepset injection (184M) | 0.787 | 49.05% |
 | … | … | … |
 
 Bastion leads both axes here. **But this is genuinely uneven, and the average hides it** — per set, Bastion's false-alarm rate at 95% catch is:
 
 | zedgar | injecagent | hackaprompt | tensortrust | **agentdojo** | **bipia** |
 |---|---|---|---|---|---|
-| 0.00% | 0.00% | 0.00% | 10.25% | **43.30%** | **68.50%** |
+| 0.00% | 0.00% | 0.00% | 10.25% | **43.30%** | **46.00%** |
 
-On Z-Edgar, InjecAgent, and HackAPrompt it catches the injection essentially without touching benign structured data. On **BIPIA (68.5%)** and **AgentDojo (43.3%)** it cannot cleanly separate injected from benign structured records at a high catch rate — a real limitation worth naming. It is still the best of the field on these sets, but "best" here is not "solved."
+On Z-Edgar, InjecAgent, and HackAPrompt it catches the injection essentially without touching benign structured data. On **BIPIA (46.0%)** and **AgentDojo (43.3%)** it cannot cleanly separate injected from benign structured records at a high catch rate — a real limitation worth naming. It is still the best of the field on these sets, but "best" here is not "solved."
 
 ---
 
-## 6. What these classifiers fundamentally cannot catch
+## 6. Multi-turn / cross-step injection
+
+Whole *conversations*, not single messages — the attacks a single-turn classifier
+structurally can't see. Each conversation is scored at its natural length; every
+detector reads it through its own context window, keeping the most recent turns (as
+a deployed filter would). Three families, reported separately (distinct threat
+models, never averaged). Full tables + graphs: [`multiturn.md`](multiturn.md).
+
+**Window is a first-class result here.** Auto-detected context windows split the
+field: **wolf-defender and sentinel are 8192-token** models; Bastion and everyone
+else are **512**. That gap drives the headline finding.
+
+**Cross-step depth — the "step-1 poisons step-4" test.** We bury the poisoned tool
+output under increasing benign context and measure recall as it moves away from the
+end. Everyone catches a *recent* injection; only a long-context model still catches
+a *deeply-buried* one:
+
+| Detector | window | recall (recent) | recall (buried >1k tok) |
+|---|---|---:|---:|
+| wolf-defender (0.3B) | 8192 | 1.00 | **0.80** |
+| sentinel (395M) | 8192 | 1.00 | 0.23 |
+| **bastion (70M)** | 512 | 1.00 | **0.08** |
+| proventra (280M) | 512 | 1.00 | 0.23 |
+| meta prompt-guard v2 (86M) | 512 | 1.00 | 0.15 |
+
+![Cross-step detection vs injection depth](multiturn_cross_step.png)
+
+This is the cleanest statement of the problem: **detection holds only within a
+model's window.** Bastion catches recent injections perfectly and **collapses to
+0.08 once the poison is buried past its 512-token window** — not a detection
+failure but a *context-window* one, and the strongest data-backed case for a
+long-context base. wolf-defender's 8k window is exactly why it stays flat. (The
+pooled cross-step AUC blends all depths, so read the depth table, not the single
+number: a short-window model looks mid-pack on AUC while being excellent shallow
+and useless deep.)
+
+**Over-flagging warning.** deepset and fmops post 1.00 recall at *every* depth —
+but their AUC is ~0.5 (random) and they flag ~94% of benign records. That "perfect
+recall" is the wrong-tool artifact from §2/§4, not detection. Read AUC + FPR, never
+recall alone.
+
+**Multi-turn jailbreak (conversational).** Here Bastion **leads** (AUC 0.795). And
+recall *rises* with conversation length rather than falling — these crescendo /
+coreference attacks put the payload in the most recent turn, so more buildup means
+more accumulated signal, and keep-recent truncation always keeps the payload.
+
+**Agent-jailbreak (AgentHarm).** A distinct threat model — a malicious *user* query
+to a tool-using agent, not an injected tool output — so it's reported on its own,
+never folded in. wolf-defender leads (0.852 AUC), Bastion mid-field (0.698).
+
+**Honest bottom line.** Bastion is strongest on conversational jailbreak and on
+*recent* cross-step injection, but its 512-token window is a real weakness on
+*deeply-buried* cross-step attacks. That's a roadmap item (long-context base), named
+rather than hidden.
+
+---
+
+## 7. What these classifiers fundamentally cannot catch
 
 A detector — any detector here — only recognizes the *patterns it was trained on*. It is one layer, and these are out of scope for all of them:
 
 - **Domain-specific abuse.** "Give me a 100% discount" or "I want a $50 coupon" is ordinary user language; no injection detector should (or will) block it. Whether a discount is granted is a job for your business logic, not a prompt classifier.
-- **Multi-step / context attacks.** "Translate it to Spanish" is innocent in isolation but may be one turn of a long attempt to extract something the agent already refused. A single message scored in isolation has no conversation state. _This is now measured directly_ on the multi-turn / cross-step axis (see [METHODOLOGY.md](../METHODOLOGY.md)) — when the filter is fed the **whole conversation**, catching it becomes a detection question. Results land here after the next benchmark run (`scripts.eval_multiturn` → `scripts.analyze_multiturn`, table in `results/multiturn.md`).
+- **Multi-step / context attacks** — *now measured, with limits.* A single message scored in isolation has no conversation state. When the filter is fed the **whole conversation**, catching it becomes a detection question — that's the multi-turn axis (§6). The limit it exposes: detection only holds **within the model's context window**, so a buried cross-step injection is missed by a short-window detector regardless of how good it is. Feeding full context is necessary but not sufficient; the window has to reach the poison.
 - **Tool misuse.** "Check every reference in my résumé" may be a reasonable request or a DoS-style overload, depending on user, context, and limits. Tool/token budgets are infrastructure concerns, not detection ones.
 - **Probabilistic, not deterministic.** Unlike antivirus signatures, these are statistical models — even on attacks they were trained on they approach, but never guarantee, 100% reliability. And a brand-new exploit discovered tomorrow won't be in any model's training set, which is why a maintained, continuously-updated detector matters.
 
@@ -154,6 +212,7 @@ Treat a detector as defense-in-depth, alongside schema validation, authorization
 - **Same policy for everyone.** Detection is out-of-domain on four held-out sets; the fixed-threshold metrics use 0.5 for every detector, Bastion included. No per-model tuning. The operating-point analysis then removes the threshold dependence entirely.
 - **Competitor numbers are not bit-stable across GPU runs.** The torch baselines vary slightly run-to-run (most visibly on the n=200 JBB set and on models sitting near AUC 0.5); Bastion's quantized ONNX path is deterministic. To remove any ambiguity, **every number in this folder is recomputed offline from the committed per-prompt scores** (`scores/`, `scores_indirect/`) via `python -m scripts.rebuild_results_from_scores` and `scripts.analyze_operating_points` — so the leaderboard, FPR, indirect, and operating-point tables are mutually consistent and reproducible by anyone, no GPU required. Re-running the Colab regenerates the scores (to within that run-to-run noise) and the rankings/story are unchanged; the exact published decimals are pinned by the committed scores, not by trusting a GPU run.
 - **meta prompt-guard** (0.314 AUC / 88% FPR) is kept in for completeness. It is not a harness error — its attack recall is 95.9%, so the polarity is correct; it simply flags almost everything. It is Meta's deprecated v1 model (replaced by Prompt-Guard-2) and over-fires by design; read it as "wrong tool, shown for context," not a fair head-to-head.
-- **Held out from training.** Every set scored here is held out from Bastion's training data — that's the contract behind the numbers, and why they reproduce from public weights.
+- **Held out from training.** Every set scored here is held out from Bastion's training data — that's the contract behind the numbers, and why they reproduce from public weights. For the multi-turn sets (which share behavior seeds with common training corpora), Bastion self-audited its own corpus for overlap and found **≈0% verbatim** contamination; the rendered conversations are novel text even where a seed behavior overlaps.
+- **Multi-turn reproduces the same way.** Per-conversation scores + metadata are committed (`scores_multiturn/`); `python -m scripts.analyze_multiturn` rebuilds the family tables and depth/length cuts with no GPU. One difference from the direct axis: some multi-turn sets are cloned/streamed fresh, so exact decimals may shift slightly run-to-run — the rankings and the window-cliff story don't.
 
-_Numbers generated 2026-06-22; regenerated from committed scores. Rerun: `python -m scripts.analyze_operating_points` (and `--within-set --label indirect`), or rebuild any table from `scores/`._
+_Direct/indirect numbers regenerated from committed scores; multi-turn generated 2026-07-03. Rerun any table from `scores/`, `scores_indirect/`, or `scores_multiturn/` — no GPU._

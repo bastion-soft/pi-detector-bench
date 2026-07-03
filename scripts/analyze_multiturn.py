@@ -102,6 +102,11 @@ def main() -> int:
         "along the axis that varies per family: injection **depth** (cross-step) or conversation "
         "**length** (jailbreak).\n"
     )
+    lines.append(
+        "> The cross-step headline AUC pools all injection depths, so it blends easy (recent) and "
+        "hard (deeply-buried) cases — read it alongside the depth table, where a short-window model "
+        "can be excellent at shallow injections yet collapse on deep ones.\n"
+    )
 
     for fam in FAMILY_ORDER:
         if fam not in fam_rows:
@@ -178,10 +183,13 @@ def main() -> int:
                 caption = (
                     "**Detection rate (recall @0.5) by injection depth** — chars of context after "
                     "the poison (keep-recent truncation). A cliff = the poison fell outside the "
-                    "model's window ('step-1 poisons step-4')."
+                    "model's window ('step-1 poisons step-4'); a flat line = the window reaches it."
                     if axis == "depth"
-                    else "**Detection rate (recall @0.5) by conversation length** — innocent buildup "
-                    "before the payload. A cliff = length dilutes or truncates the attack signal."
+                    else "**Detection rate (recall @0.5) by conversation length** — total innocent "
+                    "buildup before the payload. These crescendo/coreference attacks place the "
+                    "payload in the most recent turn (kept under keep-recent truncation), so more "
+                    "buildup tends to mean *more* accumulated attack signal — recall usually rises, "
+                    "not falls, with length."
                 )
                 lines.append(caption + "\n")
                 lines.append("| Model | " + " | ".join(cols) + " |")

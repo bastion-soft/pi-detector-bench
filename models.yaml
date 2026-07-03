@@ -66,6 +66,8 @@ models:
     hf_id: "hlyn-labs/prompt-injection-judge-deberta-70m"
     attack_label: 1
     params: "70M"
+    gated: true
+    notes: "Became gated on HF (was public when first scored). Skipped cleanly without access; its committed per-prompt scores keep it in the tables reproducibly."
 
   - name: "meta prompt-guard (86M)"
     hf_id: "meta-llama/Prompt-Guard-86M"

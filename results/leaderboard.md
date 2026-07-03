@@ -5,6 +5,7 @@
 | bastion-prompt-protection (70M) | 0.986 | 0.986 | 0.998 | 0.996 | **0.991** |
 | sentinel (qualifire, 395M) | 0.995 | 0.893 | 0.988 | 0.944 | **0.955** |
 | wolf-defender (0.3B) | 0.988 | 0.847 | 0.996 | 0.986 | **0.954** |
+| hlyn judge (70M) | 0.980 | 0.934 | 0.995 | 0.891 | **0.950** |
 | wolf-defender-small (0.1B) | 0.977 | 0.811 | 0.994 | 0.982 | **0.941** |
 | meta prompt-guard v2 (86M) | 0.882 | 0.754 | 0.973 | 0.922 | **0.883** |
 | proventra mdeberta (280M) | 0.867 | 0.645 | 0.906 | 0.954 | **0.843** |
@@ -21,6 +22,7 @@
 | bastion-prompt-protection (70M) | 0.916 | 0.960 | 0.941 | 0.955 | **0.943** |
 | sentinel (qualifire, 395M) | 0.976 | 0.719 | 0.927 | 0.810 | **0.858** |
 | wolf-defender (0.3B) | 0.940 | 0.789 | 0.976 | 0.865 | **0.893** |
+| hlyn judge (70M) | 0.833 | 0.829 | 0.844 | 0.326 | **0.708** |
 | wolf-defender-small (0.1B) | 0.911 | 0.744 | 0.957 | 0.896 | **0.877** |
 | meta prompt-guard v2 (86M) | 0.657 | 0.448 | 0.681 | 0.597 | **0.596** |
 | proventra mdeberta (280M) | 0.734 | 0.405 | 0.814 | 0.641 | **0.649** |
@@ -34,16 +36,17 @@
 
 | Model | rogue (5k) | JBB (200) | xTRam1 test (2k) | S-Labs test (2k) |
 |---|---|---|---|---|
-| bastion-prompt-protection (70M) | 4.3 | 0.9 | 4.3 | 0.8 |
-| sentinel (qualifire, 395M) | 22.7 | 1.5 | 22.7 | 1.2 |
-| wolf-defender (0.3B) | 8.7 | 0.7 | 8.7 | 0.7 |
-| wolf-defender-small (0.1B) | 4.2 | 0.7 | 4.1 | 0.7 |
-| meta prompt-guard v2 (86M) | 10.1 | 0.9 | 10.1 | 0.8 |
-| proventra mdeberta (280M) | 10.1 | 0.9 | 10.0 | 0.9 |
-| protectai v2 (184M) | 10.0 | 0.9 | 10.0 | 0.8 |
-| meta prompt-guard v2 (22M) | 4.3 | 0.8 | 4.3 | 0.8 |
-| deepset injection (184M) | 10.1 | 0.8 | 10.0 | 0.8 |
-| fmops distilbert (67M) | 3.3 | 0.3 | 3.3 | 0.2 |
-| meta prompt-guard (86M) | 10.1 | 0.9 | 10.0 | 0.8 |
+| bastion-prompt-protection (70M) | 4.2 | 0.9 | 4.1 | 0.8 |
+| sentinel (qualifire, 395M) | 22.4 | 1.5 | 22.4 | 1.2 |
+| wolf-defender (0.3B) | 8.5 | 0.7 | 8.5 | 0.7 |
+| hlyn judge (70M) | 4.1 | 0.9 | 4.1 | 0.8 |
+| wolf-defender-small (0.1B) | 4.1 | 0.7 | 4.1 | 0.7 |
+| meta prompt-guard v2 (86M) | 9.7 | 0.9 | 9.6 | 0.8 |
+| proventra mdeberta (280M) | 9.7 | 0.9 | 9.6 | 0.8 |
+| protectai v2 (184M) | 9.6 | 0.8 | 9.6 | 0.8 |
+| meta prompt-guard v2 (22M) | 4.1 | 0.8 | 4.1 | 0.8 |
+| deepset injection (184M) | 9.6 | 0.8 | 9.6 | 0.8 |
+| fmops distilbert (67M) | 3.3 | 0.3 | 3.2 | 0.2 |
+| meta prompt-guard (86M) | 9.7 | 0.9 | 9.7 | 0.8 |
 
-_Generated 2026-07-02 via `python -m scripts.run_leaderboard`._
+_Generated 2026-07-03 via `python -m scripts.run_leaderboard`._

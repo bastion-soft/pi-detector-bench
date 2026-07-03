@@ -11,6 +11,7 @@
 | meta prompt-guard v2 (86M) | 0.963 | 0.671 | 0.599 | 0.532 | 1.000 | 0.970 | **0.789** |
 | deepset injection (184M) | 0.881 | 0.597 | 0.732 | 0.595 | 1.000 | 0.917 | **0.787** |
 | meta prompt-guard v2 (22M) | 0.928 | 0.639 | 0.717 | 0.383 | 0.996 | 0.965 | **0.771** |
+| hlyn judge (70M) | 0.867 | 0.548 | 0.835 | 0.615 | 0.999 | 0.727 | **0.765** |
 | fmops distilbert (67M) | 0.860 | 0.647 | 0.579 | 0.523 | 1.000 | 0.977 | **0.765** |
 | meta prompt-guard (86M) | 0.756 | 0.917 | 0.656 | 0.404 | 0.690 | 0.809 | **0.705** |
 
@@ -27,9 +28,10 @@
 | meta prompt-guard v2 (86M) | 0.593 | 0.020 | 0.005 | 0.000 | 0.996 | 0.747 | **0.393** |
 | deepset injection (184M) | 0.667 | 0.667 | 0.667 | 0.394 | 1.000 | 0.832 | **0.704** |
 | meta prompt-guard v2 (22M) | 0.119 | 0.000 | 0.000 | 0.000 | 0.639 | 0.523 | **0.214** |
+| hlyn judge (70M) | 0.300 | 0.030 | 0.000 | 0.000 | 0.917 | 0.651 | **0.316** |
 | fmops distilbert (67M) | 0.667 | 0.667 | 0.667 | 0.378 | 1.000 | 0.897 | **0.712** |
 | meta prompt-guard (86M) | 0.570 | 0.827 | 0.399 | 0.358 | 0.947 | 0.738 | **0.640** |
 
 Held-out indirect/structured sets, scored pure-model. Reported separately from the direct leaderboard — competitors target plain-prose injection, so this is a distinct capability axis, not folded into the main average.
 
-_Generated 2026-07-02 via `python -m scripts.eval_indirect`._
+_Generated 2026-07-03 via `python -m scripts.eval_indirect`._

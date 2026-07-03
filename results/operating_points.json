@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-02T14:08:40Z",
+  "generated_at": "2026-07-03T15:23:57Z",
   "mode": "cross-benign",
   "tprs": [
     0.95,
@@ -135,37 +135,37 @@
       "runner": "fmops distilbert (67M)"
     },
     {
-      "auc": 0.96056,
-      "eer": 0.11089,
-      "eer_threshold": 0.00365,
+      "auc": 0.96198,
+      "eer": 0.10836,
+      "eer_threshold": 0.00306,
       "n_attack": 3804,
       "n_benign": 10000,
       "fpr_at_tpr": {
         "0.95": {
           "threshold": 0.00097,
-          "fpr_benign": 0.7712
+          "fpr_benign": 0.7704
         },
         "0.99": {
           "threshold": 0.00074,
-          "fpr_benign": 0.8566
+          "fpr_benign": 0.8563
         }
       },
       "threshold_sweep": {
         "0.2": {
-          "fpr_benign": 0.5058,
-          "recall_attacks": 0.84043
+          "fpr_benign": 0.4996,
+          "recall_attacks": 0.84069
         },
         "0.45": {
-          "fpr_benign": 0.3476,
-          "recall_attacks": 0.75762
+          "fpr_benign": 0.3433,
+          "recall_attacks": 0.75657
         },
         "0.5": {
-          "fpr_benign": 0.2167,
-          "recall_attacks": 0.58728
+          "fpr_benign": 0.2153,
+          "recall_attacks": 0.58465
         },
         "0.55": {
-          "fpr_benign": 0.0561,
-          "recall_attacks": 0.29574
+          "fpr_benign": 0.056,
+          "recall_attacks": 0.29338
         },
         "0.8": {
           "fpr_benign": 0.0,

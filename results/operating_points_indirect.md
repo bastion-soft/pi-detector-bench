@@ -14,7 +14,7 @@ Each set is matched injected-vs-benign structured data. The threshold is set per
 | proventra mdeberta (280M) | 85.57% | 87.00% | 3.57% | 76.50% | 58.00% | 12.33% | **53.83%** |
 | protectai v2 (184M) | 100.00% | 96.50% | 0.00% | 59.00% | 2.75% | 67.33% | **54.26%** |
 | sentinel (qualifire, 395M) | 77.32% | 100.00% | 10.71% | 100.00% | 30.00% | 39.83% | **59.64%** |
-| hlyn judge (70M) | 87.63% | 98.50% | 0.00% | 53.00% | 69.50% | 51.50% | **60.02%** |
+| hlyn judge (70M) | 87.63% | 98.50% | 0.00% | 53.00% | 69.50% | 51.33% | **59.99%** |
 | meta prompt-guard (86M) | 75.26% | 28.00% | 46.43% | 88.00% | 53.50% | 73.00% | **60.70%** |
 
 ## Indirect / structured — summary (averaged across sets)
@@ -31,7 +31,7 @@ Each set is matched injected-vs-benign structured data. The threshold is set per
 | proventra mdeberta (280M) | 0.821 | 22.8% | 53.83% |
 | protectai v2 (184M) | 0.816 | 21.6% | 54.26% |
 | sentinel (qualifire, 395M) | 0.823 | 23.6% | 59.64% |
-| hlyn judge (70M) | 0.762 | 28.2% | 60.02% |
+| hlyn judge (70M) | 0.765 | 28.1% | 59.99% |
 | meta prompt-guard (86M) | 0.705 | 32.5% | 60.70% |
 
-_Generated 2026-07-02 via `python -m scripts.analyze_operating_points --within-set` from dumped per-prompt scores. No model inference; reproducible offline._
+_Generated 2026-07-03 via `python -m scripts.analyze_operating_points --within-set` from dumped per-prompt scores. No model inference; reproducible offline._

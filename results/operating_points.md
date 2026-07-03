@@ -12,7 +12,7 @@ Each detector's threshold is set to catch the same share of attacks; we then rep
 | sentinel (qualifire, 395M) | 0.980 | 5.4% | 46.30% | 100.00% |
 | deepset injection (184M) | 0.710 | 37.2% | 69.44% | 84.29% |
 | fmops distilbert (67M) | 0.677 | 40.9% | 74.64% | 86.64% |
-| hlyn judge (70M) | 0.961 | 11.1% | 77.12% | 85.66% |
+| hlyn judge (70M) | 0.962 | 10.8% | 77.04% | 85.63% |
 | proventra mdeberta (280M) | 0.860 | 20.4% | 82.22% | 96.92% |
 | meta prompt-guard (86M) | 0.309 | 63.1% | 85.77% | 97.96% |
 | protectai v2 (184M) | 0.884 | 19.1% | 100.00% | 100.00% |
@@ -29,7 +29,7 @@ Each detector's threshold is set to catch the same share of attacks; we then rep
 | sentinel (qualifire, 395M) | 26.62% | 24.15% | 23.60% | 23.11% | 20.65% |
 | deepset injection (184M) | 68.73% | 67.14% | 65.89% | 65.65% | 64.25% |
 | fmops distilbert (67M) | 66.81% | 65.28% | 64.98% | 64.64% | 63.28% |
-| hlyn judge (70M) | 50.58% | 34.76% | 21.67% | 5.61% | 0.00% |
+| hlyn judge (70M) | 49.96% | 34.33% | 21.53% | 5.60% | 0.00% |
 | proventra mdeberta (280M) | 22.99% | 21.93% | 21.83% | 21.75% | 20.65% |
 | meta prompt-guard (86M) | 89.10% | 88.43% | 88.30% | 88.13% | 85.83% |
 | protectai v2 (184M) | 9.74% | 8.98% | 8.82% | 8.70% | 7.96% |
@@ -46,9 +46,9 @@ Each detector's threshold is set to catch the same share of attacks; we then rep
 | sentinel (qualifire, 395M) | 89.3% | 87.8% | 87.5% | 87.2% | 85.6% |
 | deepset injection (184M) | 94.7% | 93.9% | 93.7% | 93.4% | 92.4% |
 | fmops distilbert (67M) | 91.6% | 90.5% | 90.2% | 90.0% | 88.6% |
-| hlyn judge (70M) | 84.0% | 75.8% | 58.7% | 29.6% | 0.0% |
+| hlyn judge (70M) | 84.1% | 75.7% | 58.5% | 29.3% | 0.0% |
 | proventra mdeberta (280M) | 69.8% | 68.2% | 68.0% | 67.8% | 66.0% |
 | meta prompt-guard (86M) | 96.6% | 96.0% | 95.9% | 95.8% | 95.1% |
 | protectai v2 (184M) | 69.8% | 68.8% | 68.5% | 68.3% | 67.1% |
 
-_Generated 2026-07-02 via `python -m scripts.analyze_operating_points` from dumped per-prompt scores. No model inference; reproducible offline._
+_Generated 2026-07-03 via `python -m scripts.analyze_operating_points` from dumped per-prompt scores. No model inference; reproducible offline._

@@ -6,6 +6,7 @@
 | bastion-prompt-protection (70M) | 1.18% | 1.30% | **1.24%** |
 | meta prompt-guard v2 (86M) | 1.80% | 7.96% | **4.88%** |
 | protectai v2 (184M) | 7.60% | 10.04% | **8.82%** |
+| hlyn judge (70M) | 22.76% | 20.30% | **21.53%** |
 | proventra mdeberta (280M) | 18.18% | 25.48% | **21.83%** |
 | sentinel (qualifire, 395M) | 23.82% | 23.38% | **23.60%** |
 | wolf-defender (0.3B) | 18.80% | 29.26% | **24.03%** |
@@ -16,4 +17,4 @@
 
 Benign real-user openers (WildChat / LMSYS first-user turns); the share each model wrongly flags as an attack. Lower is better.
 
-_Generated 2026-07-02 via `python -m scripts.measure_false_positives`._
+_Generated 2026-07-03 via `python -m scripts.measure_false_positives`._
