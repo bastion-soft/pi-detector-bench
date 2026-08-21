@@ -18,12 +18,15 @@ from __future__ import annotations
 
 import glob
 import json
+import logging
 import os
 import re
 import subprocess
 from functools import partial
 
 from pidbench.data import EvalSet, load_deepset_test
+
+logger = logging.getLogger(__name__)
 
 
 def _clone(url: str, path: str) -> None:
@@ -320,6 +323,84 @@ def load_tensortrust(limit: int | None = None) -> EvalSet:
 
 # Pooled keys + per-category splits for per-surface recall. Scored by
 # scripts/eval_indirect.py; kept separate from the direct BENCHMARK_LOADERS.
+# --------------------------------------------------------------------------- #
+# Quadrat-IPI — injection planted in long real documents (mail / web / report)
+# --------------------------------------------------------------------------- #
+# What it adds to this axis: the other five sets here are agent scaffolding — JSON
+# tool results, poisoned tool outputs, prompt-hacking games — and their benign side is
+# a few hundred matched records per set. This one is ordinary prose a RAG pipeline
+# would retrieve: Enron mail, FineWeb and CNN/DM pages, BillSum and GovReport, 63 000
+# clean documents against 16 800 injections spread over a fixed 92-cell grid of
+# family x action.
+#
+# NOT TWINNED, and the difference matters for how a result reads. BIPIA above pairs each
+# document with its own injected copy, so a rate is measured against the same prose. Here
+# the two sides are drawn from the same six corpora and the same three carrier types but
+# from DISJOINT documents: no clean row is the twin of an injected one. What that buys is
+# size — enough clean prose to place a threshold at 0.1% instead of extrapolating to it —
+# and what it costs is that the benign<->injected gap is a distribution comparison rather
+# than a per-document one.
+#
+# Licence ODC-BY 1.0 on the database, per-row source terms for the carrier text. The
+# injections are generated rather than collected, so none of them is recycled from another
+# benchmark, and a canary string ships with the corpus.
+# PINNED TO A REVISION, unlike the sets above. BIPIA and Z-Edgar are cloned from main and
+# drift with whatever their authors push; a number recomputed from committed scores then
+# describes rows nobody can identify. Quadrat-IPI is published as a git repository on the
+# Hub with a tag per release, and a released tag is never rewritten - an edit after
+# publication opens the next version instead. So the tag below is what the committed scores
+# were taken on, and it keeps meaning that.
+#
+# When a new release ships, bumping this constant is a PR of its own: it changes the rows,
+# so the affected results have to be regenerated with it rather than alongside it.
+_QUADRAT_REPO = "mihailgribov/quadrat-ipi"
+_QUADRAT_REV = "v1.0.2"
+
+
+def load_quadrat(
+    limit: int | None = None, carrier: str | None = None, revision: str = _QUADRAT_REV
+) -> EvalSet:
+    """carrier=None pools all three; or one of email/web/doc.
+
+    revision defaults to the pinned tag; pass "main" to track the newest release instead.
+    """
+    m = limit or 400
+    name = f"quadrat/{carrier}" if carrier else "quadrat/indirect"
+    try:
+        from datasets import load_dataset
+    except ImportError:
+        logger.warning("datasets not installed — skipping Quadrat-IPI")
+        return EvalSet(name=name, texts=[], labels=[])
+    try:
+        ds = load_dataset(_QUADRAT_REPO, revision=revision)
+    except Exception as exc:
+        logger.warning("Quadrat-IPI load failed: %s", exc)
+        return EvalSet(name=name, texts=[], labels=[])
+
+    def take(split: str) -> list[str]:
+        rows = ds[split]
+        # Deterministic and stratified by carrier: taking the head of the file would hand
+        # back one corpus, because the release is written corpus by corpus.
+        out: dict[str, list[str]] = {}
+        for r in rows:
+            if carrier and r.get("host_type") != carrier:
+                continue
+            out.setdefault(r.get("host_type") or "doc", []).append(r["text"])
+            if sum(len(v) for v in out.values()) >= m * 4:
+                break
+        picked: list[str] = []
+        for i in range(m):
+            for key in sorted(out):
+                if i < len(out[key]) and len(picked) < m:
+                    picked.append(out[key][i])
+        return picked
+
+    pos, neg = take("injected"), take("clean")
+    if not pos or not neg:
+        return EvalSet(name=name, texts=[], labels=[])
+    return _mk(name, pos, neg, m)
+
+
 INDIRECT_LOADERS = {
     "zedgar": load_zedgar,
     "bipia": load_bipia,
@@ -332,4 +413,8 @@ INDIRECT_LOADERS = {
     "agentdojo": load_agentdojo,
     "hackaprompt": load_hackaprompt,  # gated
     "tensortrust": load_tensortrust,
+    "quadrat": load_quadrat,
+    "quadrat_email": partial(load_quadrat, carrier="email"),
+    "quadrat_web": partial(load_quadrat, carrier="web"),
+    "quadrat_doc": partial(load_quadrat, carrier="doc"),
 }

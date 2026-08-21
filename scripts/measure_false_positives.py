@@ -155,9 +155,59 @@ def load_lmsys(n: int) -> list[str] | None:
     return prompts
 
 
+#: The tag the committed scores were taken on. A released tag on the Hub is never
+#: rewritten, so this keeps meaning the same rows; pass revision="main" to follow the
+#: newest release instead, and regenerate the affected numbers when you do.
+_QUADRAT_REV = "v1.0.2"
+
+
+def load_quadrat_clean(n: int, revision: str = _QUADRAT_REV) -> list[str] | None:
+    """Pull n clean DOCUMENTS from Quadrat-IPI — mail, web pages and reports.
+
+    Why a third source next to WildChat and LMSYS: both of those are first user turns,
+    which is the right benign side for a detector reading what a person typed. A detector
+    placed on the indirect axis reads something else — a document the model was asked to
+    open — and that is a different distribution, long and full of imperatives that were
+    never addressed to a model. This set is 63 000 such documents from six public corpora
+    (Enron and a FOIA mail release, FineWeb and CNN/DM pages, BillSum and GovReport).
+
+    It also has the size to make a low false-positive budget measurable: at 0.1% you
+    expect 63 false alarms here, so the point is measured rather than extrapolated.
+
+    Licence ODC-BY 1.0 on the database, per-row source terms for the carrier text; mail
+    rows carry real names and are flagged `pii` (a `no_pii` slice exists upstream for runs
+    through third-party APIs). Nothing here is held out from anything — it contains no
+    injections at all.
+    """
+    try:
+        from datasets import load_dataset
+
+        ds = load_dataset("mihailgribov/quadrat-ipi", revision=revision, split="clean")
+    except Exception as exc:
+        logger.warning("Quadrat-IPI load failed: %s", exc)
+        return None
+    # Stratified by carrier rather than head-of-file: the release is written corpus by
+    # corpus, so the first n rows would all be mail.
+    buckets: dict[str, list[str]] = {}
+    for row in ds:
+        buckets.setdefault(row.get("host_type") or "doc", []).append(row["text"])
+        if sum(len(v) for v in buckets.values()) >= n * 4:
+            break
+    out: list[str] = []
+    for i in range(n):
+        for key in sorted(buckets):
+            if i < len(buckets[key]) and len(out) < n:
+                out.append(buckets[key][i])
+    if not out:
+        logger.warning("Quadrat-IPI returned 0 usable documents")
+        return None
+    return out
+
+
 DATASET_LOADERS = {
     "wildchat": load_wildchat,
     "lmsys": load_lmsys,
+    "quadrat": load_quadrat_clean,
 }
 
 
