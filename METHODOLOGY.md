@@ -114,6 +114,26 @@ only**, since its `_base` split is a common training source.
   multi-class models, summed).
 - **No per-model threshold tuning** for the fixed-threshold metrics: 0.5 for
   everyone. The threshold-agnostic metrics then remove the threshold entirely.
+- **Long inputs: truncate (default) or chunk, never per model.** By default an
+  input longer than a model's window is truncated, which means a payload past the
+  window is invisible and the detector scores a document it was never shown. On the
+  published tiny (70M) at a 512 window, a clean 3.5k-token report and the same
+  report with an injection appended both score **0.0801** — identical, because the
+  injection is cut off. `--chunk` instead scores overlapping windows (overlap
+  `max(96, window//8)`, capped at 32 windows) and aggregates them with a
+  softmax-weighted average, which is bounded by the max, so adding quiet windows
+  can never raise a score. The same two documents then score **0.1575** and
+  **0.9969**.
+
+  `--chunk` is a **run-wide switch applied to every entry**, at each model's own
+  window — never a per-model setting. Chunking is generic inference that any
+  sequence classifier supports, so enabling it for one entry and not another would
+  be precisely the special-casing this benchmark refuses. It is **off by default**,
+  so published numbers stay comparable to earlier runs, and when on the extra
+  forward passes are charged to the reported latency. It is not free: the clean
+  document above also roughly doubles (0.0801 → 0.1575), so a chunked run trades
+  recall on buried payloads against false positives on long benign documents. Both
+  sides belong in any table produced with it.
 - **Calibration is auto-applied if shipped.** If a model's HF repo includes a
   `temperature.json`, logits are divided by it before softmax (temperature scaling).
   Models without one get `T=1.0` (no-op). This is applied uniformly — a model that

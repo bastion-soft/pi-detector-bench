@@ -68,12 +68,14 @@ def main() -> int:
         return 1
 
     rows: list[tuple[str, SuiteRow]] = []
-    for spec in load_models():
+    for spec in load_models(only=args.model):
         display, model_id, attack_label = spec.name, spec.hf_id, spec.attack_label
         logger.info("=" * 60)
         logger.info("loading %s (%s)", display, model_id)
         try:
             runner = TransformersRunner(
+                chunk=args.chunk,
+                chunk_temperature=args.chunk_temperature,
                 model_id=model_id,
                 attack_label_id=attack_label,
                 max_length=512,
@@ -181,6 +183,28 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--limit", type=int, default=None, help="cap samples per set (smoke testing)")
     p.add_argument("--threshold", type=float, default=0.5)
     p.add_argument("--batch-size", type=int, default=32)
+    p.add_argument(
+        "--model",
+        action="append",
+        default=[],
+        metavar="PATTERN",
+        help="only score entries whose name or hf_id matches (substring or glob); "
+        "repeat for several. Default: every entry in models.yaml.",
+    )
+    p.add_argument(
+        "--chunk",
+        action="store_true",
+        help="score inputs longer than a model's window as overlapping windows "
+        "aggregated with smooth-max, instead of truncating. Applied to EVERY "
+        "model in the run, at each model's own window — never per-model. "
+        "Off by default so numbers stay comparable to published runs.",
+    )
+    p.add_argument(
+        "--chunk-temperature",
+        type=float,
+        default=0.1,
+        help="smooth-max temperature for --chunk (default 0.1 ~= max).",
+    )
     p.add_argument("--output-dir", default="results")
     p.add_argument(
         "--dump-scores",
