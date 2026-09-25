@@ -24,7 +24,7 @@ from pathlib import Path
 
 from pidbench.benchmark_suite import SuiteRow, _run
 from pidbench.indirect_data import INDIRECT_LOADERS
-from pidbench.models import load_models
+from pidbench.models import load_models, run_provenance
 from pidbench.runners import TransformersRunner
 
 logger = logging.getLogger(__name__)
@@ -106,7 +106,7 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     bench_order = [k for k, _ in bench_pairs]
 
-    (out_dir / "indirect.json").write_text(_write_json(rows))
+    (out_dir / "indirect.json").write_text(_write_json(rows, run_provenance(args)))
     logger.info("wrote %s", out_dir / "indirect.json")
     md_path = out_dir / "indirect.md"
     md_path.write_text(_format_markdown(rows, bench_order))
@@ -161,11 +161,12 @@ def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -
     return "\n".join(lines) + "\n"
 
 
-def _write_json(rows: list[tuple[str, SuiteRow]]) -> str:
+def _write_json(rows: list[tuple[str, SuiteRow]], run: dict | None = None) -> str:
     from dataclasses import asdict
 
     payload = {
         "schema_version": 1,
+        "run": run or {},
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "rows": [{"benchmark_key": key, **asdict(r)} for key, r in rows],
     }

@@ -61,3 +61,23 @@ def load_models(path: str | Path | None = None, only: list[str] | None = None) -
             f"available:\n  " + "\n  ".join(f"{s.name}  [{s.hf_id}]" for s in specs)
         )
     return kept
+
+
+def run_provenance(args) -> dict:
+    """Scoring settings that change what the numbers mean, for the results JSON.
+
+    Two tables are only comparable when these match. Chunking in particular moves
+    every score for any input longer than a model's window, so a run that used it
+    must say so in its own output rather than relying on someone remembering the
+    command line.
+    """
+    return {
+        "chunk": bool(getattr(args, "chunk", False)),
+        "chunk_temperature": (
+            float(getattr(args, "chunk_temperature", 0.1))
+            if getattr(args, "chunk", False)
+            else None
+        ),
+        "models_filter": list(getattr(args, "model", []) or []) or None,
+        "threshold": getattr(args, "threshold", None),
+    }

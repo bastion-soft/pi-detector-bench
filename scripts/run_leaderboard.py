@@ -29,7 +29,7 @@ from pathlib import Path
 
 from pidbench.benchmark_suite import SuiteRow, _run
 from pidbench.data import BENCHMARK_LOADERS
-from pidbench.models import load_models
+from pidbench.models import load_models, run_provenance
 from pidbench.runners import TransformersRunner
 
 logger = logging.getLogger(__name__)
@@ -112,7 +112,7 @@ def main() -> int:
     bench_order = [k for k, _ in bench_pairs]
 
     json_path = out_dir / "leaderboard.json"
-    _write_json(rows, json_path)
+    _write_json(rows, json_path, run_provenance(args))
     logger.info("wrote %s", json_path)
 
     md_path = out_dir / "leaderboard.md"
@@ -193,11 +193,12 @@ def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -
     return "\n".join(lines) + "\n"
 
 
-def _write_json(rows: list[tuple[str, SuiteRow]], path: Path) -> None:
+def _write_json(rows: list[tuple[str, SuiteRow]], path: Path, run: dict | None = None) -> None:
     from dataclasses import asdict
 
     payload = {
         "schema_version": 1,
+        "run": run or {},
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "rows": [{"benchmark_key": key, **asdict(r)} for key, r in rows],
     }

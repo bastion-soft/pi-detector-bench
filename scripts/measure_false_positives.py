@@ -44,7 +44,7 @@ import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from pidbench.models import load_models
+from pidbench.models import load_models, run_provenance
 from pidbench.runners import TransformersRunner
 
 logger = logging.getLogger(__name__)
@@ -344,6 +344,7 @@ def main() -> int:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "schema_version": 1,
+        "run": run_provenance(args),
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "threshold": 0.5,
         "samples_per_dataset": {k: len(v) for k, v in datasets.items()},

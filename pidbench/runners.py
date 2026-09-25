@@ -125,7 +125,7 @@ class TransformersRunner:
         scores: list[float] = []
         latencies: list[float] = []
 
-        for batch in _chunks(texts, self.batch_size):
+        for batch in _batches(texts, self.batch_size):
             t0 = time.perf_counter()
             enc = self.tokenizer(
                 list(batch),
@@ -214,7 +214,7 @@ class TransformersRunner:
         latencies: list[float] = []
         pad_id = self.tokenizer.pad_token_id or 0
 
-        for batch in _chunks(texts, self.batch_size):
+        for batch in _batches(texts, self.batch_size):
             t0 = time.perf_counter()
             per_doc = [self._window_ids(t) for t in batch]
             flat = [w for doc in per_doc for w in doc]
@@ -268,7 +268,8 @@ def _smooth_max(scores: list[float], temperature: float = 0.1) -> float:
     return float(sum(w * v for w, v in zip(exps, scores, strict=True)) / denom)
 
 
-def _chunks(items: list[str], size: int) -> Iterable[list[str]]:
+def _batches(items: list[str], size: int) -> Iterable[list[str]]:
+    """Split a list into inference batches (NOT windowing — see _window_ids)."""
     for i in range(0, len(items), size):
         yield items[i : i + size]
 

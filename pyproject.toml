@@ -34,7 +34,7 @@ dependencies = [
 
 [project.optional-dependencies]
 plot = ["matplotlib>=3.7"]
-dev = ["ruff>=0.6"]
+dev = ["ruff>=0.6", "pytest>=8"]
 
 [project.urls]
 Homepage = "https://github.com/bastion-soft/pi-detector-bench"

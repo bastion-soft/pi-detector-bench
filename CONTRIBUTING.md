@@ -18,6 +18,7 @@ cd pi-detector-bench
 pip install -e ".[dev,plot]"
 huggingface-cli login        # optional — only for gated models/datasets
 ruff check . && ruff format --check .
+pytest -q                    # offline: no model or dataset downloads
 ```
 
 ---
@@ -88,6 +89,8 @@ dataset's prompt text, so committing results never redistributes gated data.
 ## Quality bar
 
 - `ruff check .` and `ruff format --check .` pass (CI enforces this).
+- `pytest -q` passes. The suite is offline by design — it downloads no model
+  and no dataset, so it stays runnable in CI and in a PR review.
 - New numbers reproduce from committed scores (`rebuild_results_from_scores` is the check).
 - Be honest in interpretation — if something is a weak spot (including for the
   maintainers' own model), say so. That honesty is the whole point of the project.
