@@ -11,6 +11,9 @@ with no GPU — see [METHODOLOGY.md](../METHODOLOGY.md) and [CONTRIBUTING.md](..
 > the committed raw scores, every detector is scored through the identical generic path, and
 > this document is explicit about where each model — **including Bastion's own** — is weak.
 > Be skeptical, and rerun it.
+>
+> **Contributed dataset.** Quadrat-IPI (`mihailgribov/quadrat-ipi`), used on the indirect and
+> false-positive axes, was contributed to this benchmark by its author.
 
 ---
 
