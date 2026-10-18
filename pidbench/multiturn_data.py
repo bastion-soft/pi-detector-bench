@@ -15,8 +15,10 @@ Design rules (see METHODOLOGY.md):
   length bucket and by where the injection sits (early vs late) — the cut that
   directly answers "does the filter fire before the agent acts on the poison".
 - **Families are reported separately, never averaged together** (different
-  threat models): `jailbreak` (conversational), `cross_step` (injected tool
-  output), `agent_jailbreak` (malicious user query to an agent).
+  threat models): `jailbreak` (conversational, human red-team tactics — MHJ) and
+  `cross_step` (injected tool output). CoSafe and AgentHarm were removed in the
+  2026-11 revision: they measure harmful intent, not an injection/jailbreak
+  technique (see METHODOLOGY.md, "Benchmark revision 2026-11").
 - **Held out from training.** Public benchmarks, held out by construction for any
   detector that did not train on them. Held-out status is a per-maintainer
   disclosure, not a benchmark-wide guarantee — see METHODOLOGY.md.
@@ -44,7 +46,6 @@ logger = logging.getLogger(__name__)
 # Families — reported in separate tables, never pooled into one average.
 FAMILY_JAILBREAK = "jailbreak"  # conversational, harmless-early/malicious-later
 FAMILY_CROSS_STEP = "cross_step"  # injection inside a tool output / document
-FAMILY_AGENT_JAILBREAK = "agent_jailbreak"  # malicious user query to a tool-using agent
 
 
 @dataclass
@@ -395,8 +396,9 @@ def load_agentdojo_mt(limit: int | None = None):
 
 # =========================================================================== #
 # Benign multi-turn negatives — real WildChat/LMSYS conversations rendered in
-# full. The jailbreak sources (CoSafe, MHJ) are attack-only, so AUC/FPR need a
-# shared benign pool. Note: many detectors train on FIRST-user-turns of these
+# full. The jailbreak source (MHJ) is attack-only, so AUC/FPR need a shared
+# benign pool (also the filler for the cross-step depth expansion). Note: many
+# detectors train on FIRST-user-turns of these
 # corpora (single-turn strings); a full rendered multi-turn conversation is a
 # different string, so held-out status is preserved for such models.
 # =========================================================================== #
@@ -459,74 +461,6 @@ def _benign_multiturn(n: int) -> list[list[tuple[str, str]]]:
 
 
 # =========================================================================== #
-# CoSafe — conversational jailbreak via dialogue coreference. Each conversation
-# ends on a user turn whose harmful request refers back to earlier turns. Attack
-# only; paired with the shared benign pool. Verbatim-clean vs the corpus (0%).
-# =========================================================================== #
-_COSAFE_API = "https://api.github.com/repos/ErxinYu/CoSafe-Dataset/contents/CoSafe%20datasets"
-
-
-def _cosafe_iter_json(blob: bytes):
-    txt = blob.decode("utf-8")
-    try:
-        d = json.loads(txt)
-        return d if isinstance(d, list) else [d]
-    except Exception:
-        out = []
-        for line in txt.splitlines():
-            line = line.strip().rstrip(",")
-            if line and line not in "[]":
-                with contextlib.suppress(Exception):
-                    out.append(json.loads(line))
-        return out
-
-
-def load_cosafe_mt(limit: int | None = None):
-    import urllib.request
-
-    m = limit or 400
-    rows: list[tuple[list[tuple[str, str]], int, str, int | None]] = []
-    try:
-        files = json.loads(urllib.request.urlopen(_COSAFE_API, timeout=20).read())
-    except Exception as exc:
-        logger.warning("CoSafe listing failed: %s", str(exc)[:120])
-        return EvalSet(name="cosafe_mt", texts=[], labels=[]), []
-    for f in files:
-        if not f["name"].endswith(".json"):
-            continue
-        try:
-            data = _cosafe_iter_json(urllib.request.urlopen(f["download_url"], timeout=25).read())
-        except Exception:
-            continue
-        for conv in data:
-            turns_raw = (
-                conv
-                if isinstance(conv, list)
-                else (
-                    conv.get("conversations")
-                    or conv.get("messages")
-                    or conv.get("conversation")
-                    or []
-                )
-            )
-            turns = [
-                (t.get("role", "user"), (t.get("content") or "").strip())
-                for t in turns_raw
-                if isinstance(t, dict) and (t.get("content") or "").strip()
-            ]
-            if len(turns) < 2:
-                continue
-            # last user turn carries the coreference-masked harmful request
-            last_user = max(
-                (i for i, (r, _) in enumerate(turns) if r == "user"), default=len(turns) - 1
-            )
-            rows.append((turns, 1, "cosafe", last_user))
-    for turns in _benign_multiturn(len(rows) or m):
-        rows.append((turns, 0, "wildchat_benign", None))
-    return _mt("cosafe_mt", rows, FAMILY_JAILBREAK, max_per_class=m)
-
-
-# =========================================================================== #
 # MHJ — human multi-turn jailbreaks (Scale AI). Parquet shards have ragged
 # message_* columns, so we read the parquet directly with pandas. Attack only;
 # paired with the shared benign pool. Gated (needs accepted HF terms + token).
@@ -579,36 +513,6 @@ def _nonempty(v) -> bool:
         return False
     s = str(v).strip()
     return bool(s) and s.lower() != "nan"
-
-
-# =========================================================================== #
-# AgentHarm — agent-jailbreak-by-USER (distinct threat model, separate table).
-# Paired: harmful.prompt (attack) vs harmless_benign.prompt (benign). Single
-# user turn to a tool-using agent. Eval-only (canary + do-not-train). Public.
-# =========================================================================== #
-def load_agentharm_mt(limit: int | None = None, split: str = "test_public"):
-    m = limit or 300
-    rows: list[tuple[list[tuple[str, str]], int, str, int | None]] = []
-    try:
-        from datasets import load_dataset
-
-        for cfg, label in (("harmful", 1), ("harmless_benign", 0)):
-            ds = load_dataset("ai-safety-institute/AgentHarm", cfg, split=split)
-            for r in ds:
-                p = r.get("prompt") or r.get("detailed_prompt")
-                if isinstance(p, str) and p.strip():
-                    rows.append(
-                        (
-                            [("user", p.strip())],
-                            label,
-                            f"agentharm/{cfg}",
-                            0 if label == 1 else None,
-                        )
-                    )
-    except Exception as exc:
-        logger.warning("AgentHarm unavailable: %s", str(exc)[:140])
-        return EvalSet(name="agentharm_mt", texts=[], labels=[]), []
-    return _mt("agentharm_mt", rows, FAMILY_AGENT_JAILBREAK, max_per_class=m)
 
 
 # =========================================================================== #
@@ -685,7 +589,5 @@ MULTITURN_LOADERS_MT = {
     "injecagent": load_injecagent_mt,  # cross_step
     "agentdojo": load_agentdojo_mt,  # cross_step
     "asb": load_asb_mt,  # cross_step
-    "cosafe": load_cosafe_mt,  # jailbreak
     "mhj": load_mhj_mt,  # jailbreak
-    "agentharm": load_agentharm_mt,  # agent_jailbreak
 }

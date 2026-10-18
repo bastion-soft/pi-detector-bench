@@ -34,4 +34,4 @@
 
 Held-out indirect/structured sets, scored pure-model. Reported separately from the direct leaderboard — competitors target plain-prose injection, so this is a distinct capability axis, not folded into the main average.
 
-_Generated 2026-07-03 via `python -m scripts.eval_indirect`._
+_Generated 2026-10-19 via `python -m scripts.eval_indirect`._

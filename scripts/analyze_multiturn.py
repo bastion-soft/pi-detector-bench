@@ -2,12 +2,11 @@
 
 Reads ``results/scores_multiturn/*.json`` (raw per-conversation scores + labels +
 meta written by ``scripts.eval_multiturn``) and produces ``results/multiturn.md``
-+ ``.json``. Three families are reported SEPARATELY (different threat models,
++ ``.json``. Two families are reported SEPARATELY (different threat models,
 never averaged together):
 
-  * jailbreak       — conversational, harmless-early / malicious-later (CoSafe, MHJ)
-  * cross_step      — injection inside a tool output (InjecAgent, AgentDojo)
-  * agent_jailbreak — malicious user query to an agent (AgentHarm)
+  * jailbreak  — conversational, human red-team tactics (MHJ)
+  * cross_step — injection inside a tool output (InjecAgent, AgentDojo, ASB)
 
 Per family: a headline table (AUC / FPR@95 / EER + each model's window), and the
 decisive stratified cut along the axis that VARIES for that family — injection
@@ -38,9 +37,8 @@ from pidbench.scores_io import load_all_scores
 FAMILY_TITLE = {
     "jailbreak": "Multi-turn jailbreak (conversational)",
     "cross_step": "Cross-step agent injection (poisoned tool output)",
-    "agent_jailbreak": "Agent-jailbreak by user (separate threat model)",
 }
-FAMILY_ORDER = ["cross_step", "jailbreak", "agent_jailbreak"]
+FAMILY_ORDER = ["cross_step", "jailbreak"]
 
 # ABSOLUTE buckets (model-agnostic; ~4 chars/token). The eval defines these once;
 # each model reads the same conversations through its own window, so a model's
@@ -161,8 +159,7 @@ def main() -> int:
 
         # ---- stratified: recall@0.5 along the axis that VARIES for this family
         # (attack rows only). Cross-step → injection DEPTH (chars after the poison);
-        # jailbreak → conversation LENGTH (innocent buildup). Agent-jailbreak is
-        # single-turn, so there's nothing to stratify.
+        # jailbreak → conversation LENGTH (innocent buildup).
         axis = {"cross_step": "depth", "jailbreak": "length"}.get(fam)
         if axis:
             buckets = DEPTH_BUCKETS if axis == "depth" else LEN_BUCKETS

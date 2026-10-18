@@ -37,14 +37,15 @@ logger = logging.getLogger(__name__)
 
 BENCHMARK_DISPLAY = {
     "rogue": "rogue (5k)",
-    "jailbreakbench": "JBB (200)",
     "xtram1_test": "xTRam1 test (2k)",
     "slabs_test": "S-Labs test (2k)",
     "deepset_test": "deepset test (116)",
 }
 
 
-DEFAULT_BENCHMARKS = ["rogue", "jailbreakbench", "xtram1_test", "slabs_test"]
+# JailbreakBench was removed in the 2026-11 revision (plain harmful requests with no
+# injection mechanism — out of scope; see METHODOLOGY.md "Benchmark revision 2026-11").
+DEFAULT_BENCHMARKS = ["rogue", "xtram1_test", "slabs_test"]
 
 
 def main() -> int:

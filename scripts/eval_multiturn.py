@@ -1,8 +1,8 @@
 """Multi-turn / cross-step prompt-injection scoring — pure-model.
 
 Scores every detector in ``models.yaml`` on the multi-turn sets in
-``pidbench/multiturn_data.py`` (InjecAgent-enhanced, AgentDojo, CoSafe, MHJ,
-AgentHarm) the same generic way as the other leaderboards, and dumps raw
+``pidbench/multiturn_data.py`` (InjecAgent-enhanced, AgentDojo, ASB, MHJ) the
+same generic way as the other leaderboards, and dumps raw
 per-conversation scores + labels + **meta** (length, injection position,
 family) to ``results/scores_multiturn/``. The stratified tables are then built
 offline with no GPU by ``scripts.analyze_multiturn``.
@@ -12,7 +12,7 @@ each model truncates to its own ``max_length``. We record each model's window so
 the analysis can show the truncation cliff rather than hide it.
 
     python -m scripts.eval_multiturn --dump-scores results/scores_multiturn
-    python -m scripts.eval_multiturn --dataset cosafe --dataset agentdojo --limit 100
+    python -m scripts.eval_multiturn --dataset mhj --dataset agentdojo --limit 100
 """
 
 from __future__ import annotations
@@ -31,7 +31,9 @@ from pidbench.scores_io import dump_scores
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_DATASETS = ["injecagent", "agentdojo", "asb", "cosafe", "mhj", "agentharm"]
+# CoSafe and AgentHarm were removed in the 2026-11 revision (harmful intent, no
+# injection mechanism — see METHODOLOGY.md "Benchmark revision 2026-11").
+DEFAULT_DATASETS = ["injecagent", "agentdojo", "asb", "mhj"]
 # Each model scores conversations truncated to ITS OWN window — recorded per row.
 # Each model is scored at its OWN context window (auto-detected from the model
 # config, or a per-model override in models.yaml) — not a global cap — so a

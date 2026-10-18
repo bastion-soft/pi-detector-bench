@@ -114,41 +114,12 @@ def load_deepset_test(limit: int | None = None) -> EvalSet:
     return EvalSet(name="deepset/test", texts=texts, labels=labels)
 
 
-def load_jailbreakbench(limit: int | None = None) -> EvalSet:
-    """JailbreakBench JBB-Behaviors — public JailbreakBench eval set.
-
-    100 harmful behavior goals + 100 benign — covers a different attack
-    style than rogue (harmful content elicitation rather than prompt
-    injection per se). Useful complement.
-    """
-    from datasets import load_dataset
-
-    ds = load_dataset("JailbreakBench/JBB-Behaviors", "behaviors")
-    texts: list[str] = []
-    labels: list[int] = []
-    for split_name in ds:
-        for row in ds[split_name]:
-            text = row.get("Goal") or ""
-            if not text:
-                continue
-            # The dataset has separate harmful (100) and benign (100) configs;
-            # in the "behaviors" combined view, split name indicates which.
-            label = 1 if split_name == "harmful" else 0
-            texts.append(text)
-            labels.append(label)
-    if limit:
-        texts = texts[:limit]
-        labels = labels[:limit]
-    return EvalSet(name="JailbreakBench", texts=texts, labels=labels)
-
-
 # Registry for benchmark suite runner
 BENCHMARK_LOADERS = {
     "rogue": load_rogue_benchmark,
     "xtram1_test": load_xtram1_test,
     "slabs_test": load_slabs_test,
     "deepset_test": load_deepset_test,
-    "jailbreakbench": load_jailbreakbench,
 }
 
 

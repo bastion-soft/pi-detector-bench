@@ -28,6 +28,8 @@ from pathlib import Path
 import numpy as np
 
 from pidbench.benchmark_suite import SuiteRow
+from pidbench.data import BENCHMARK_LOADERS
+from pidbench.indirect_data import INDIRECT_LOADERS
 from pidbench.metrics import binary_metrics
 from pidbench.scores_io import load_all_scores, slugify
 from scripts.eval_indirect import _format_markdown as _ind_md
@@ -45,8 +47,15 @@ def _score_map(scores_dir: str) -> dict:
     return m
 
 
-def _rebuild_rows(json_path: Path, scores_dir: str) -> tuple[list, list, int]:
-    """Return (rows[(key, SuiteRow)], benchmark_key order, n_cells_changed)."""
+def _rebuild_rows(
+    json_path: Path, scores_dir: str, registered: set[str] | None = None
+) -> tuple[list, list, int]:
+    """Return (rows[(key, SuiteRow)], benchmark_key order, n_cells_changed).
+
+    ``registered`` (optional) is the set of benchmark keys the harness still
+    loads; rows for any other key are dropped (a set removed from the benchmark
+    leaves the published table, rather than lingering from an old run).
+    """
     import json
 
     payload = json.loads(json_path.read_text())
@@ -54,6 +63,8 @@ def _rebuild_rows(json_path: Path, scores_dir: str) -> tuple[list, list, int]:
     rows, order, changed = [], [], 0
     for row in payload["rows"]:
         key = row["benchmark_key"]
+        if registered is not None and key not in registered:
+            continue
         if key not in order:
             order.append(key)
         rec = sm.get((slugify(row["runner"]), slugify(row["benchmark"])))
@@ -107,7 +118,8 @@ def main() -> int:
         if not Path(scores_dir).exists():
             print(f"skip {name}: scores dir {scores_dir} not found (run with --dump-scores first)")
             continue
-        rows, order, changed = _rebuild_rows(json_path, scores_dir)
+        registered = set(BENCHMARK_LOADERS) if name == "leaderboard" else set(INDIRECT_LOADERS)
+        rows, order, changed = _rebuild_rows(json_path, scores_dir, registered)
         if name == "leaderboard":
             _lb_json(rows, json_path)
             md_path.write_text(_lb_md(rows, order))

@@ -34,4 +34,4 @@ Each set is matched injected-vs-benign structured data. The threshold is set per
 | hlyn judge (70M) | 0.765 | 28.1% | 59.99% |
 | meta prompt-guard (86M) | 0.705 | 32.5% | 60.70% |
 
-_Generated 2026-07-03 via `python -m scripts.analyze_operating_points --within-set` from dumped per-prompt scores. No model inference; reproducible offline._
+_Generated 2026-10-19 via `python -m scripts.analyze_operating_points --within-set` from dumped per-prompt scores. No model inference; reproducible offline._

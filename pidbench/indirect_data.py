@@ -1,7 +1,7 @@
 """Indirect / agentic prompt-injection eval sets.
 
 Held-out sets that complement the direct benchmarks in ``eval/data.py``
-(rogue/xTRam1/S-Labs/JailbreakBench) so the harness can show direct vs indirect
+(rogue/xTRam1/S-Labs) so the harness can show direct vs indirect
 injection side-by-side. Scored the same way as the direct benchmarks (pure model,
 all baselines) and written to a SEPARATE table — these target structured/indirect
 injection, a distinct capability, so they aren't folded into the main average.

@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-03T15:23:56Z",
+  "run": {},
+  "generated_at": "2026-10-18T21:08:49Z",
   "rows": [
     {
       "benchmark_key": "rogue",
@@ -18,23 +19,6 @@
       "p50_latency_ms": 4.163936187500994,
       "p95_latency_ms": 4.326755656249404,
       "total_seconds": 20.389668347999987
-    },
-    {
-      "benchmark_key": "jailbreakbench",
-      "runner": "bastion-prompt-protection (70M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.9855,
-      "f1": 0.96,
-      "precision": 0.96,
-      "recall": 0.96,
-      "fpr_at_tpr_99": 0.16,
-      "fpr_at_tpr_95": 0.04,
-      "p50_latency_ms": 0.9174575312496103,
-      "p95_latency_ms": 1.1737482187488268,
-      "total_seconds": 0.2093440630000032
     },
     {
       "benchmark_key": "xtram1_test",
@@ -88,23 +72,6 @@
       "total_seconds": 39.14312533100002
     },
     {
-      "benchmark_key": "jailbreakbench",
-      "runner": "wolf-defender (0.3B)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.84725,
-      "f1": 0.7892376681614349,
-      "precision": 0.7154471544715447,
-      "recall": 0.88,
-      "fpr_at_tpr_99": 0.85,
-      "fpr_at_tpr_95": 0.46,
-      "p50_latency_ms": 0.7114075000007603,
-      "p95_latency_ms": 0.7651395312500142,
-      "total_seconds": 0.1608136849999937
-    },
-    {
       "benchmark_key": "xtram1_test",
       "runner": "wolf-defender (0.3B)",
       "benchmark": "xTRam1/test",
@@ -154,23 +121,6 @@
       "p50_latency_ms": 4.090529718750346,
       "p95_latency_ms": 4.215445187499611,
       "total_seconds": 18.790741190000006
-    },
-    {
-      "benchmark_key": "jailbreakbench",
-      "runner": "wolf-defender-small (0.1B)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.8105999999999999,
-      "f1": 0.7443946188340808,
-      "precision": 0.6747967479674797,
-      "recall": 0.83,
-      "fpr_at_tpr_99": 0.84,
-      "fpr_at_tpr_95": 0.61,
-      "p50_latency_ms": 0.7119806875000023,
-      "p95_latency_ms": 0.7348729687510769,
-      "total_seconds": 0.15889457299999776
     },
     {
       "benchmark_key": "xtram1_test",
@@ -224,23 +174,6 @@
       "total_seconds": 102.96111130899999
     },
     {
-      "benchmark_key": "jailbreakbench",
-      "runner": "sentinel (qualifire, 395M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.8925000000000001,
-      "f1": 0.718562874251497,
-      "precision": 0.8955223880597015,
-      "recall": 0.6,
-      "fpr_at_tpr_99": 0.67,
-      "fpr_at_tpr_95": 0.41,
-      "p50_latency_ms": 1.5398011562481884,
-      "p95_latency_ms": 1.6989255000012804,
-      "total_seconds": 0.30242132800003674
-    },
-    {
       "benchmark_key": "xtram1_test",
       "runner": "sentinel (qualifire, 395M)",
       "benchmark": "xTRam1/test",
@@ -290,23 +223,6 @@
       "p50_latency_ms": 9.666428031248842,
       "p95_latency_ms": 9.795325000002464,
       "total_seconds": 45.93710187800002
-    },
-    {
-      "benchmark_key": "jailbreakbench",
-      "runner": "proventra mdeberta (280M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.6455,
-      "f1": 0.40540540540540543,
-      "precision": 0.625,
-      "recall": 0.3,
-      "fpr_at_tpr_99": 0.86,
-      "fpr_at_tpr_95": 0.75,
-      "p50_latency_ms": 0.9483319062510986,
-      "p95_latency_ms": 0.9888348749989007,
-      "total_seconds": 0.2016352979999283
     },
     {
       "benchmark_key": "xtram1_test",
@@ -360,23 +276,6 @@
       "total_seconds": 15.01450972200007
     },
     {
-      "benchmark_key": "jailbreakbench",
-      "runner": "fmops distilbert (67M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.5911,
-      "f1": 0.6690140845070423,
-      "precision": 0.5163043478260869,
-      "recall": 0.95,
-      "fpr_at_tpr_99": 0.95,
-      "fpr_at_tpr_95": 0.89,
-      "p50_latency_ms": 0.2867544687497059,
-      "p95_latency_ms": 0.29733696874956195,
-      "total_seconds": 0.05884319400001914
-    },
-    {
       "benchmark_key": "xtram1_test",
       "runner": "fmops distilbert (67M)",
       "benchmark": "xTRam1/test",
@@ -426,23 +325,6 @@
       "p50_latency_ms": 9.643840468747555,
       "p95_latency_ms": 9.738016468748611,
       "total_seconds": 43.00502403100006
-    },
-    {
-      "benchmark_key": "jailbreakbench",
-      "runner": "protectai v2 (184M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.5132,
-      "f1": 0.0,
-      "precision": 0.0,
-      "recall": 0.0,
-      "fpr_at_tpr_99": 1.0,
-      "fpr_at_tpr_95": 1.0,
-      "p50_latency_ms": 0.8447427187512346,
-      "p95_latency_ms": 0.9047524062495427,
-      "total_seconds": 0.18998501699991266
     },
     {
       "benchmark_key": "xtram1_test",
@@ -496,23 +378,6 @@
       "total_seconds": 43.05011200800004
     },
     {
-      "benchmark_key": "jailbreakbench",
-      "runner": "deepset injection (184M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.64955,
-      "f1": 0.7012987012987013,
-      "precision": 0.6183206106870229,
-      "recall": 0.81,
-      "fpr_at_tpr_99": 0.87,
-      "fpr_at_tpr_95": 0.81,
-      "p50_latency_ms": 0.8289240312500112,
-      "p95_latency_ms": 0.8545525312513291,
-      "total_seconds": 0.18309958200006804
-    },
-    {
       "benchmark_key": "xtram1_test",
       "runner": "deepset injection (184M)",
       "benchmark": "xTRam1/test",
@@ -562,23 +427,6 @@
       "p50_latency_ms": 4.136701531251674,
       "p95_latency_ms": 4.254401937497931,
       "total_seconds": 18.550888746000055
-    },
-    {
-      "benchmark_key": "jailbreakbench",
-      "runner": "hlyn judge (70M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.9335500000000001,
-      "f1": 0.8287292817679558,
-      "precision": 0.9259259259259259,
-      "recall": 0.75,
-      "fpr_at_tpr_99": 0.69,
-      "fpr_at_tpr_95": 0.28,
-      "p50_latency_ms": 0.8803835000001925,
-      "p95_latency_ms": 1.07597490625011,
-      "total_seconds": 0.1994431740000664
     },
     {
       "benchmark_key": "xtram1_test",
@@ -632,23 +480,6 @@
       "total_seconds": 45.926830945000006
     },
     {
-      "benchmark_key": "jailbreakbench",
-      "runner": "meta prompt-guard (86M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.35440000000000005,
-      "f1": 0.6666666666666666,
-      "precision": 0.5,
-      "recall": 1.0,
-      "fpr_at_tpr_99": 0.99,
-      "fpr_at_tpr_95": 0.97,
-      "p50_latency_ms": 0.9381964062527004,
-      "p95_latency_ms": 0.9760032812486941,
-      "total_seconds": 0.19909485999994558
-    },
-    {
       "benchmark_key": "xtram1_test",
       "runner": "meta prompt-guard (86M)",
       "benchmark": "xTRam1/test",
@@ -700,23 +531,6 @@
       "total_seconds": 45.89414875600005
     },
     {
-      "benchmark_key": "jailbreakbench",
-      "runner": "meta prompt-guard v2 (86M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.75445,
-      "f1": 0.44776119402985076,
-      "precision": 0.8823529411764706,
-      "recall": 0.3,
-      "fpr_at_tpr_99": 0.92,
-      "fpr_at_tpr_95": 0.76,
-      "p50_latency_ms": 0.938904562499232,
-      "p95_latency_ms": 0.9808294375019955,
-      "total_seconds": 0.19749907799996436
-    },
-    {
       "benchmark_key": "xtram1_test",
       "runner": "meta prompt-guard v2 (86M)",
       "benchmark": "xTRam1/test",
@@ -766,23 +580,6 @@
       "p50_latency_ms": 4.142712406249416,
       "p95_latency_ms": 4.261734187501531,
       "total_seconds": 18.564147724999998
-    },
-    {
-      "benchmark_key": "jailbreakbench",
-      "runner": "meta prompt-guard v2 (22M)",
-      "benchmark": "JailbreakBench",
-      "n_samples": 200,
-      "n_attack": 100,
-      "n_benign": 100,
-      "auc": 0.75575,
-      "f1": 0.2833333333333333,
-      "precision": 0.85,
-      "recall": 0.17,
-      "fpr_at_tpr_99": 0.92,
-      "fpr_at_tpr_95": 0.76,
-      "p50_latency_ms": 0.8332400312518473,
-      "p95_latency_ms": 0.838523156250659,
-      "total_seconds": 0.1854891469999984
     },
     {
       "benchmark_key": "xtram1_test",

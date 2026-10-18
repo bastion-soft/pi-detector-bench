@@ -4,7 +4,7 @@ One figure per family: **detection rate vs the axis that varies for it** —
 injection *depth* for cross-step (how far the poison is buried from the end),
 conversation *length* for jailbreak (innocent buildup before the payload). A
 curve that stays flat = the model's window reaches the poison; a cliff = it
-falls out of view. Agent-jailbreak is single-turn, so it has no stratified plot.
+falls out of view.
 
 Reads the ``stratified`` block written by ``scripts.analyze_multiturn``;
 matplotlib is an optional plotting-only dependency.
@@ -22,7 +22,6 @@ from pathlib import Path
 FAMILY_TITLE = {
     "jailbreak": "Multi-turn jailbreak",
     "cross_step": "Cross-step agent injection",
-    "agent_jailbreak": "Agent-jailbreak by user",
 }
 AXIS_LABEL = {
     "depth": "Injection depth — context after the poison (→ deeper / older)",
@@ -56,7 +55,7 @@ def main() -> int:
     for fam, block in families.items():
         strat = block.get("stratified")
         if not strat or not strat.get("buckets"):
-            continue  # e.g. agent-jailbreak (single-turn, nothing to stratify)
+            continue  # nothing stratified (e.g. family pending re-score)
         axis = strat.get("axis", "length")
         buckets = strat["buckets"]
         recall = strat["recall"]

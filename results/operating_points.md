@@ -4,18 +4,18 @@ Each detector's threshold is set to catch the same share of attacks; we then rep
 
 | Detector | AUC | EER | FPR @ 95% catch | FPR @ 99% catch |
 |---|---|---|---|---|
-| bastion-prompt-protection (70M) | 0.991 | 4.7% | 7.71% | 23.13% |
-| meta prompt-guard v2 (86M) | 0.906 | 17.9% | 25.52% | 54.37% |
-| wolf-defender (0.3B) | 0.986 | 5.7% | 34.63% | 54.97% |
-| meta prompt-guard v2 (22M) | 0.823 | 26.3% | 40.39% | 67.88% |
-| wolf-defender-small (0.1B) | 0.978 | 7.2% | 43.79% | 69.21% |
-| sentinel (qualifire, 395M) | 0.980 | 5.4% | 46.30% | 100.00% |
-| deepset injection (184M) | 0.710 | 37.2% | 69.44% | 84.29% |
-| fmops distilbert (67M) | 0.677 | 40.9% | 74.64% | 86.64% |
-| hlyn judge (70M) | 0.962 | 10.8% | 77.04% | 85.63% |
-| proventra mdeberta (280M) | 0.860 | 20.4% | 82.22% | 96.92% |
-| meta prompt-guard (86M) | 0.309 | 63.1% | 85.77% | 97.96% |
-| protectai v2 (184M) | 0.884 | 19.1% | 100.00% | 100.00% |
+| bastion-prompt-protection (70M) | 0.991 | 4.6% | 7.81% | 23.35% |
+| meta prompt-guard v2 (86M) | 0.909 | 17.6% | 24.22% | 53.11% |
+| wolf-defender (0.3B) | 0.988 | 5.2% | 34.56% | 54.92% |
+| meta prompt-guard v2 (22M) | 0.825 | 26.2% | 40.66% | 68.26% |
+| wolf-defender-small (0.1B) | 0.981 | 6.9% | 43.51% | 68.86% |
+| sentinel (qualifire, 395M) | 0.981 | 5.0% | 44.18% | 100.00% |
+| protectai v2 (184M) | 0.896 | 18.8% | 54.78% | 100.00% |
+| deepset injection (184M) | 0.714 | 36.8% | 68.31% | 84.47% |
+| fmops distilbert (67M) | 0.680 | 40.5% | 75.12% | 86.77% |
+| hlyn judge (70M) | 0.963 | 10.6% | 77.04% | 85.63% |
+| proventra mdeberta (280M) | 0.864 | 19.9% | 82.22% | 96.92% |
+| meta prompt-guard (86M) | 0.307 | 63.2% | 85.83% | 98.12% |
 
 ## Threshold sweep — FPR on real benign traffic (lower = better)
 
@@ -27,28 +27,28 @@ Each detector's threshold is set to catch the same share of attacks; we then rep
 | meta prompt-guard v2 (22M) | 3.05% | 0.91% | 0.77% | 0.74% | 0.47% |
 | wolf-defender-small (0.1B) | 33.43% | 29.21% | 28.79% | 28.58% | 25.29% |
 | sentinel (qualifire, 395M) | 26.62% | 24.15% | 23.60% | 23.11% | 20.65% |
+| protectai v2 (184M) | 9.74% | 8.98% | 8.82% | 8.70% | 7.96% |
 | deepset injection (184M) | 68.73% | 67.14% | 65.89% | 65.65% | 64.25% |
 | fmops distilbert (67M) | 66.81% | 65.28% | 64.98% | 64.64% | 63.28% |
 | hlyn judge (70M) | 49.96% | 34.33% | 21.53% | 5.60% | 0.00% |
 | proventra mdeberta (280M) | 22.99% | 21.93% | 21.83% | 21.75% | 20.65% |
 | meta prompt-guard (86M) | 89.10% | 88.43% | 88.30% | 88.13% | 85.83% |
-| protectai v2 (184M) | 9.74% | 8.98% | 8.82% | 8.70% | 7.96% |
 
 ## Threshold sweep — recall on attacks (higher = better)
 
 | Detector | 0.2 | 0.45 | 0.5 | 0.55 | 0.8 |
 |---|---|---|---|---|---|
-| bastion-prompt-protection (70M) | 90.8% | 89.2% | 89.1% | 88.9% | 86.7% |
-| meta prompt-guard v2 (86M) | 57.9% | 52.3% | 51.2% | 50.4% | 46.7% |
-| wolf-defender (0.3B) | 90.5% | 89.4% | 89.3% | 89.2% | 88.6% |
-| meta prompt-guard v2 (22M) | 35.6% | 17.5% | 16.3% | 15.4% | 11.4% |
-| wolf-defender-small (0.1B) | 90.9% | 89.5% | 89.2% | 89.1% | 88.1% |
-| sentinel (qualifire, 395M) | 89.3% | 87.8% | 87.5% | 87.2% | 85.6% |
-| deepset injection (184M) | 94.7% | 93.9% | 93.7% | 93.4% | 92.4% |
-| fmops distilbert (67M) | 91.6% | 90.5% | 90.2% | 90.0% | 88.6% |
-| hlyn judge (70M) | 84.1% | 75.7% | 58.5% | 29.3% | 0.0% |
-| proventra mdeberta (280M) | 69.8% | 68.2% | 68.0% | 67.8% | 66.0% |
-| meta prompt-guard (86M) | 96.6% | 96.0% | 95.9% | 95.8% | 95.1% |
-| protectai v2 (184M) | 69.8% | 68.8% | 68.5% | 68.3% | 67.1% |
+| bastion-prompt-protection (70M) | 90.7% | 89.0% | 88.9% | 88.7% | 87.1% |
+| meta prompt-guard v2 (86M) | 58.5% | 52.9% | 51.8% | 51.0% | 47.4% |
+| wolf-defender (0.3B) | 90.6% | 89.5% | 89.3% | 89.3% | 88.6% |
+| meta prompt-guard v2 (22M) | 35.7% | 17.4% | 16.3% | 15.3% | 11.5% |
+| wolf-defender-small (0.1B) | 91.0% | 89.7% | 89.4% | 89.3% | 88.3% |
+| sentinel (qualifire, 395M) | 89.9% | 88.5% | 88.3% | 88.0% | 86.5% |
+| protectai v2 (184M) | 71.7% | 70.6% | 70.4% | 70.1% | 68.9% |
+| deepset injection (184M) | 95.0% | 94.2% | 94.0% | 93.7% | 92.8% |
+| fmops distilbert (67M) | 91.5% | 90.4% | 90.1% | 89.8% | 88.5% |
+| hlyn judge (70M) | 83.8% | 75.2% | 58.0% | 29.7% | 0.0% |
+| proventra mdeberta (280M) | 70.8% | 69.2% | 69.0% | 68.8% | 67.1% |
+| meta prompt-guard (86M) | 96.5% | 95.9% | 95.8% | 95.7% | 95.0% |
 
-_Generated 2026-07-03 via `python -m scripts.analyze_operating_points` from dumped per-prompt scores. No model inference; reproducible offline._
+_Generated 2026-10-19 via `python -m scripts.analyze_operating_points` from dumped per-prompt scores. No model inference; reproducible offline._
