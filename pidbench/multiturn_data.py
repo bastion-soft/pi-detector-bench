@@ -207,7 +207,8 @@ def load_injecagent_mt(limit: int | None = None, category: str | None = None):
     )
     name = f"injecagent_mt/{category or 'all'}_enhanced"
     rows: list[tuple[list[tuple[str, str]], int, str, int | None]] = []
-    for path in glob.glob(pat, recursive=True):
+    # sorted: glob order is filesystem-dependent and decides row order + the cap
+    for path in sorted(glob.glob(pat, recursive=True)):
         try:
             with open(path) as f:
                 records = json.load(f)

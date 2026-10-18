@@ -88,7 +88,9 @@ def load_bipia(limit: int | None = None, domain: str | None = None) -> EvalSet:
     pattern = f"BIPIA/benchmark/{domain}/test.jsonl" if domain else "BIPIA/benchmark/**/test.jsonl"
     name = f"bipia/{domain}" if domain else "bipia/indirect"
     contexts: list[str] = []
-    for p in glob.glob(pattern, recursive=True):
+    # sorted: glob order is filesystem-dependent, and with the per-domain files
+    # concatenated (and attacks assigned by index) it decides every row.
+    for p in sorted(glob.glob(pattern, recursive=True)):
         with open(p) as f:
             for line in f:
                 try:
@@ -150,7 +152,8 @@ def load_injecagent(limit: int | None = None, category: str | None = None) -> Ev
     )
     name = f"injecagent/{category}_enhanced" if category else "injecagent/enhanced"
     pos, neg = [], []
-    for p in glob.glob(glob_pat, recursive=True):
+    # sorted: glob order is filesystem-dependent and decides which rows survive the cap
+    for p in sorted(glob.glob(glob_pat, recursive=True)):
         try:
             with open(p) as f:
                 rows = json.load(f)
