@@ -24,7 +24,7 @@ from pathlib import Path
 
 from pidbench.benchmark_suite import SuiteRow, _run
 from pidbench.indirect_data import INDIRECT_LOADERS
-from pidbench.models import load_models, run_provenance
+from pidbench.models import declared_thresholds, load_models, run_provenance
 from pidbench.runners import TransformersRunner
 
 logger = logging.getLogger(__name__)
@@ -117,7 +117,12 @@ def main() -> int:
 
 def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -> str:
     by_runner: dict[str, dict[str, SuiteRow]] = {}
+    pending: set[tuple[str, str]] = set()  # (runner, key) cells awaiting a re-score
     for key, r in rows:
+        if r.pending_rescore:
+            pending.add((r.runner, key))
+            by_runner.setdefault(r.runner, {})
+            continue
         by_runner.setdefault(r.runner, {})[key] = r
 
     def _avg(by_bench: dict[str, SuiteRow], metric: str) -> float:
@@ -137,7 +142,7 @@ def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -
             for k in bench_order:
                 row = bb.get(k)
                 if row is None:
-                    vals.append("—")
+                    vals.append("pending re-score" if (runner, k) in pending else "—")
                 else:
                     v = getattr(row, metric)
                     vals.append(f"{v:.3f}")
@@ -150,6 +155,13 @@ def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -
     lines: list[str] = []
     lines += _table("auc", "AUC")
     lines += _table("f1", "F1 @ threshold=0.5")
+    if pending:
+        lines.append(
+            "_pending re-score_: this set's loader changed in the 2026-11 revision (row order "
+            "is now deterministic), so its committed scores no longer align with its rows. "
+            "**Avg** is over the remaining sets until the re-score lands."
+        )
+        lines.append("")
     lines.append(
         "Held-out indirect/structured sets, scored pure-model. Reported "
         "separately from the direct leaderboard — competitors target plain-prose "
@@ -164,10 +176,12 @@ def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -
 def _write_json(rows: list[tuple[str, SuiteRow]], run: dict | None = None) -> str:
     from dataclasses import asdict
 
+    declared = declared_thresholds()
     payload = {
-        "schema_version": 1,
+        "schema_version": 2,
         "run": run or {},
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "declared_thresholds": {r.runner: declared.get(r.runner, 0.5) for _, r in rows},
         "rows": [{"benchmark_key": key, **asdict(r)} for key, r in rows],
     }
     return json.dumps(payload, indent=2)

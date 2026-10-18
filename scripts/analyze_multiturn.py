@@ -31,14 +31,22 @@ from pathlib import Path
 
 import numpy as np
 
-from pidbench.metrics import binary_metrics, eer
-from pidbench.scores_io import load_all_scores
+from pidbench.metrics import binary_metrics, eer, fpr_at_threshold
+from pidbench.models import DEFAULT_THRESHOLD, declared_thresholds, threshold_for
+from pidbench.scores_io import check_alignment, load_all_scores
 
 FAMILY_TITLE = {
     "jailbreak": "Multi-turn jailbreak (conversational)",
     "cross_step": "Cross-step agent injection (poisoned tool output)",
 }
 FAMILY_ORDER = ["cross_step", "jailbreak"]
+# dataset (EvalSet name) -> family, for score files that are pending (not loaded)
+DATASET_FAMILY = {
+    "injecagent_mt/all_enhanced": "cross_step",
+    "agentdojo_mt": "cross_step",
+    "asb_mt": "cross_step",
+    "mhj_mt": "jailbreak",
+}
 
 # ABSOLUTE buckets (model-agnostic; ~4 chars/token). The eval defines these once;
 # each model reads the same conversations through its own window, so a model's
@@ -82,41 +90,71 @@ def main() -> int:
         )
         return 1
 
+    # Refuse (raise) on files that disagree about their rows; files written before
+    # the loader/scoring change for their set are not used — they are pending.
+    files, pending = check_alignment(files)
+    declared = declared_thresholds()
+
     # index: family -> model -> dataset -> {scores, labels, meta}
     fam_rows: dict[str, dict[str, dict[str, dict]]] = defaultdict(lambda: defaultdict(dict))
     for f in files:
         fam = f["meta"][0].get("family", "?")
         fam_rows[fam][f["runner"]][f["dataset"]] = f
+    # pending cells: family -> model -> {dataset: reason}
+    fam_pending: dict[str, dict[str, dict[str, str]]] = defaultdict(lambda: defaultdict(dict))
+    for (runner, dataset), why in pending.items():
+        fam = DATASET_FAMILY.get(dataset, "?")
+        fam_pending[fam][runner][dataset] = why
+        fam_rows[fam].setdefault(runner, {})
 
     out_json: dict = {
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "declared_thresholds": {},
         "families": {},
     }
     lines: list[str] = ["# Multi-turn / cross-step prompt-injection results", ""]
     lines.append(
         "Conversations are model-agnostic (fixed absolute lengths/depths); each model reads them "
-        "through its own window, keeping the most recent turns (**max_len** column). Families are "
-        "reported separately — different threat models, never averaged. Recall is then stratified "
-        "along the axis that varies per family: injection **depth** (cross-step) or conversation "
-        "**length** (jailbreak).\n"
+        "through its own window (**max_len** column) — chunked into overlapping windows when "
+        "scored with `--chunk` (the published protocol since the 2026-11 revision), otherwise "
+        "keeping the most recent turns. Families are reported separately — different threat "
+        "models, never averaged. Recall is then stratified along the axis that varies per "
+        "family: injection **depth** (cross-step) or conversation **length** (jailbreak).\n"
     )
     lines.append(
         "> The cross-step headline AUC pools all injection depths, so it blends easy (recent) and "
-        "hard (deeply-buried) cases — read it alongside the depth table, where a short-window model "
-        "can be excellent at shallow injections yet collapse on deep ones.\n"
+        "hard (deeply-buried) cases — read it alongside the depth table.\n"
     )
+    if pending:
+        lines.append(
+            "> **Pending re-score.** Cells marked _pending re-score_ belong to sets whose rows or "
+            "scoring protocol changed in the 2026-11 revision (MHJ benign negatives rendered "
+            "user-turns-only, deterministic InjecAgent file order, chunked multi-turn scoring). "
+            "The committed scores predate that change, so they are not shown. Re-score with "
+            "`notebooks/rescore_revision_2026_11.ipynb`.\n"
+        )
 
     for fam in FAMILY_ORDER:
         if fam not in fam_rows:
             continue
         lines.append(f"## {FAMILY_TITLE.get(fam, fam)}\n")
         models = fam_rows[fam]
-        datasets = sorted({d for m in models.values() for d in m})
+        datasets = sorted(
+            {d for m in models.values() for d in m}
+            | {d for by in fam_pending[fam].values() for d in by}
+        )
 
-        # ---- headline: AUC / FPR@95 / EER, mean across the family's datasets ----
-        head = []
+        # ---- headline: AUC / FPR@95 / EER + fixed-threshold FPR/recall, mean across
+        # the family's datasets. A model with ANY of the family's sets pending is shown
+        # as pending (a mean over a subset of sets would not be comparable).
+        head, pend_models = [], []
         for model, by_ds in models.items():
-            aucs, fpr95s, eers, window = [], [], [], None
+            if fam_pending[fam].get(model):
+                pend_models.append(model)
+                continue
+            thr = threshold_for(model, declared)
+            acc = defaultdict(list)
+            window = scoring = None
             for ds in datasets:
                 rec = by_ds.get(ds)
                 if not rec:
@@ -126,36 +164,65 @@ def main() -> int:
                 if len(set(y.tolist())) < 2:
                     continue
                 bm = binary_metrics(s, y)
-                aucs.append(bm.auc)
-                fpr95s.append(bm.fpr_at_tpr_95)
-                eers.append(eer(s, y)[0])
+                acc["auc"].append(bm.auc)
+                acc["fpr95"].append(bm.fpr_at_tpr_95)
+                acc["eer"].append(eer(s, y)[0])
+                for tag, t in (("05", DEFAULT_THRESHOLD), ("thr", thr)):
+                    acc[f"fpr_{tag}"].append(fpr_at_threshold(s[y == 0], t))
+                    acc[f"rec_{tag}"].append(float(np.mean(s[y == 1] >= t)))
                 window = rec["meta"][0].get("model_max_length", window)
-            if aucs:
+                scoring = rec["meta"][0].get("scoring", "left_truncated")
+            if acc["auc"]:
                 head.append(
-                    (
-                        model,
-                        statistics.mean(aucs),
-                        statistics.mean(fpr95s),
-                        statistics.mean(eers),
-                        window,
-                    )
+                    {
+                        "model": model,
+                        **{k: statistics.mean(v) for k, v in acc.items()},
+                        "thr": thr,
+                        "window": window,
+                        "scoring": scoring,
+                    }
                 )
-        head.sort(key=lambda r: r[1], reverse=True)
-        lines.append("| Model | max_len | AUC | FPR@95%-catch | EER |")
-        lines.append("|---|---|---|---|---|")
-        for model, auc, fpr95, e, window in head:
-            lines.append(f"| {model} | {window or '?'} | {auc:.3f} | {fpr95:.3f} | {e:.3f} |")
+                out_json["declared_thresholds"][model] = thr
+        head.sort(key=lambda r: r["auc"], reverse=True)
+        lines.append(
+            "| Model | max_len | AUC | FPR@95%-catch | EER | FPR @0.5 | recall @0.5 "
+            "| declared thr | FPR @thr | recall @thr |"
+        )
+        lines.append("|---|---|---|---|---|---|---|---|---|---|")
+        for r in head:
+            lines.append(
+                f"| {r['model']} | {r['window'] or '?'} | {r['auc']:.3f} | {r['fpr95']:.3f} "
+                f"| {r['eer']:.3f} | {r['fpr_05']:.3f} | {r['rec_05']:.3f} | {r['thr']:g} "
+                f"| {r['fpr_thr']:.3f} | {r['rec_thr']:.3f} |"
+            )
+        for model in sorted(pend_models):
+            thr = threshold_for(model, declared)
+            out_json["declared_thresholds"][model] = thr
+            cells = " | ".join(["pending re-score"] * 5)
+            lines.append(
+                f"| {model} | — | {cells} | {thr:g} | pending re-score | pending re-score |"
+            )
         lines.append("")
-        out_json["families"].setdefault(fam, {})["headline"] = [
+        fam_out = out_json["families"].setdefault(fam, {})
+        fam_out["headline"] = [
             {
-                "model": m,
-                "auc": round(a, 4),
-                "fpr_at_95": round(fp, 4),
-                "eer": round(e, 4),
-                "max_len": w,
+                "model": r["model"],
+                "auc": round(r["auc"], 4),
+                "fpr_at_95": round(r["fpr95"], 4),
+                "eer": round(r["eer"], 4),
+                "fpr_at_0.5": round(r["fpr_05"], 4),
+                "recall_at_0.5": round(r["rec_05"], 4),
+                "declared_threshold": r["thr"],
+                "fpr_at_declared": round(r["fpr_thr"], 4),
+                "recall_at_declared": round(r["rec_thr"], 4),
+                "max_len": r["window"],
+                "scoring": r["scoring"],
             }
-            for m, a, fp, e, w in head
+            for r in head
         ]
+        if pend_models:
+            fam_out["pending_rescore"] = {m: fam_pending[fam][m] for m in sorted(pend_models)}
+        head = [(r["model"],) for r in head]  # model order for the stratified table
 
         # ---- stratified: recall@0.5 along the axis that VARIES for this family
         # (attack rows only). Cross-step → injection DEPTH (chars after the poison);
@@ -179,14 +246,14 @@ def main() -> int:
             if cols:
                 caption = (
                     "**Detection rate (recall @0.5) by injection depth** — chars of context after "
-                    "the poison (keep-recent truncation). A cliff = the poison fell outside the "
-                    "model's window ('step-1 poisons step-4'); a flat line = the window reaches it."
+                    "the poison. Under keep-recent truncation a cliff means the poison fell "
+                    "outside the model's window ('step-1 poisons step-4'); chunked scoring "
+                    "(`--chunk`) reads every window, so a cliff there is a detection limit."
                     if axis == "depth"
-                    else "**Detection rate (recall @0.5) by conversation length** — total innocent "
-                    "buildup before the payload. These crescendo/coreference attacks place the "
-                    "payload in the most recent turn (kept under keep-recent truncation), so more "
-                    "buildup tends to mean *more* accumulated attack signal — recall usually rises, "
-                    "not falls, with length."
+                    else "**Detection rate (recall @0.5) by conversation length** — total "
+                    "conversation size (attacks only). MHJ places the payload in the most "
+                    "recent user turn, so length mostly measures how much red-team buildup "
+                    "precedes it."
                 )
                 lines.append(caption + "\n")
                 lines.append("| Model | " + " | ".join(cols) + " |")

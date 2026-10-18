@@ -154,7 +154,10 @@ def test_turn_chunking_is_identical_to_token_path_when_it_fits():
 def test_turn_windows_respect_the_model_window_and_start_on_a_turn():
     r = _turn_runner(40)
     tag_ids = {r.tokenizer(f"[{x}]")["input_ids"][0] for x in ("USER", "TOOL", "ASSISTANT")}
-    turns = [(("USER", "TOOL", "ASSISTANT")[k % 3], " ".join(f"w{k}_{j}" for j in range(12))) for k in range(9)]
+    turns = [
+        (("USER", "TOOL", "ASSISTANT")[k % 3], " ".join(f"w{k}_{j}" for j in range(12)))
+        for k in range(9)
+    ]
     wins = r._window_ids(_conv(*turns))
     assert len(wins) > 1
     for w in wins:
@@ -169,9 +172,9 @@ def test_buried_turn_lands_whole_in_some_window():
     text = _conv(filler[0], poison, *filler[1:])
     target = r.tokenizer("[TOOL] " + poison[1])["input_ids"]
     wins = r._window_ids(text)
-    assert any(
-        w[i : i + len(target)] == target for w in wins for i in range(len(w))
-    ), "the poisoned turn must appear unsplit in at least one window"
+    assert any(w[i : i + len(target)] == target for w in wins for i in range(len(w))), (
+        "the poisoned turn must appear unsplit in at least one window"
+    )
 
 
 def test_overlong_turn_is_split_and_continuations_keep_the_role():

@@ -14,6 +14,14 @@
 #   params        parameter count, for the tables (optional)
 #   gated         true if the model needs HF access approval; skipped cleanly
 #                 without it (optional)
+#   threshold     the operating threshold the model's maintainer declares for it
+#                 (optional, a float in (0, 1); default 0.5 when absent). Every
+#                 table that reports FPR @0.5 also reports FPR (and recall where
+#                 relevant) at this threshold, so a model is shown at the point its
+#                 own maintainer recommends as well as at the common 0.5. It is a
+#                 reporting column only: it never changes how a model is scored,
+#                 and the threshold-agnostic metrics (AUC, FPR at a fixed catch
+#                 rate, EER) ignore it. Cite the source (model card) in `notes`.
 #   notes         freeform (optional)
 #
 # Note: PIGuard (leolee99/PIGuard) is intentionally not listed — it requires

@@ -40,7 +40,8 @@ from pathlib import Path
 import numpy as np
 
 from pidbench.metrics import eer, fpr_at_threshold, threshold_at_tpr
-from pidbench.scores_io import load_all_scores
+from pidbench.models import DEFAULT_THRESHOLD, declared_thresholds, threshold_for
+from pidbench.scores_io import check_alignment, load_all_scores
 
 
 def _pool(records: list[dict], runner: str, kind: str) -> tuple[np.ndarray, np.ndarray | None]:
@@ -65,6 +66,7 @@ def _analyze_runner(
     benign_scores: np.ndarray,
     tprs: list[float],
     thresholds: list[float],
+    declared: float = DEFAULT_THRESHOLD,
 ) -> dict:
     from sklearn.metrics import roc_auc_score  # type: ignore[import-not-found]
 
@@ -87,6 +89,13 @@ def _analyze_runner(
 
     eer_val, eer_t = eer(attack_scores, attack_labels)
 
+    def _point(thr: float) -> dict:
+        return {
+            "threshold": thr,
+            "fpr_benign": round(fpr_at_threshold(benign_scores, thr), 5),
+            "recall_attacks": round(float(np.mean(pos >= thr)) if pos.size else 0.0, 5),
+        }
+
     # Deployment curve: TPR(attacks) vs FPR(real benign) swept over thresholds.
     grid = np.linspace(0.0, 1.0, 201)
     curve = {
@@ -103,6 +112,9 @@ def _analyze_runner(
         "n_benign": int(benign_scores.size),
         "fpr_at_tpr": fpr_at_tpr,
         "threshold_sweep": sweep,
+        "at_0.5": _point(DEFAULT_THRESHOLD),
+        "declared_threshold": declared,
+        "at_declared": _point(declared),
         "deployment_curve": curve,
     }
 
@@ -138,6 +150,25 @@ def _format_markdown(results: dict, tprs: list[float], thresholds: list[float]) 
             f"| {r['runner']} | {r['auc']:.3f} | {r['eer'] * 100:.1f}% | "
             + " | ".join(cells)
             + " |"
+        )
+
+    lines.append("")
+    lines.append("## Fixed thresholds — 0.5 and each model's declared threshold")
+    lines.append("")
+    lines.append(
+        "FPR on real benign traffic and recall on the pooled attack sets at the common 0.5 "
+        "and at the threshold each model's maintainer declares (`threshold:` in models.yaml; "
+        "0.5 when none is declared)."
+    )
+    lines.append("")
+    lines.append("| Detector | FPR @0.5 | recall @0.5 | declared thr | FPR @thr | recall @thr |")
+    lines.append("|---|---|---|---|---|---|")
+    for r in order:
+        a, d = r["at_0.5"], r["at_declared"]
+        lines.append(
+            f"| {r['runner']} | {a['fpr_benign'] * 100:.2f}% | {a['recall_attacks'] * 100:.1f}% "
+            f"| {r['declared_threshold']:g} | {d['fpr_benign'] * 100:.2f}% "
+            f"| {d['recall_attacks'] * 100:.1f}% |"
         )
 
     lines.append("")
@@ -183,7 +214,8 @@ def _format_markdown_within(results: dict, tprs: list[float], thresholds: list[f
     """
     rows = results["rows"]
     primary = f"{tprs[0]:g}"
-    datasets = sorted({r["dataset"] for r in rows})
+    pending = set(results.get("pending_rescore") or [])
+    datasets = sorted({r["dataset"] for r in rows} | pending)
     by_runner: dict[str, dict[str, dict]] = {}
     for r in rows:
         by_runner.setdefault(r["runner"], {})[r["dataset"]] = r
@@ -216,6 +248,9 @@ def _format_markdown_within(results: dict, tprs: list[float], thresholds: list[f
         for d in datasets:
             r = by_runner[runner].get(d)
             v = r["fpr_at_tpr"].get(primary, {}).get("fpr_benign") if r else None
+            if v is None and d in pending:
+                cells.append("pending re-score")
+                continue
             cells.append(f"{v * 100:.2f}%" if v is not None else "—")
             if v is not None:
                 vals.append(v)
@@ -223,16 +258,34 @@ def _format_markdown_within(results: dict, tprs: list[float], thresholds: list[f
         lines.append(f"| {runner} | " + " | ".join(cells) + f" | {avg} |")
 
     lines.append("")
+    if pending:
+        lines.append(
+            "_pending re-score_: the loader for these sets changed in the 2026-11 revision "
+            "(row order is now deterministic), so the committed scores no longer align with "
+            "the rows; averages are over the remaining sets until the re-score lands."
+        )
+        lines.append("")
     lines.append("## Indirect / structured — summary (averaged across sets)")
     lines.append("")
-    lines.append(f"| Detector | Avg AUC | Avg EER | Avg FPR @ {pct}% catch |")
-    lines.append("|---|---|---|---|")
+    lines.append(
+        f"| Detector | Avg AUC | Avg EER | Avg FPR @ {pct}% catch | Avg FPR @0.5 "
+        "| Avg recall @0.5 | declared thr | Avg FPR @thr | Avg recall @thr |"
+    )
+    lines.append("|---|---|---|---|---|---|---|---|---|")
     for runner in order:
         rs = list(by_runner[runner].values())
+
+        def _m(key: str, field: str, rs=rs) -> float:
+            return sum(r[key][field] for r in rs) / len(rs)
+
         auc = sum(r["auc"] for r in rs) / len(rs)
         eer_avg = sum(r["eer"] for r in rs) / len(rs)
         lines.append(
-            f"| {runner} | {auc:.3f} | {eer_avg * 100:.1f}% | {_avg_fpr(runner) * 100:.2f}% |"
+            f"| {runner} | {auc:.3f} | {eer_avg * 100:.1f}% | {_avg_fpr(runner) * 100:.2f}% "
+            f"| {_m('at_0.5', 'fpr_benign') * 100:.2f}% "
+            f"| {_m('at_0.5', 'recall_attacks') * 100:.1f}% | {rs[0]['declared_threshold']:g} "
+            f"| {_m('at_declared', 'fpr_benign') * 100:.2f}% "
+            f"| {_m('at_declared', 'recall_attacks') * 100:.1f}% |"
         )
 
     lines.append("")
@@ -255,6 +308,12 @@ def main() -> int:
             f"no score files in {args.scores_dir} — run with --dump-scores first", file=sys.stderr
         )
         return 1
+    # Refuses (raises) on files that disagree about their rows; files that predate
+    # a loader change for their dataset are left out and listed as pending.
+    records, pending = check_alignment(records)
+    for (runner, dataset), why in sorted(pending.items()):
+        print(f"pending re-score: {runner} / {dataset} — {why}", file=sys.stderr)
+    declared = declared_thresholds()
 
     rows = []
     curves = {}
@@ -272,7 +331,14 @@ def main() -> int:
                     f"skip {rec['runner']} / {rec['dataset']}: needs both classes", file=sys.stderr
                 )
                 continue
-            res = _analyze_runner(s, label_arr, s[label_arr == 0], tprs, thresholds)
+            res = _analyze_runner(
+                s,
+                label_arr,
+                s[label_arr == 0],
+                tprs,
+                thresholds,
+                threshold_for(rec["runner"], declared),
+            )
             res["runner"] = rec["runner"]
             res["dataset"] = rec["dataset"]
             curves[f"{rec['runner']} · {rec['dataset']}"] = res.pop("deployment_curve")
@@ -291,7 +357,14 @@ def main() -> int:
             if benign_scores.size == 0:
                 print(f"skip {runner}: no real-benign scores", file=sys.stderr)
                 continue
-            res = _analyze_runner(attack_scores, attack_labels, benign_scores, tprs, thresholds)
+            res = _analyze_runner(
+                attack_scores,
+                attack_labels,
+                benign_scores,
+                tprs,
+                thresholds,
+                threshold_for(runner, declared),
+            )
             res["runner"] = runner
             curves[runner] = res.pop("deployment_curve")
             rows.append(res)
@@ -310,6 +383,8 @@ def main() -> int:
         "schema_version": 1,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "mode": "within-set" if args.within_set else "cross-benign",
+        "declared_thresholds": {r["runner"]: r["declared_threshold"] for r in rows},
+        "pending_rescore": sorted({d for _, d in pending}),
         "tprs": tprs,
         "thresholds": thresholds,
         "rows": rows,

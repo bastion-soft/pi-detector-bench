@@ -125,7 +125,14 @@ def main() -> int:
             ]
             if dump_dir:
                 dump_scores(
-                    dump_dir, spec.name, eval_set.name, "attack", scores, labels, meta=meta_out
+                    dump_dir,
+                    spec.name,
+                    eval_set.name,
+                    "attack",
+                    scores,
+                    labels,
+                    meta=meta_out,
+                    texts=eval_set.texts,
                 )
             m = binary_metrics(scores, labels, threshold=args.threshold)
             summary.append(

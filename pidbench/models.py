@@ -12,6 +12,9 @@ from pathlib import Path
 
 _DEFAULT_PATH = Path(__file__).resolve().parent.parent / "models.yaml"
 
+# The fixed out-of-the-box threshold every model is also reported at.
+DEFAULT_THRESHOLD = 0.5
+
 
 @dataclass
 class ModelSpec:
@@ -22,6 +25,19 @@ class ModelSpec:
     gated: bool = False
     notes: str | None = None
     max_length: int | None = None  # None = auto-detect from config.max_position_embeddings
+    threshold: float | None = None  # maintainer-declared operating threshold; None = 0.5
+
+    def __post_init__(self) -> None:
+        if self.threshold is not None:
+            t = float(self.threshold)
+            if not 0.0 < t < 1.0:
+                raise ValueError(f"{self.name}: threshold must be in (0, 1), got {self.threshold}")
+            self.threshold = t
+
+    @property
+    def declared_threshold(self) -> float:
+        """The threshold the model's maintainer declares, or 0.5 if none."""
+        return DEFAULT_THRESHOLD if self.threshold is None else self.threshold
 
 
 def load_models(path: str | Path | None = None, only: list[str] | None = None) -> list[ModelSpec]:
@@ -63,6 +79,18 @@ def load_models(path: str | Path | None = None, only: list[str] | None = None) -
     return kept
 
 
+def declared_thresholds(path: str | Path | None = None) -> dict[str, float]:
+    """``{display name: declared threshold}`` for every registry entry (0.5 when
+    an entry declares none). Score files are keyed by display name, so this is
+    what the offline analysis scripts look thresholds up by."""
+    return {s.name: s.declared_threshold for s in load_models(path)}
+
+
+def threshold_for(name: str, table: dict[str, float]) -> float:
+    """Declared threshold for a scored runner; 0.5 for one no longer registered."""
+    return table.get(name, DEFAULT_THRESHOLD)
+
+
 def run_provenance(args) -> dict:
     """Scoring settings that change what the numbers mean, for the results JSON.
 
@@ -78,7 +106,9 @@ def run_provenance(args) -> dict:
             if getattr(args, "chunk", False)
             else None
         ),
-        "chunk_unit": getattr(args, "chunk_unit", "tokens") if getattr(args, "chunk", False) else None,
+        "chunk_unit": getattr(args, "chunk_unit", "tokens")
+        if getattr(args, "chunk", False)
+        else None,
         "models_filter": list(getattr(args, "model", []) or []) or None,
         "threshold": getattr(args, "threshold", None),
     }

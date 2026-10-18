@@ -39,6 +39,10 @@ class SuiteRow:
     p50_latency_ms: float
     p95_latency_ms: float
     total_seconds: float
+    # Set (to the reason) when the committed scores for this cell predate a loader
+    # change for its dataset; metric fields are then not meaningful and every
+    # table shows the cell as "pending re-score" (see scores_io.check_alignment).
+    pending_rescore: str | None = None
 
 
 def _run(
@@ -65,7 +69,15 @@ def _run(
     if dump_dir is not None:
         from pidbench.scores_io import dump_scores
 
-        dump_scores(dump_dir, runner.name, bench.name, "attack", output.scores, bench.labels)
+        dump_scores(
+            dump_dir,
+            runner.name,
+            bench.name,
+            "attack",
+            output.scores,
+            bench.labels,
+            texts=bench.texts,
+        )
 
     metrics = binary_metrics(scores, labels, threshold=threshold)
 

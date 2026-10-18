@@ -29,7 +29,7 @@ from pathlib import Path
 
 from pidbench.benchmark_suite import SuiteRow, _run
 from pidbench.data import BENCHMARK_LOADERS
-from pidbench.models import load_models, run_provenance
+from pidbench.models import declared_thresholds, load_models, run_provenance
 from pidbench.runners import TransformersRunner
 
 logger = logging.getLogger(__name__)
@@ -125,7 +125,12 @@ def main() -> int:
 
 def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -> str:
     by_runner: dict[str, dict[str, SuiteRow]] = {}
+    pending: set[tuple[str, str]] = set()  # (runner, key) cells awaiting a re-score
     for key, r in rows:
+        if r.pending_rescore:
+            pending.add((r.runner, key))
+            by_runner.setdefault(r.runner, {})
+            continue
         by_runner.setdefault(r.runner, {})[key] = r
 
     # Rank models by average AUC (descending), applied consistently to every
@@ -149,7 +154,7 @@ def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -
         for key in bench_order:
             row = by_bench.get(key)
             if row is None:
-                values.append("—")
+                values.append("pending re-score" if (runner, key) in pending else "—")
             else:
                 values.append(f"{row.auc:.3f}")
                 aucs.append(row.auc)
@@ -167,7 +172,7 @@ def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -
         for key in bench_order:
             row = by_bench.get(key)
             if row is None:
-                values.append("—")
+                values.append("pending re-score" if (runner, key) in pending else "—")
             else:
                 values.append(f"{row.f1:.3f}")
                 f1s.append(row.f1)
@@ -184,7 +189,11 @@ def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -
         values = []
         for key in bench_order:
             row = by_bench.get(key)
-            values.append(f"{row.p50_latency_ms:.1f}" if row else "—")
+            values.append(
+                f"{row.p50_latency_ms:.1f}"
+                if row
+                else ("pending re-score" if (runner, key) in pending else "—")
+            )
         lines.append(f"| {runner} | " + " | ".join(values) + " |")
 
     lines.append("")
@@ -197,10 +206,12 @@ def _format_markdown(rows: list[tuple[str, SuiteRow]], bench_order: list[str]) -
 def _write_json(rows: list[tuple[str, SuiteRow]], path: Path, run: dict | None = None) -> None:
     from dataclasses import asdict
 
+    declared = declared_thresholds()
     payload = {
-        "schema_version": 1,
+        "schema_version": 2,
         "run": run or {},
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "declared_thresholds": {r.runner: declared.get(r.runner, 0.5) for _, r in rows},
         "rows": [{"benchmark_key": key, **asdict(r)} for key, r in rows],
     }
     path.write_text(json.dumps(payload, indent=2))
