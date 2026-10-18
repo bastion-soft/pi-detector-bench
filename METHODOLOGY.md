@@ -5,6 +5,16 @@ How detectors are scored here, and why. The goal is a comparison that is **fair*
 traffic), and **threshold-agnostic** (results don't depend on where any model's
 0.5 falls). Everything is recomputable from the committed per-prompt scores.
 
+## Scope
+
+The benchmark measures detection of prompt-injection **and jailbreak techniques**: an input
+that tries to override, extract, impersonate, break out of a delimiter, exfiltrate, suppress
+refusals, or otherwise manipulate the model's instructions — directly, inside data the model
+reads, or across turns. A plainly worded harmful request with no injection mechanism ("how do
+I make X") is **out of scope**: that is a content-safety classifier's job, and a set built from
+such requests measures harmful-intent detection rather than injection detection. See
+[Benchmark revision 2026-11](#benchmark-revision-2026-11) for the sets this removed.
+
 ## What's being measured
 
 A prompt-injection detector outputs a risk score in `[0, 1]` per input; you pick a
@@ -39,8 +49,8 @@ whole catch-rate-vs-false-alarm trade-off.
 All evaluation sets are **held out** — they are not training data for the detectors
 (that's the contract behind the numbers). Three groups:
 
-- **Direct attacks** (detection axis): four public held-out adversarial benchmarks —
-  rogue, JailbreakBench, xTRam1-test, S-Labs-test.
+- **Direct attacks** (detection axis): three public held-out adversarial benchmarks —
+  rogue, xTRam1-test, S-Labs-test. (JailbreakBench was removed in the 2026-11 revision.)
 - **Real benign traffic** (false-positive axis): first user turns sampled
   deterministically (fixed seed, reservoir sampling) from **WildChat-1M** and
   **LMSYS-Chat-1M** — real messages, not synthetic "benign" prompts. This is where
@@ -53,11 +63,11 @@ All evaluation sets are **held out** — they are not training data for the dete
   (`--within-set`).
 - **Multi-turn / cross-step injection** (separate axis): whole *conversations*,
   not single messages — the attacks a single-prompt classifier structurally cannot
-  see. Three families, reported separately (distinct threat models, never averaged):
-  *jailbreak* (harmless-early / malicious-later, CoSafe + MHJ), *cross-step*
-  (injection inside a tool output that poisons a later step, InjecAgent-enhanced +
-  AgentDojo + ASB), and *agent-jailbreak* (a malicious user query to a tool-using
-  agent, AgentHarm). See the dedicated section below.
+  see. Two families, reported separately (distinct threat models, never averaged):
+  *jailbreak* (human multi-turn red-team tactics, MHJ) and *cross-step* (injection
+  inside a tool output that poisons a later step, InjecAgent-enhanced + AgentDojo +
+  ASB). CoSafe and the agent-jailbreak family (AgentHarm) were removed in the 2026-11
+  revision. See the dedicated section below.
 
 Some datasets are gated (LMSYS, HackAPrompt, MHJ) — the harness skips them cleanly if
 you don't have access.
@@ -73,8 +83,12 @@ that, under one rule:
 
 **Eval the task, not the model.** Each conversation is rendered (role-tagged) at
 its **natural length** and scored as one input. We do **not** cap length to fit any
-detector's context window — every model truncates per its own `max_length`, and we
-report that window as a column. A detector too small to see the poisoned turn
+detector's context window — every model reads it through its own `max_length`, and we
+report that window as a column. Since the 2026-11 revision the published multi-turn
+numbers use `--chunk` (overlapping windows at each model's own window, see *Long inputs*
+below) for every model, so a payload past the window is still read; the earlier
+keep-recent truncation remains available and is recorded per row (`scoring` in the
+score-file meta). A detector too small to see the poisoned turn
 *should* score worse; hiding that by trimming the input would measure the harness,
 not the model. (Rendered lengths span from a few hundred to tens of thousands of
 characters, so the short-window cliff is exercised, not assumed away.)
@@ -114,6 +128,12 @@ only**, since its `_base` split is a common training source.
   multi-class models, summed).
 - **No per-model threshold tuning** for the fixed-threshold metrics: 0.5 for
   everyone. The threshold-agnostic metrics then remove the threshold entirely.
+- **Declared thresholds, reported alongside.** A model's maintainer may declare an
+  operating threshold (`threshold:` in [`models.yaml`](models.yaml); 0.5 when absent).
+  Every table that reports FPR @0.5 — false positives, operating points, multi-turn —
+  also reports FPR (and recall where relevant) at that declared threshold, and the
+  results JSON records it per model. It is a reporting column, not tuning: it never
+  changes scores, and the benchmark does not pick it.
 - **Long inputs: truncate (default) or chunk, never per model.** By default an
   input longer than a model's window is truncated, which means a payload past the
   window is invisible and the detector scores a document it was never shown. On the
@@ -139,7 +159,7 @@ only**, since its `_base` split is a common training source.
   Models without one get `T=1.0` (no-op). This is applied uniformly — a model that
   ships calibration isn't penalized for it, nor advantaged beyond what calibration
   actually does.
-- **Averages are unweighted** across datasets (JailbreakBench, n=200, counts as much
+- **Averages are unweighted** across datasets (S-Labs-test, n=2,000, counts as much
   as rogue, n=5,000). **Read the per-dataset columns**, not just the average.
 - **Polarity check:** a binary detector whose AUC comes out below 0.5 has its label
   index reversed — flip its `attack_label` (0↔1). An AUC far below 0.5 is a config
@@ -153,6 +173,13 @@ only**, since its `_base` split is a common training source.
   `meta` for length/injection-position stratification). Every table, curve, and
   operating point is then recomputed from those with **no GPU**
   (`rebuild_results_from_scores`, `analyze_operating_points`, `analyze_multiturn`).
+- **Score files must align with their rows.** Since the 2026-11 revision every dump
+  records the loader revision and an order-sensitive fingerprint of the scored rows
+  (`rows_sha256`; a hash, never the text). The offline rebuild refuses files that
+  disagree about their rows (lengths, labels or fingerprints differing between
+  detectors on one set), and files written before a loader change for their set are
+  shown as *pending re-score* instead of being re-aligned by guesswork
+  (`python -m scripts.rescore_plan` lists them).
 - **GPU runs aren't bit-stable; the committed numbers are.** PyTorch detectors vary
   slightly run-to-run on a GPU (most visibly on small sets and near-0.5-AUC models).
   So the *published* numbers are pinned by the committed scores, not by trusting any
@@ -170,6 +197,121 @@ detection (not attack prevention). A single message scored in isolation still ha
 conversation state, and no classifier catches a brand-new exploit absent from its
 training set. A detector is one layer of defense-in-depth, not the whole wall. See
 [`results/FINDINGS.md`](results/FINDINGS.md).
+
+## Benchmark revision 2026-11
+
+_Decided by the maintainer and written up 2026-10-19._ This revision narrows the benchmark
+to its stated scope, removes a label shortcut, and tightens reproducibility. Every model is
+re-scored in the same change: tables whose rows did not change are rebuilt from the committed
+per-prompt scores for all twelve detectors at once, and every set whose rows or scoring
+protocol changed is re-scored for all twelve detectors in one run
+([`notebooks/rescore_revision_2026_11.ipynb`](notebooks/rescore_revision_2026_11.ipynb)).
+Until that run lands, those cells read **pending re-score**; no score is carried over from a
+row order it was not computed on.
+
+### Scope: three sets removed
+
+The scope is injection and jailbreak *techniques* (see [Scope](#scope)). To check each set
+against it, the rows were searched with an injection-mechanism pattern set covering these
+classes: instruction override ("ignore previous instructions" and variants), system-prompt /
+secret extraction, persona or role-play takeover (DAN-style "you are now…"), delimiter and
+fake-role-tag injection, data exfiltration instructions, refusal suppression ("do not
+refuse", "no warnings"), and similar control phrasing. Counts of rows with at least one
+match:
+
+| Set | Attack rows with a mechanism | Benign rows with a mechanism | Reading |
+|---|---:|---:|---|
+| JailbreakBench (direct) | 0 / 100 | 0 / 100 | 100 harmful requests vs 100 benign near-twins |
+| AgentHarm (multi-turn, agent-jailbreak) | 8 / 176 | 8 / 176 | harmful vs harmless agent tasks; mechanisms equally common on both sides |
+| CoSafe (multi-turn, jailbreak) | 0 / 400 | 14 / 400 | harmful intent expressed through dialogue coreference |
+
+None of the three separates its labels by an injection or jailbreak technique; they separate
+harmful from harmless intent. They are removed from the scored tables, with their loaders and
+committed scores (the multi-turn *agent-jailbreak* family had only AgentHarm and is gone).
+This also removes a strong result for the maintainer's own detector: Bastion's 0.986 AUC on
+JailbreakBench was the top score on that set, and it no longer counts toward its average.
+A pattern search is a coarse instrument — it can miss paraphrased mechanisms — but a
+technique benchmark whose attack side shows no technique at all is not measuring one.
+
+### MHJ: same turn structure on both sides
+
+MHJ (Scale AI's human multi-turn red-teaming) stays: its attacks are human jailbreak tactics,
+in scope. But its attack conversations contain **no assistant turns**, while every benign
+negative (the shared WildChat/LMSYS multi-turn pool) contains them, so the single feature
+"has an assistant turn" separated the labels perfectly (AUC 1.0, or 0.0 inverted), and
+conversation length was itself a strong inverted cue (AUC 0.12–0.19). A detector could score
+well by reacting to transcript shape. From this revision the MHJ comparison renders **both
+sides user-turns-only**: assistant turns are dropped from the benign conversations (and would
+be from attacks, which have none). Benign conversations keep their deterministic first-N
+order and must still have at least two user turns. The cross-step sets (InjecAgent,
+AgentDojo, ASB) are unaffected: they keep their user → assistant tool call → tool output
+traces, and the benign pool they are padded with is read unchanged. A test asserts the
+has-assistant-turn feature no longer separates MHJ labels. Length is no longer a perfect
+inverse cue but remains correlated with the source (red-team conversations and chat
+conversations differ in length); read the length-bucket table rather than the pooled AUC alone.
+
+### Declared-threshold column
+
+Some detectors are published with an operating threshold other than 0.5, and judging them
+only at 0.5 reports a point their maintainers do not recommend. `models.yaml` takes an
+optional `threshold:` per model (default 0.5). Every table that reports FPR @0.5 also
+reports FPR, and recall where the table has attacks, at the declared threshold; the results
+JSON records each model's declared threshold. At the time of writing no entry declares one,
+so both columns agree; maintainers are invited to add theirs (with a model-card citation).
+
+### Chunked multi-turn harness
+
+Multi-turn conversations are scored with `--chunk`: overlapping windows at each model's own
+context window (overlap `max(96, window//8)`, at most 32 windows) aggregated with a smooth
+max, the same token windowing the direct and indirect harnesses offer. Under the earlier
+keep-recent truncation a 512-token detector could not see a payload buried deeper than its
+window, so the cross-step depth table measured window size as much as detection; with
+chunking every model reads the whole conversation and the depth table measures detection.
+The trade-off is documented under *Long inputs*: long benign conversations become several
+windows, which can raise false positives. Every multi-turn row records its scoring mode.
+`--chunk-unit turns` stays opt-in.
+
+### Loader determinism
+
+The BIPIA and InjecAgent loaders (indirect and multi-turn) read their source files in
+filesystem `glob` order. Row order — and, through the per-class caps and index-assigned
+attacks, row *content* — therefore depended on the machine. The file lists are now sorted.
+To find out which committed scores this invalidates, the old loaders were run under every
+file order and two detectors (bastion-prompt-protection, protectai v2) were re-scored locally
+against the committed per-prompt scores:
+
+- **InjecAgent (indirect)** — the committed scores match the sorted order exactly (dh before
+  ds), so they stay valid and the table is rebuilt from them.
+- **BIPIA (indirect)** — the committed scores match *table → email → code*; the sorted order is
+  *code → email → table*. Attacks are assigned by row index, so the injected rows themselves
+  change. BIPIA is **pending re-score** for every detector; indirect averages are over the
+  remaining five sets until then (this removes one of Bastion's two weakest indirect sets from
+  its average in the meantime).
+- **InjecAgent (multi-turn)** — re-scored anyway with the chunked harness.
+
+Score files now carry the loader revision and a row fingerprint, and the offline rebuild
+refuses files that disagree about their rows, so this cannot recur silently.
+
+### Known issues (not fixed in this revision)
+
+Label noise found while auditing; recorded here so readers can weigh the affected columns.
+
+- **rogue** — 103 rows labelled *attack* are multiple-choice safety quizzes ("pick the
+  safe/unsafe answer", SafetyBench-style, containing `<ans>` and `<eoa>` markers), not
+  injections.
+- **S-Labs test** — about 40 rows labelled *attack* are vague curiosity prompts with no
+  injection or jailbreak content.
+- **False-positive samples** — the WildChat and LMSYS benign samples contain real jailbreak
+  attempts (about 140 in WildChat, about 70 in LMSYS) that are counted as false positives
+  when a detector flags them. This inflates every detector's FPR, more so for detectors that
+  catch jailbreaks.
+- **LMSYS scaffold** — one "you are the text completion model…" scaffold prompt appears 195
+  times in the LMSYS sample (≈3.9% of it); detectors that flag it carry that whole share as
+  false positives, and it drives several competitors' LMSYS FPR.
+- **wolf-defender** — the current checkpoint on the Hub no longer reproduces its committed
+  scores. The committed scores are what the direct and indirect tables show; the 2026-11
+  multi-turn re-score necessarily uses the current checkpoint, so wolf-defender's
+  multi-turn numbers and its direct/indirect numbers come from different checkpoints.
 
 ## Changing the methodology
 

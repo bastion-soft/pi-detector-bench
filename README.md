@@ -27,22 +27,24 @@ An [article on Medium](https://medium.com/@mantas.urbonas/measuring-prompt-injec
 
 ## Leaderboard (seed results)
 
-Twelve detectors, four held-out adversarial benchmarks. Full tables + latency in [`results/leaderboard.md`](results/leaderboard.md); these are **seed results** — [add your model](CONTRIBUTING.md).
+Twelve detectors, three held-out adversarial benchmarks. Full tables + latency in [`results/leaderboard.md`](results/leaderboard.md); these are **seed results** — [add your model](CONTRIBUTING.md).
+
+> **Revision 2026-11** (details: [`METHODOLOGY.md`](METHODOLOGY.md#benchmark-revision-2026-11)). Scope is now explicitly injection and jailbreak *techniques*: JailbreakBench, CoSafe and AgentHarm — harmful-intent sets with no injection mechanism — were removed (this also removes the maintainer's own top JailbreakBench score, 0.986). MHJ is rendered with the same turn structure on both sides, multi-turn sets are scored chunked, loaders are deterministic, and tables gain a declared-threshold column. Cells whose rows changed read **pending re-score** until the GPU re-score ([`notebooks/rescore_revision_2026_11.ipynb`](notebooks/rescore_revision_2026_11.ipynb)) lands. Known label-noise issues are listed in the same section.
 
 | Detector | Params | Detection (avg AUC) | False positives (real traffic, @0.5) | FPR @ 95% catch |
 |---|---:|---:|---:|---:|
-| bastion-prompt-protection | 70M | 0.991 | 1.24% | 7.71% |
-| sentinel (qualifire) | 395M | 0.955 | 23.60% | 46.30% |
-| wolf-defender | 0.3B | 0.954 | 24.03% | 34.63% |
-| hlyn judge ‡ | 70M | 0.950 | 21.53% | 77.04% |
-| wolf-defender-small | 0.1B | 0.941 | 28.79% | 43.79% |
-| meta prompt-guard v2 | 86M | 0.883 | 4.88% | 25.52% |
-| proventra mdeberta | 280M | 0.843 | 21.83% | 82.22% |
-| protectai v2 | 184M | 0.820 | 8.82% | 100.00% |
-| meta prompt-guard v2 | 22M | 0.810 | 0.77% | 40.39% |
-| deepset injection | 184M | 0.766 | 65.89% | 69.44% |
-| fmops distilbert | 67M | 0.700 | 64.98% | 74.64% |
-| meta prompt-guard v1 † | 86M | 0.314 | 88.30% | 85.77% |
+| bastion-prompt-protection | 70M | 0.993 | 1.24% | 7.81% |
+| wolf-defender | 0.3B | 0.990 | 24.03% | 34.56% |
+| wolf-defender-small | 0.1B | 0.984 | 28.79% | 43.51% |
+| sentinel (qualifire) | 395M | 0.975 | 23.60% | 44.18% |
+| hlyn judge ‡ | 70M | 0.956 | 21.53% | 77.04% |
+| meta prompt-guard v2 | 86M | 0.926 | 4.88% | 24.22% |
+| protectai v2 | 184M | 0.923 | 8.82% | 54.78% |
+| proventra mdeberta | 280M | 0.909 | 21.83% | 82.22% |
+| meta prompt-guard v2 | 22M | 0.828 | 0.77% | 40.66% |
+| deepset injection | 184M | 0.805 | 65.89% | 68.31% |
+| fmops distilbert | 67M | 0.736 | 64.98% | 75.12% |
+| meta prompt-guard v1 † | 86M | 0.301 | 88.30% | 85.83% |
 
 What this table is *for*: notice that detectors close on AUC are nowhere close on false positives, and that some low-FPR-at-0.5 numbers are bought by under-catching (visible in the "@95% catch" column). **Read [`results/FINDINGS.md`](results/FINDINGS.md) for the honest interpretation** — including each detector's weak spots. † `meta prompt-guard v1` is Meta's deprecated, over-firing model kept for context; v2 is its replacement. ‡ `hlyn judge` is now gated on HF — its row is reproduced from committed scores.
 
@@ -52,11 +54,9 @@ What this table is *for*: notice that detectors close on AUC are nowhere close o
 
 ## Multi-turn / cross-step injection
 
-A separate axis for the attacks a single-turn classifier structurally can't see: **harmless-early / malicious-later** conversations and **cross-step** injection where a poisoned tool output corrupts a later step. Whole conversations are scored at their natural length; every detector reads them through its own context window.
+A separate axis for the attacks a single-turn classifier structurally can't see: **multi-turn jailbreak** conversations (MHJ, human red-team tactics) and **cross-step** injection where a poisoned tool output corrupts a later step. Whole conversations are scored at their natural length; every detector reads them through its own context window, chunked into overlapping windows so a payload past the window is still read.
 
-![Cross-step detection vs injection depth](results/multiturn_cross_step.png)
-
-*Detection holds only as far as a model's window reaches. Every detector catches a **recent** injection; only long-context detectors (wolf-defender, 8k) still catch one **buried deep** — 512-token detectors (Bastion included) collapse as the poison scrolls out of the window. This is the "step-1 poisons step-4" case, measured. Full tables + the jailbreak / agent-jailbreak families: [`results/multiturn.md`](results/multiturn.md).*
+**Pending re-score.** The 2026-11 revision changed the multi-turn rows and scoring protocol (MHJ turn structure, deterministic InjecAgent order, chunked scoring), so the earlier multi-turn numbers and depth plots were withdrawn; [`results/multiturn.md`](results/multiturn.md) shows every cell as *pending re-score* until the re-score notebook has run.
 
 ## Why this benchmark exists
 
@@ -66,6 +66,7 @@ It's not another attack dataset — it's a **methodology** (see [`METHODOLOGY.md
 - **Threshold-agnostic.** Beyond the fixed-0.5 view, we report **FPR at a fixed detection rate** (tune each detector to catch 95% of attacks, compare the false-alarm cost), **EER**, and full **operating curves** — so no detector is helped or hurt by where its 0.5 falls.
 - **Indirect / structured injection.** A separate axis for injection hidden inside data (documents, JSON, tool output), with a structured-data false-positive measure.
 - **Multi-turn / cross-step.** Whole conversations, not single messages — with detection stratified by how deeply the injection is buried ("step-1 poisons step-4") and each model read through its own context window. Reported in separate threat-model families.
+- **In scope: techniques, not topics.** Prompt-injection and jailbreak *mechanisms*; plain harmful-intent requests are a content-safety problem and are not scored (see [`METHODOLOGY.md`](METHODOLOGY.md#scope)).
 - **Reproducible from raw scores.** Every detector's per-prompt scores are committed (`results/scores*/`), so all tables, curves, and operating points recompute offline with no GPU. The exact published numbers don't depend on trusting a GPU run.
 
 ## Run it yourself
@@ -79,10 +80,11 @@ huggingface-cli login          # optional — only for gated entries/datasets
 python -m scripts.run_leaderboard          --dump-scores results/scores            # detection
 python -m scripts.measure_false_positives  --dump-scores results/scores            # false positives
 python -m scripts.eval_indirect            --dump-scores results/scores_indirect   # indirect/structured
-python -m scripts.eval_multiturn           --dump-scores results/scores_multiturn  # multi-turn/cross-step (needs: pip install agentdojo)
+python -m scripts.eval_multiturn --chunk   --dump-scores results/scores_multiturn  # multi-turn/cross-step (needs: pip install agentdojo; MHJ is gated)
 
 # Post-processing — no GPU, recomputes every table from the dumped scores:
-python -m scripts.rebuild_results_from_scores
+python -m scripts.rebuild_results_from_scores   # refuses misaligned score files; marks stale ones "pending re-score"
+python -m scripts.rescore_plan                  # lists pending (model, set) cells + the commands to re-score them
 python -m scripts.analyze_operating_points
 python -m scripts.analyze_operating_points --scores-dir results/scores_indirect --within-set --label indirect
 python -m scripts.analyze_multiturn        # multi-turn family tables + depth/length cuts
@@ -100,6 +102,7 @@ It's a one-file PR. Append your model to [`models.yaml`](models.yaml):
     hf_id: "my-org/my-prompt-injection-detector"
     attack_label: 1        # softmax index meaning "attack" (or a list to sum)
     params: "220M"
+    threshold: 0.5         # optional: the operating threshold you recommend (default 0.5)
 ```
 
 …then run the harness and include the new result rows + scores. Full guide — including how to propose a **methodology change** or add a **dataset** — in [`CONTRIBUTING.md`](CONTRIBUTING.md).

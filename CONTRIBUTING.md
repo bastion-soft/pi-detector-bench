@@ -38,6 +38,7 @@ reasons).
     attack_label: 1                   # softmax index for "attack" (or a list to sum, e.g. [1, 2])
     params: "220M"
     # gated: true                     # only if the model needs HF access approval
+    # threshold: 0.7                  # only if your model card recommends a threshold other than 0.5
 ```
 
 **Step 2 — run the harness** (a free Colab T4 works — see `notebooks/benchmark_colab.ipynb`):
@@ -58,7 +59,9 @@ from the committed scores to confirm they reproduce.
 
 **Sanity checks before you submit:**
 - If your model's AUC is below 0.5, your `attack_label` is probably inverted — flip it (0↔1).
-- Don't tune a per-model threshold; the fixed-threshold metrics use 0.5 for everyone.
+- Don't tune a per-model threshold; the fixed-threshold metrics use 0.5 for everyone. If
+  your model card already *declares* an operating threshold, put it in `threshold:` (cite the
+  card in `notes`) — the tables then also report FPR/recall at it, next to the 0.5 columns.
 
 ## 2. Propose a methodology change
 
