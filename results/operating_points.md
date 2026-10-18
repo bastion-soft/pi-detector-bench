@@ -17,6 +17,25 @@ Each detector's threshold is set to catch the same share of attacks; we then rep
 | proventra mdeberta (280M) | 0.864 | 19.9% | 82.22% | 96.92% |
 | meta prompt-guard (86M) | 0.307 | 63.2% | 85.83% | 98.12% |
 
+## Fixed thresholds — 0.5 and each model's declared threshold
+
+FPR on real benign traffic and recall on the pooled attack sets at the common 0.5 and at the threshold each model's maintainer declares (`threshold:` in models.yaml; 0.5 when none is declared).
+
+| Detector | FPR @0.5 | recall @0.5 | declared thr | FPR @thr | recall @thr |
+|---|---|---|---|---|---|
+| bastion-prompt-protection (70M) | 1.24% | 88.9% | 0.5 | 1.24% | 88.9% |
+| meta prompt-guard v2 (86M) | 4.88% | 51.8% | 0.5 | 4.88% | 51.8% |
+| wolf-defender (0.3B) | 24.03% | 89.3% | 0.5 | 24.03% | 89.3% |
+| meta prompt-guard v2 (22M) | 0.77% | 16.3% | 0.5 | 0.77% | 16.3% |
+| wolf-defender-small (0.1B) | 28.79% | 89.4% | 0.5 | 28.79% | 89.4% |
+| sentinel (qualifire, 395M) | 23.60% | 88.3% | 0.5 | 23.60% | 88.3% |
+| protectai v2 (184M) | 8.82% | 70.4% | 0.5 | 8.82% | 70.4% |
+| deepset injection (184M) | 65.89% | 94.0% | 0.5 | 65.89% | 94.0% |
+| fmops distilbert (67M) | 64.98% | 90.1% | 0.5 | 64.98% | 90.1% |
+| hlyn judge (70M) | 21.53% | 58.0% | 0.5 | 21.53% | 58.0% |
+| proventra mdeberta (280M) | 21.83% | 69.0% | 0.5 | 21.83% | 69.0% |
+| meta prompt-guard (86M) | 88.30% | 95.8% | 0.5 | 88.30% | 95.8% |
+
 ## Threshold sweep — FPR on real benign traffic (lower = better)
 
 | Detector | 0.2 | 0.45 | 0.5 | 0.55 | 0.8 |

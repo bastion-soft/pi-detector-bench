@@ -42,6 +42,14 @@ LOADER_REVISION = "2026-11"
 # never silently aligned with the new rows. ``requires`` optionally names a
 # per-row meta value the file must carry (multi-turn scoring mode).
 ROWS_CHANGED: dict[str, dict] = {
+    # Committed BIPIA scores were computed on table, email, code file order (checked
+    # by re-scoring two detectors locally); sorted order is code, email, table, and
+    # attacks are assigned by row index, so the injected rows themselves differ.
+    # (InjecAgent's committed order already equals sorted order — not listed.)
+    "bipia/indirect": {
+        "revision": "2026-11",
+        "reason": "file order now sorted (committed scores used table, email, code order)",
+    },
     "mhj_mt": {
         "revision": "2026-11",
         "reason": "benign negatives re-rendered user-turns-only; scoring now --chunk",

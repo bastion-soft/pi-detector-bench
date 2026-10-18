@@ -1,7 +1,21 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "run": {},
-  "generated_at": "2026-10-18T21:08:50Z",
+  "generated_at": "2026-10-18T22:19:19Z",
+  "declared_thresholds": {
+    "bastion-prompt-protection (70M)": 0.5,
+    "wolf-defender (0.3B)": 0.5,
+    "wolf-defender-small (0.1B)": 0.5,
+    "sentinel (qualifire, 395M)": 0.5,
+    "proventra mdeberta (280M)": 0.5,
+    "fmops distilbert (67M)": 0.5,
+    "protectai v2 (184M)": 0.5,
+    "deepset injection (184M)": 0.5,
+    "hlyn judge (70M)": 0.5,
+    "meta prompt-guard (86M)": 0.5,
+    "meta prompt-guard v2 (86M)": 0.5,
+    "meta prompt-guard v2 (22M)": 0.5
+  },
   "rows": [
     {
       "benchmark_key": "zedgar",
@@ -18,24 +32,26 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 2.7429444375002277,
       "p95_latency_ms": 11.981584499999087,
-      "total_seconds": 4.036999609000077
+      "total_seconds": 4.036999609000077,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "bastion-prompt-protection (70M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.8686125,
-      "f1": 0.7506702412868632,
-      "precision": 0.8092485549132948,
-      "recall": 0.7,
-      "fpr_at_tpr_99": 0.89,
-      "fpr_at_tpr_95": 0.46,
-      "p50_latency_ms": 4.131382281251206,
-      "p95_latency_ms": 4.2353307812561525,
-      "total_seconds": 1.50922278500002
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -52,7 +68,8 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 1.1936308437441312,
       "p95_latency_ms": 1.398455312497049,
-      "total_seconds": 0.9938688449999518
+      "total_seconds": 0.9938688449999518,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -69,7 +86,8 @@
       "fpr_at_tpr_95": 0.4845360824742268,
       "p50_latency_ms": 0.9386363749968041,
       "p95_latency_ms": 1.1471033125047825,
-      "total_seconds": 0.12644269099996563
+      "total_seconds": 0.12644269099996563,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -86,7 +104,8 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 4.17326828124942,
       "p95_latency_ms": 4.23837534374627,
-      "total_seconds": 1.7102465160000975
+      "total_seconds": 1.7102465160000975,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -103,7 +122,8 @@
       "fpr_at_tpr_95": 0.1025,
       "p50_latency_ms": 4.092041062499163,
       "p95_latency_ms": 4.1845630000025835,
-      "total_seconds": 2.0465875260001667
+      "total_seconds": 2.0465875260001667,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -120,24 +140,26 @@
       "fpr_at_tpr_95": 0.22666666666666666,
       "p50_latency_ms": 5.0319462812495885,
       "p95_latency_ms": 8.474791781246438,
-      "total_seconds": 6.4539292469999054
+      "total_seconds": 6.4539292469999054,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "wolf-defender (0.3B)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.6077375,
-      "f1": 0.27385892116182575,
-      "precision": 0.8048780487804879,
-      "recall": 0.165,
-      "fpr_at_tpr_99": 0.99,
-      "fpr_at_tpr_95": 0.87,
-      "p50_latency_ms": 8.735125875006133,
-      "p95_latency_ms": 8.919856874996412,
-      "total_seconds": 3.424207787999876
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -154,7 +176,8 @@
       "fpr_at_tpr_95": 0.5875,
       "p50_latency_ms": 2.583213156249542,
       "p95_latency_ms": 3.3187519062494175,
-      "total_seconds": 2.1710869660000753
+      "total_seconds": 2.1710869660000753,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -171,7 +194,8 @@
       "fpr_at_tpr_95": 0.9175257731958762,
       "p50_latency_ms": 2.0721406250032715,
       "p95_latency_ms": 3.7220394687480507,
-      "total_seconds": 0.2817122000001291
+      "total_seconds": 0.2817122000001291,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -188,7 +212,8 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 8.573171593752704,
       "p95_latency_ms": 8.603595125002528,
-      "total_seconds": 3.4627349859999867
+      "total_seconds": 3.4627349859999867,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -205,7 +230,8 @@
       "fpr_at_tpr_95": 0.135,
       "p50_latency_ms": 8.275328062495646,
       "p95_latency_ms": 8.577720375001263,
-      "total_seconds": 3.850758374000179
+      "total_seconds": 3.850758374000179,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -222,24 +248,26 @@
       "fpr_at_tpr_95": 0.4633333333333333,
       "p50_latency_ms": 2.3884764687522875,
       "p95_latency_ms": 4.029428468754759,
-      "total_seconds": 3.0921162829999957
+      "total_seconds": 3.0921162829999957,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "wolf-defender-small (0.1B)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.614575,
-      "f1": 0.42953020134228187,
-      "precision": 0.6530612244897959,
-      "recall": 0.32,
-      "fpr_at_tpr_99": 0.97,
-      "fpr_at_tpr_95": 0.86,
-      "p50_latency_ms": 4.239803687497101,
-      "p95_latency_ms": 4.405702062499017,
-      "total_seconds": 1.6649192660001972
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -256,7 +284,8 @@
       "fpr_at_tpr_95": 0.8825,
       "p50_latency_ms": 1.2418030624985477,
       "p95_latency_ms": 1.600403968751607,
-      "total_seconds": 1.0449337939999168
+      "total_seconds": 1.0449337939999168,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -273,7 +302,8 @@
       "fpr_at_tpr_95": 0.7422680412371134,
       "p50_latency_ms": 1.043058625000981,
       "p95_latency_ms": 1.7962537187514727,
-      "total_seconds": 0.14106481399994664
+      "total_seconds": 0.14106481399994664,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -290,7 +320,8 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 4.08380768749339,
       "p95_latency_ms": 4.155152968749576,
-      "total_seconds": 1.6753056580000703
+      "total_seconds": 1.6753056580000703,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -307,7 +338,8 @@
       "fpr_at_tpr_95": 0.17,
       "p50_latency_ms": 3.9925644687599515,
       "p95_latency_ms": 4.175651156245408,
-      "total_seconds": 1.9926592510000773
+      "total_seconds": 1.9926592510000773,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -324,24 +356,26 @@
       "fpr_at_tpr_95": 0.3983333333333333,
       "p50_latency_ms": 12.75517868749887,
       "p95_latency_ms": 22.373132031248133,
-      "total_seconds": 16.27929423100022
+      "total_seconds": 16.27929423100022,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "sentinel (qualifire, 395M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.5984,
-      "f1": 0.30714285714285716,
-      "precision": 0.5375,
-      "recall": 0.215,
-      "fpr_at_tpr_99": 1.0,
-      "fpr_at_tpr_95": 1.0,
-      "p50_latency_ms": 22.445077500009347,
-      "p95_latency_ms": 22.56141484375007,
-      "total_seconds": 8.304459869999846
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -358,7 +392,8 @@
       "fpr_at_tpr_95": 1.0,
       "p50_latency_ms": 6.405803125005605,
       "p95_latency_ms": 7.473721031246328,
-      "total_seconds": 5.393016194000211
+      "total_seconds": 5.393016194000211,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -375,7 +410,8 @@
       "fpr_at_tpr_95": 1.0,
       "p50_latency_ms": 4.739852562494207,
       "p95_latency_ms": 6.791031812497295,
-      "total_seconds": 0.6119577580002442
+      "total_seconds": 0.6119577580002442,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -392,7 +428,8 @@
       "fpr_at_tpr_95": 0.10714285714285714,
       "p50_latency_ms": 22.42441903123904,
       "p95_latency_ms": 22.500542687495795,
-      "total_seconds": 9.076742506999835
+      "total_seconds": 9.076742506999835,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -409,7 +446,8 @@
       "fpr_at_tpr_95": 0.2975,
       "p50_latency_ms": 22.354339843744242,
       "p95_latency_ms": 22.43057775000068,
-      "total_seconds": 9.866768428000341
+      "total_seconds": 9.866768428000341,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -426,24 +464,26 @@
       "fpr_at_tpr_95": 0.12333333333333334,
       "p50_latency_ms": 5.138347781254993,
       "p95_latency_ms": 9.57096831250226,
-      "total_seconds": 6.331795078000141
+      "total_seconds": 6.331795078000141,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "proventra mdeberta (280M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.6692125000000001,
-      "f1": 0.3263598326359833,
-      "precision": 1.0,
-      "recall": 0.195,
-      "fpr_at_tpr_99": 0.97,
-      "fpr_at_tpr_95": 0.87,
-      "p50_latency_ms": 9.657012624998629,
-      "p95_latency_ms": 9.718066562498962,
-      "total_seconds": 3.5054216929997892
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -460,7 +500,8 @@
       "fpr_at_tpr_95": 0.765,
       "p50_latency_ms": 2.6760016562548117,
       "p95_latency_ms": 3.2162946249911784,
-      "total_seconds": 2.248178915000153
+      "total_seconds": 2.248178915000153,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -477,7 +518,8 @@
       "fpr_at_tpr_95": 0.9587628865979382,
       "p50_latency_ms": 1.853562125006647,
       "p95_latency_ms": 2.864820312495908,
-      "total_seconds": 0.2514399190004042
+      "total_seconds": 0.2514399190004042,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -494,7 +536,8 @@
       "fpr_at_tpr_95": 0.03571428571428571,
       "p50_latency_ms": 9.721084999995355,
       "p95_latency_ms": 10.273548843755975,
-      "total_seconds": 3.960764688999916
+      "total_seconds": 3.960764688999916,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -511,7 +554,8 @@
       "fpr_at_tpr_95": 0.58,
       "p50_latency_ms": 9.635238562495374,
       "p95_latency_ms": 9.718345437505604,
-      "total_seconds": 4.360049609000271
+      "total_seconds": 4.360049609000271,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -528,24 +572,26 @@
       "fpr_at_tpr_95": 0.37,
       "p50_latency_ms": 2.3237182499968867,
       "p95_latency_ms": 3.2330590312454888,
-      "total_seconds": 2.622740924000027
+      "total_seconds": 2.622740924000027,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "fmops distilbert (67M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.6474749999999999,
-      "f1": 0.6666666666666666,
-      "precision": 0.5,
-      "recall": 1.0,
-      "fpr_at_tpr_99": 0.91,
-      "fpr_at_tpr_95": 0.815,
-      "p50_latency_ms": 3.3446397499972136,
-      "p95_latency_ms": 3.6304428125077948,
-      "total_seconds": 1.2494963989997814
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -562,7 +608,8 @@
       "fpr_at_tpr_95": 1.0,
       "p50_latency_ms": 1.1283038437568393,
       "p95_latency_ms": 1.297645718750573,
-      "total_seconds": 0.9165667320003195
+      "total_seconds": 0.9165667320003195,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -579,7 +626,8 @@
       "fpr_at_tpr_95": 0.8762886597938144,
       "p50_latency_ms": 0.7136149687454463,
       "p95_latency_ms": 0.9460816250026483,
-      "total_seconds": 0.09259263800004192
+      "total_seconds": 0.09259263800004192,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -596,7 +644,8 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 3.306011874997239,
       "p95_latency_ms": 3.3543178750079505,
-      "total_seconds": 1.3473085109999374
+      "total_seconds": 1.3473085109999374,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -613,7 +662,8 @@
       "fpr_at_tpr_95": 0.1175,
       "p50_latency_ms": 3.1207642812489667,
       "p95_latency_ms": 3.294842125001196,
-      "total_seconds": 1.4647336809998706
+      "total_seconds": 1.4647336809998706,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -630,24 +680,26 @@
       "fpr_at_tpr_95": 0.6733333333333333,
       "p50_latency_ms": 5.891550624994579,
       "p95_latency_ms": 9.606657281253206,
-      "total_seconds": 7.16675435399975
+      "total_seconds": 7.16675435399975,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "protectai v2 (184M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.41231249999999997,
-      "f1": 0.20610687022900764,
-      "precision": 0.43548387096774194,
-      "recall": 0.135,
-      "fpr_at_tpr_99": 1.0,
-      "fpr_at_tpr_95": 0.965,
-      "p50_latency_ms": 9.64539084374394,
-      "p95_latency_ms": 9.745878781259876,
-      "total_seconds": 3.509175418000268
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -664,7 +716,8 @@
       "fpr_at_tpr_95": 0.59,
       "p50_latency_ms": 2.7170371875087085,
       "p95_latency_ms": 3.218014625005594,
-      "total_seconds": 2.2924944270002925
+      "total_seconds": 2.2924944270002925,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -681,7 +734,8 @@
       "fpr_at_tpr_95": 1.0,
       "p50_latency_ms": 1.6953522187463932,
       "p95_latency_ms": 2.595058937501449,
-      "total_seconds": 0.2311345779999101
+      "total_seconds": 0.2311345779999101,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -698,7 +752,8 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 9.695021468758114,
       "p95_latency_ms": 9.805448906249126,
-      "total_seconds": 3.9044382609999957
+      "total_seconds": 3.9044382609999957,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -715,7 +770,8 @@
       "fpr_at_tpr_95": 0.0275,
       "p50_latency_ms": 9.61443974999554,
       "p95_latency_ms": 9.697853656248867,
-      "total_seconds": 4.349060294000083
+      "total_seconds": 4.349060294000083,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -732,24 +788,26 @@
       "fpr_at_tpr_95": 0.46,
       "p50_latency_ms": 5.908591312504541,
       "p95_latency_ms": 9.594978593753467,
-      "total_seconds": 7.1723338790002344
+      "total_seconds": 7.1723338790002344,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "deepset injection (184M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.5974,
-      "f1": 0.6666666666666666,
-      "precision": 0.5,
-      "recall": 1.0,
-      "fpr_at_tpr_99": 0.89,
-      "fpr_at_tpr_95": 0.83,
-      "p50_latency_ms": 9.642852124997603,
-      "p95_latency_ms": 9.738226000010286,
-      "total_seconds": 3.510678208999707
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -766,7 +824,8 @@
       "fpr_at_tpr_95": 0.6475,
       "p50_latency_ms": 2.7509335312458916,
       "p95_latency_ms": 3.2138672187613793,
-      "total_seconds": 2.2980304150000848
+      "total_seconds": 2.2980304150000848,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -783,7 +842,8 @@
       "fpr_at_tpr_95": 0.7938144329896907,
       "p50_latency_ms": 1.7024073437568177,
       "p95_latency_ms": 2.6182505937413225,
-      "total_seconds": 0.2323707900000045
+      "total_seconds": 0.2323707900000045,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -800,7 +860,8 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 9.699446562507319,
       "p95_latency_ms": 9.849284093760957,
-      "total_seconds": 3.908471076999831
+      "total_seconds": 3.908471076999831,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -817,7 +878,8 @@
       "fpr_at_tpr_95": 0.2325,
       "p50_latency_ms": 9.607581281244393,
       "p95_latency_ms": 9.70230531250138,
-      "total_seconds": 4.348173948999829
+      "total_seconds": 4.348173948999829,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -834,24 +896,26 @@
       "fpr_at_tpr_95": 0.5133333333333333,
       "p50_latency_ms": 2.4842149999955154,
       "p95_latency_ms": 4.085843843753878,
-      "total_seconds": 3.0759281150003517
+      "total_seconds": 3.0759281150003517,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "hlyn judge (70M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.5483750000000001,
-      "f1": 0.029556650246305417,
-      "precision": 1.0,
-      "recall": 0.015,
-      "fpr_at_tpr_99": 0.995,
-      "fpr_at_tpr_95": 0.985,
-      "p50_latency_ms": 4.172968125004672,
-      "p95_latency_ms": 4.654306812497566,
-      "total_seconds": 1.5391727420001189
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -868,7 +932,8 @@
       "fpr_at_tpr_95": 0.53,
       "p50_latency_ms": 1.2358666249951966,
       "p95_latency_ms": 1.4021834687554247,
-      "total_seconds": 1.0215633810003055
+      "total_seconds": 1.0215633810003055,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -885,7 +950,8 @@
       "fpr_at_tpr_95": 0.8762886597938144,
       "p50_latency_ms": 0.9470777499984706,
       "p95_latency_ms": 1.1466898750001064,
-      "total_seconds": 0.12543473799996718
+      "total_seconds": 0.12543473799996718,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -902,7 +968,8 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 4.225126062507911,
       "p95_latency_ms": 4.2692689687555685,
-      "total_seconds": 1.72950866400015
+      "total_seconds": 1.72950866400015,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -919,7 +986,8 @@
       "fpr_at_tpr_95": 0.695,
       "p50_latency_ms": 4.111335156252949,
       "p95_latency_ms": 4.24102631249923,
-      "total_seconds": 2.0631035950000296
+      "total_seconds": 2.0631035950000296,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -936,24 +1004,26 @@
       "fpr_at_tpr_95": 0.73,
       "p50_latency_ms": 5.117383156246547,
       "p95_latency_ms": 9.602335656239802,
-      "total_seconds": 6.328853794999759
+      "total_seconds": 6.328853794999759,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "meta prompt-guard (86M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.91715,
-      "f1": 0.8267326732673267,
-      "precision": 0.8186274509803921,
-      "recall": 0.835,
-      "fpr_at_tpr_99": 0.375,
-      "fpr_at_tpr_95": 0.285,
-      "p50_latency_ms": 9.670215281246897,
-      "p95_latency_ms": 9.747334124995177,
-      "total_seconds": 3.5151688939999985
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -970,7 +1040,8 @@
       "fpr_at_tpr_95": 0.88,
       "p50_latency_ms": 2.697442375009018,
       "p95_latency_ms": 3.226045750011508,
-      "total_seconds": 2.253800393000347
+      "total_seconds": 2.253800393000347,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -987,7 +1058,8 @@
       "fpr_at_tpr_95": 0.7525773195876289,
       "p50_latency_ms": 1.8614783437413962,
       "p95_latency_ms": 2.8711117500108685,
-      "total_seconds": 0.2518753009999273
+      "total_seconds": 0.2518753009999273,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -1004,7 +1076,8 @@
       "fpr_at_tpr_95": 0.4642857142857143,
       "p50_latency_ms": 9.732121031248653,
       "p95_latency_ms": 10.25404846875233,
-      "total_seconds": 3.9524438549997285
+      "total_seconds": 3.9524438549997285,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -1021,7 +1094,8 @@
       "fpr_at_tpr_95": 0.535,
       "p50_latency_ms": 9.66622915625237,
       "p95_latency_ms": 9.734261624998908,
-      "total_seconds": 4.3714944039998045
+      "total_seconds": 4.3714944039998045,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -1038,24 +1112,26 @@
       "fpr_at_tpr_95": 0.11333333333333333,
       "p50_latency_ms": 5.137156718745928,
       "p95_latency_ms": 9.594743281255091,
-      "total_seconds": 6.313519178999741
+      "total_seconds": 6.313519178999741,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "meta prompt-guard v2 (86M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.670675,
-      "f1": 0.019801980198019802,
-      "precision": 1.0,
-      "recall": 0.01,
-      "fpr_at_tpr_99": 0.9,
-      "fpr_at_tpr_95": 0.81,
-      "p50_latency_ms": 9.66365887499876,
-      "p95_latency_ms": 9.738365718760633,
-      "total_seconds": 3.512026130999857
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -1072,7 +1148,8 @@
       "fpr_at_tpr_95": 0.7625,
       "p50_latency_ms": 2.6827733125003306,
       "p95_latency_ms": 3.2439877499967906,
-      "total_seconds": 2.253992896999989
+      "total_seconds": 2.253992896999989,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -1089,7 +1166,8 @@
       "fpr_at_tpr_95": 0.8762886597938144,
       "p50_latency_ms": 1.8478812499864716,
       "p95_latency_ms": 2.865498531249955,
-      "total_seconds": 0.2502211209998677
+      "total_seconds": 0.2502211209998677,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -1106,7 +1184,8 @@
       "fpr_at_tpr_95": 0.0,
       "p50_latency_ms": 9.734476031255213,
       "p95_latency_ms": 9.781989687496662,
-      "total_seconds": 3.9313343029998578
+      "total_seconds": 3.9313343029998578,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -1123,7 +1202,8 @@
       "fpr_at_tpr_95": 0.065,
       "p50_latency_ms": 9.648867812501294,
       "p95_latency_ms": 9.728108468749497,
-      "total_seconds": 4.362763723999706
+      "total_seconds": 4.362763723999706,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "zedgar",
@@ -1140,24 +1220,26 @@
       "fpr_at_tpr_95": 0.2966666666666667,
       "p50_latency_ms": 2.48997981249488,
       "p95_latency_ms": 4.07731790625121,
-      "total_seconds": 3.0714797810001073
+      "total_seconds": 3.0714797810001073,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "bipia",
       "runner": "meta prompt-guard v2 (22M)",
       "benchmark": "bipia/indirect",
-      "n_samples": 400,
-      "n_attack": 200,
-      "n_benign": 200,
-      "auc": 0.6393125,
-      "f1": 0.0,
-      "precision": 0.0,
-      "recall": 0.0,
-      "fpr_at_tpr_99": 0.96,
-      "fpr_at_tpr_95": 0.9,
-      "p50_latency_ms": 4.18006631250023,
-      "p95_latency_ms": 4.242942906259373,
-      "total_seconds": 1.523596052999892
+      "n_samples": null,
+      "n_attack": null,
+      "n_benign": null,
+      "auc": null,
+      "f1": null,
+      "precision": null,
+      "recall": null,
+      "fpr_at_tpr_99": null,
+      "fpr_at_tpr_95": null,
+      "p50_latency_ms": null,
+      "p95_latency_ms": null,
+      "total_seconds": null,
+      "pending_rescore": "scored before loader revision 2026-11 (file order now sorted (committed scores used table, email, code order))"
     },
     {
       "benchmark_key": "injecagent",
@@ -1174,7 +1256,8 @@
       "fpr_at_tpr_95": 0.765,
       "p50_latency_ms": 1.1975327812479009,
       "p95_latency_ms": 1.391767812492617,
-      "total_seconds": 0.9975907069997447
+      "total_seconds": 0.9975907069997447,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "agentdojo",
@@ -1191,7 +1274,8 @@
       "fpr_at_tpr_95": 0.979381443298969,
       "p50_latency_ms": 0.9271901874967625,
       "p95_latency_ms": 1.1393705937479126,
-      "total_seconds": 0.12347692000003008
+      "total_seconds": 0.12347692000003008,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "hackaprompt",
@@ -1208,7 +1292,8 @@
       "fpr_at_tpr_95": 0.017857142857142856,
       "p50_latency_ms": 4.203402624995078,
       "p95_latency_ms": 4.246453656250537,
-      "total_seconds": 1.7180287290002525
+      "total_seconds": 1.7180287290002525,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "tensortrust",
@@ -1225,7 +1310,8 @@
       "fpr_at_tpr_95": 0.2025,
       "p50_latency_ms": 4.122470687491386,
       "p95_latency_ms": 4.224139812507133,
-      "total_seconds": 2.0556664900000214
+      "total_seconds": 2.0556664900000214,
+      "pending_rescore": null
     }
   ]
 }

@@ -1,7 +1,21 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "run": {},
-  "generated_at": "2026-10-18T21:08:49Z",
+  "generated_at": "2026-10-18T22:19:19Z",
+  "declared_thresholds": {
+    "bastion-prompt-protection (70M)": 0.5,
+    "wolf-defender (0.3B)": 0.5,
+    "wolf-defender-small (0.1B)": 0.5,
+    "sentinel (qualifire, 395M)": 0.5,
+    "proventra mdeberta (280M)": 0.5,
+    "fmops distilbert (67M)": 0.5,
+    "protectai v2 (184M)": 0.5,
+    "deepset injection (184M)": 0.5,
+    "hlyn judge (70M)": 0.5,
+    "meta prompt-guard (86M)": 0.5,
+    "meta prompt-guard v2 (86M)": 0.5,
+    "meta prompt-guard v2 (22M)": 0.5
+  },
   "rows": [
     {
       "benchmark_key": "rogue",
@@ -18,7 +32,8 @@
       "fpr_at_tpr_95": 0.08508508508508508,
       "p50_latency_ms": 4.163936187500994,
       "p95_latency_ms": 4.326755656249404,
-      "total_seconds": 20.389668347999987
+      "total_seconds": 20.389668347999987,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -35,7 +50,8 @@
       "fpr_at_tpr_95": 0.009219858156028368,
       "p50_latency_ms": 4.115845343749314,
       "p95_latency_ms": 4.254997031249985,
-      "total_seconds": 7.219275881999977
+      "total_seconds": 7.219275881999977,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -52,7 +68,8 @@
       "fpr_at_tpr_95": 0.012380952380952381,
       "p50_latency_ms": 0.8464810937507394,
       "p95_latency_ms": 0.9107955625005104,
-      "total_seconds": 1.8005451619999917
+      "total_seconds": 1.8005451619999917,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -69,7 +86,8 @@
       "fpr_at_tpr_95": 0.05472138805472139,
       "p50_latency_ms": 8.54724731249945,
       "p95_latency_ms": 8.683718250001249,
-      "total_seconds": 39.14312533100002
+      "total_seconds": 39.14312533100002,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -86,7 +104,8 @@
       "fpr_at_tpr_95": 0.00425531914893617,
       "p50_latency_ms": 8.505322187501108,
       "p95_latency_ms": 8.625873312499976,
-      "total_seconds": 15.204028660999995
+      "total_seconds": 15.204028660999995,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -103,7 +122,8 @@
       "fpr_at_tpr_95": 0.06285714285714286,
       "p50_latency_ms": 0.7001066874998685,
       "p95_latency_ms": 0.7327260625000775,
-      "total_seconds": 1.4845177830000011
+      "total_seconds": 1.4845177830000011,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -120,7 +140,8 @@
       "fpr_at_tpr_95": 0.11611611611611612,
       "p50_latency_ms": 4.090529718750346,
       "p95_latency_ms": 4.215445187499611,
-      "total_seconds": 18.790741190000006
+      "total_seconds": 18.790741190000006,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -137,7 +158,8 @@
       "fpr_at_tpr_95": 0.012056737588652482,
       "p50_latency_ms": 4.050200062499343,
       "p95_latency_ms": 4.150291781250814,
-      "total_seconds": 7.301580000000001
+      "total_seconds": 7.301580000000001,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -154,7 +176,8 @@
       "fpr_at_tpr_95": 0.08666666666666667,
       "p50_latency_ms": 0.703109156249937,
       "p95_latency_ms": 0.8797003750000698,
-      "total_seconds": 1.5101991330000146
+      "total_seconds": 1.5101991330000146,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -171,7 +194,8 @@
       "fpr_at_tpr_95": 0.005005005005005005,
       "p50_latency_ms": 22.408726500000142,
       "p95_latency_ms": 22.55208887500082,
-      "total_seconds": 102.96111130899999
+      "total_seconds": 102.96111130899999,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -188,7 +212,8 @@
       "fpr_at_tpr_95": 0.031914893617021274,
       "p50_latency_ms": 22.374326281248358,
       "p95_latency_ms": 22.488916812502424,
-      "total_seconds": 40.13902029099995
+      "total_seconds": 40.13902029099995,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -205,7 +230,8 @@
       "fpr_at_tpr_95": 1.0,
       "p50_latency_ms": 1.1864598750008781,
       "p95_latency_ms": 1.5572479062520017,
-      "total_seconds": 2.569165044999977
+      "total_seconds": 2.569165044999977,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -222,7 +248,8 @@
       "fpr_at_tpr_95": 0.3763763763763764,
       "p50_latency_ms": 9.666428031248842,
       "p95_latency_ms": 9.795325000002464,
-      "total_seconds": 45.93710187800002
+      "total_seconds": 45.93710187800002,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -239,7 +266,8 @@
       "fpr_at_tpr_95": 0.6581560283687943,
       "p50_latency_ms": 9.623875687498895,
       "p95_latency_ms": 9.72396493749983,
-      "total_seconds": 17.829733467999972
+      "total_seconds": 17.829733467999972,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -256,7 +284,8 @@
       "fpr_at_tpr_95": 0.30666666666666664,
       "p50_latency_ms": 0.8256551562482173,
       "p95_latency_ms": 0.9340570625013811,
-      "total_seconds": 1.778308175999996
+      "total_seconds": 1.778308175999996,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -273,7 +302,8 @@
       "fpr_at_tpr_95": 0.5395395395395396,
       "p50_latency_ms": 3.2719071562503643,
       "p95_latency_ms": 3.3683451562502853,
-      "total_seconds": 15.01450972200007
+      "total_seconds": 15.01450972200007,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -290,7 +320,8 @@
       "fpr_at_tpr_95": 0.7673758865248227,
       "p50_latency_ms": 3.2453976250010896,
       "p95_latency_ms": 3.3125104062499133,
-      "total_seconds": 5.8313948390000405
+      "total_seconds": 5.8313948390000405,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -307,7 +338,8 @@
       "fpr_at_tpr_95": 0.4895238095238095,
       "p50_latency_ms": 0.24902809375149104,
       "p95_latency_ms": 0.31389434375128644,
-      "total_seconds": 0.5229381670000066
+      "total_seconds": 0.5229381670000066,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -324,7 +356,8 @@
       "fpr_at_tpr_95": 0.4427761094427761,
       "p50_latency_ms": 9.643840468747555,
       "p95_latency_ms": 9.738016468748611,
-      "total_seconds": 43.00502403100006
+      "total_seconds": 43.00502403100006,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -341,7 +374,8 @@
       "fpr_at_tpr_95": 0.02624113475177305,
       "p50_latency_ms": 9.604241125000357,
       "p95_latency_ms": 9.702388000000894,
-      "total_seconds": 16.68136674499999
+      "total_seconds": 16.68136674499999,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -358,7 +392,8 @@
       "fpr_at_tpr_95": 1.0,
       "p50_latency_ms": 0.8217232812484099,
       "p95_latency_ms": 0.8490401562504246,
-      "total_seconds": 1.738765398000055
+      "total_seconds": 1.738765398000055,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -375,7 +410,8 @@
       "fpr_at_tpr_95": 0.5085085085085085,
       "p50_latency_ms": 9.644963187501077,
       "p95_latency_ms": 9.762028749999985,
-      "total_seconds": 43.05011200800004
+      "total_seconds": 43.05011200800004,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -392,7 +428,8 @@
       "fpr_at_tpr_95": 0.7035460992907802,
       "p50_latency_ms": 9.614579843749027,
       "p95_latency_ms": 9.717370312500861,
-      "total_seconds": 16.691153098999962
+      "total_seconds": 16.691153098999962,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -409,7 +446,8 @@
       "fpr_at_tpr_95": 0.23904761904761904,
       "p50_latency_ms": 0.8085714687489087,
       "p95_latency_ms": 0.8708830625003827,
-      "total_seconds": 1.713860244999978
+      "total_seconds": 1.713860244999978,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -426,7 +464,8 @@
       "fpr_at_tpr_95": 0.06072739406072739,
       "p50_latency_ms": 4.136701531251674,
       "p95_latency_ms": 4.254401937497931,
-      "total_seconds": 18.550888746000055
+      "total_seconds": 18.550888746000055,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -443,7 +482,8 @@
       "fpr_at_tpr_95": 0.00851063829787234,
       "p50_latency_ms": 4.089759437501783,
       "p95_latency_ms": 4.199710062501083,
-      "total_seconds": 7.163698913000076
+      "total_seconds": 7.163698913000076,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -460,7 +500,8 @@
       "fpr_at_tpr_95": 0.41714285714285715,
       "p50_latency_ms": 0.8153510312496337,
       "p95_latency_ms": 0.8526170937486199,
-      "total_seconds": 1.7299410709999847
+      "total_seconds": 1.7299410709999847,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -477,7 +518,8 @@
       "fpr_at_tpr_95": 0.9606272939606273,
       "p50_latency_ms": 9.671374749999018,
       "p95_latency_ms": 9.784587218753416,
-      "total_seconds": 45.926830945000006
+      "total_seconds": 45.926830945000006,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -494,7 +536,8 @@
       "fpr_at_tpr_95": 0.9560283687943263,
       "p50_latency_ms": 9.65547375000142,
       "p95_latency_ms": 9.735066656247682,
-      "total_seconds": 17.877265561999934
+      "total_seconds": 17.877265561999934,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -511,7 +554,8 @@
       "fpr_at_tpr_95": 0.9047619047619048,
       "p50_latency_ms": 0.8231535000007284,
       "p95_latency_ms": 0.9256850937511274,
-      "total_seconds": 1.7689094229999682
+      "total_seconds": 1.7689094229999682,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -528,7 +572,8 @@
       "fpr_at_tpr_95": 0.3663663663663664,
       "p50_latency_ms": 9.664981843751974,
       "p95_latency_ms": 9.755997156251084,
-      "total_seconds": 45.89414875600005
+      "total_seconds": 45.89414875600005,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -545,7 +590,8 @@
       "fpr_at_tpr_95": 0.11773049645390071,
       "p50_latency_ms": 9.630202218747996,
       "p95_latency_ms": 9.737579312499633,
-      "total_seconds": 17.84583567200002
+      "total_seconds": 17.84583567200002,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -562,7 +608,8 @@
       "fpr_at_tpr_95": 0.38571428571428573,
       "p50_latency_ms": 0.8351704687505901,
       "p95_latency_ms": 0.9295489374991917,
-      "total_seconds": 1.792164171999957
+      "total_seconds": 1.792164171999957,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "rogue",
@@ -579,7 +626,8 @@
       "fpr_at_tpr_95": 0.4457791124457791,
       "p50_latency_ms": 4.142712406249416,
       "p95_latency_ms": 4.261734187501531,
-      "total_seconds": 18.564147724999998
+      "total_seconds": 18.564147724999998,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "xtram1_test",
@@ -596,7 +644,8 @@
       "fpr_at_tpr_95": 0.36028368794326243,
       "p50_latency_ms": 4.110161375002974,
       "p95_latency_ms": 4.262562875002374,
-      "total_seconds": 7.1938010949999125
+      "total_seconds": 7.1938010949999125,
+      "pending_rescore": null
     },
     {
       "benchmark_key": "slabs_test",
@@ -613,7 +662,8 @@
       "fpr_at_tpr_95": 0.86,
       "p50_latency_ms": 0.8115839999973673,
       "p95_latency_ms": 0.889232437501164,
-      "total_seconds": 1.7222538729999997
+      "total_seconds": 1.7222538729999997,
+      "pending_rescore": null
     }
   ]
 }

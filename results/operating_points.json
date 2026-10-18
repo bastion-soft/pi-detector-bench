@@ -1,7 +1,22 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-18T21:08:59Z",
+  "generated_at": "2026-10-18T22:19:21Z",
   "mode": "cross-benign",
+  "declared_thresholds": {
+    "bastion-prompt-protection (70M)": 0.5,
+    "deepset injection (184M)": 0.5,
+    "fmops distilbert (67M)": 0.5,
+    "hlyn judge (70M)": 0.5,
+    "meta prompt-guard (86M)": 0.5,
+    "meta prompt-guard v2 (22M)": 0.5,
+    "meta prompt-guard v2 (86M)": 0.5,
+    "protectai v2 (184M)": 0.5,
+    "proventra mdeberta (280M)": 0.5,
+    "sentinel (qualifire, 395M)": 0.5,
+    "wolf-defender (0.3B)": 0.5,
+    "wolf-defender-small (0.1B)": 0.5
+  },
+  "pending_rescore": [],
   "tprs": [
     0.95,
     0.99
@@ -52,6 +67,17 @@
           "recall_attacks": 0.87122
         }
       },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.0124,
+        "recall_attacks": 0.88904
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.0124,
+        "recall_attacks": 0.88904
+      },
       "runner": "bastion-prompt-protection (70M)"
     },
     {
@@ -91,6 +117,17 @@
           "fpr_benign": 0.6425,
           "recall_attacks": 0.92819
         }
+      },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.6589,
+        "recall_attacks": 0.94006
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.6589,
+        "recall_attacks": 0.94006
       },
       "runner": "deepset injection (184M)"
     },
@@ -132,6 +169,17 @@
           "recall_attacks": 0.88499
         }
       },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.6498,
+        "recall_attacks": 0.90065
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.6498,
+        "recall_attacks": 0.90065
+      },
       "runner": "fmops distilbert (67M)"
     },
     {
@@ -171,6 +219,17 @@
           "fpr_benign": 0.0,
           "recall_attacks": 0.0
         }
+      },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.2153,
+        "recall_attacks": 0.58018
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.2153,
+        "recall_attacks": 0.58018
       },
       "runner": "hlyn judge (70M)"
     },
@@ -212,6 +271,17 @@
           "recall_attacks": 0.94978
         }
       },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.883,
+        "recall_attacks": 0.95788
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.883,
+        "recall_attacks": 0.95788
+      },
       "runner": "meta prompt-guard (86M)"
     },
     {
@@ -251,6 +321,17 @@
           "fpr_benign": 0.0047,
           "recall_attacks": 0.11528
         }
+      },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.0077,
+        "recall_attacks": 0.16307
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.0077,
+        "recall_attacks": 0.16307
       },
       "runner": "meta prompt-guard v2 (22M)"
     },
@@ -292,6 +373,17 @@
           "recall_attacks": 0.47354
         }
       },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.0488,
+        "recall_attacks": 0.51782
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.0488,
+        "recall_attacks": 0.51782
+      },
       "runner": "meta prompt-guard v2 (86M)"
     },
     {
@@ -331,6 +423,17 @@
           "fpr_benign": 0.0796,
           "recall_attacks": 0.68871
         }
+      },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.0882,
+        "recall_attacks": 0.70383
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.0882,
+        "recall_attacks": 0.70383
       },
       "runner": "protectai v2 (184M)"
     },
@@ -372,6 +475,17 @@
           "recall_attacks": 0.67117
         }
       },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.2183,
+        "recall_attacks": 0.68979
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.2183,
+        "recall_attacks": 0.68979
+      },
       "runner": "proventra mdeberta (280M)"
     },
     {
@@ -411,6 +525,17 @@
           "fpr_benign": 0.2065,
           "recall_attacks": 0.86501
         }
+      },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.236,
+        "recall_attacks": 0.88256
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.236,
+        "recall_attacks": 0.88256
       },
       "runner": "sentinel (qualifire, 395M)"
     },
@@ -452,6 +577,17 @@
           "recall_attacks": 0.88607
         }
       },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.2403,
+        "recall_attacks": 0.89309
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.2403,
+        "recall_attacks": 0.89309
+      },
       "runner": "wolf-defender (0.3B)"
     },
     {
@@ -491,6 +627,17 @@
           "fpr_benign": 0.2529,
           "recall_attacks": 0.88256
         }
+      },
+      "at_0.5": {
+        "threshold": 0.5,
+        "fpr_benign": 0.2879,
+        "recall_attacks": 0.89417
+      },
+      "declared_threshold": 0.5,
+      "at_declared": {
+        "threshold": 0.5,
+        "fpr_benign": 0.2879,
+        "recall_attacks": 0.89417
       },
       "runner": "wolf-defender-small (0.1B)"
     }

@@ -1,358 +1,123 @@
 {
-  "generated_at": "2026-10-18T21:09:21Z",
+  "generated_at": "2026-10-18T22:19:23Z",
+  "declared_thresholds": {
+    "bastion-prompt-protection (70M)": 0.5,
+    "deepset injection (184M)": 0.5,
+    "fmops distilbert (67M)": 0.5,
+    "hlyn judge (70M)": 0.5,
+    "meta prompt-guard (86M)": 0.5,
+    "meta prompt-guard v2 (22M)": 0.5,
+    "meta prompt-guard v2 (86M)": 0.5,
+    "protectai v2 (184M)": 0.5,
+    "proventra mdeberta (280M)": 0.5,
+    "sentinel (qualifire, 395M)": 0.5,
+    "wolf-defender (0.3B)": 0.5,
+    "wolf-defender-small (0.1B)": 0.5
+  },
   "families": {
     "cross_step": {
-      "headline": [
-        {
-          "model": "wolf-defender (0.3B)",
-          "auc": 0.8687,
-          "fpr_at_95": 0.4016,
-          "eer": 0.1971,
-          "max_len": 8192
+      "headline": [],
+      "pending_rescore": {
+        "bastion-prompt-protection (70M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "wolf-defender-small (0.1B)",
-          "auc": 0.8273,
-          "fpr_at_95": 0.4216,
-          "eer": 0.2119,
-          "max_len": 8192
+        "deepset injection (184M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "sentinel (qualifire, 395M)",
-          "auc": 0.6882,
-          "fpr_at_95": 0.8713,
-          "eer": 0.3641,
-          "max_len": 8192
+        "fmops distilbert (67M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "meta prompt-guard (86M)",
-          "auc": 0.5799,
-          "fpr_at_95": 0.925,
-          "eer": 0.4513,
-          "max_len": 512
+        "hlyn judge (70M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "hlyn judge (70M)",
-          "auc": 0.5794,
-          "fpr_at_95": 0.9355,
-          "eer": 0.4539,
-          "max_len": 512
+        "meta prompt-guard (86M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "protectai v2 (184M)",
-          "auc": 0.577,
-          "fpr_at_95": 1.0,
-          "eer": 0.449,
-          "max_len": 512
+        "meta prompt-guard v2 (22M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "meta prompt-guard v2 (86M)",
-          "auc": 0.576,
-          "fpr_at_95": 0.9379,
-          "eer": 0.4587,
-          "max_len": 512
+        "meta prompt-guard v2 (86M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "bastion-prompt-protection (70M)",
-          "auc": 0.5692,
-          "fpr_at_95": 0.9357,
-          "eer": 0.46,
-          "max_len": 512
+        "protectai v2 (184M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "meta prompt-guard v2 (22M)",
-          "auc": 0.5638,
-          "fpr_at_95": 0.8644,
-          "eer": 0.4669,
-          "max_len": 512
+        "proventra mdeberta (280M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "deepset injection (184M)",
-          "auc": 0.5581,
-          "fpr_at_95": 0.9577,
-          "eer": 0.4741,
-          "max_len": 512
+        "sentinel (qualifire, 395M)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "proventra mdeberta (280M)",
-          "auc": 0.5321,
-          "fpr_at_95": 0.9663,
-          "eer": 0.4951,
-          "max_len": 512
+        "wolf-defender (0.3B)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         },
-        {
-          "model": "fmops distilbert (67M)",
-          "auc": 0.5207,
-          "fpr_at_95": 0.939,
-          "eer": 0.489,
-          "max_len": 512
-        }
-      ],
-      "stratified": {
-        "axis": "depth",
-        "buckets": [
-          "0 (last turn)",
-          "\u2264256tok deep",
-          "256\u2013512tok",
-          "512\u20131k tok",
-          ">1k tok deep"
-        ],
-        "recall": {
-          "wolf-defender (0.3B)": {
-            "0 (last turn)": 0.9191919191919192,
-            "\u2264256tok deep": 1.0,
-            "256\u2013512tok": 0.8301886792452831,
-            "512\u20131k tok": 0.8225108225108225,
-            ">1k tok deep": 0.8035320088300221
-          },
-          "wolf-defender-small (0.1B)": {
-            "0 (last turn)": 0.8131313131313131,
-            "\u2264256tok deep": 1.0,
-            "256\u2013512tok": 0.7735849056603774,
-            "512\u20131k tok": 0.7705627705627706,
-            ">1k tok deep": 0.7461368653421634
-          },
-          "sentinel (qualifire, 395M)": {
-            "0 (last turn)": 0.803030303030303,
-            "\u2264256tok deep": 1.0,
-            "256\u2013512tok": 0.4339622641509434,
-            "512\u20131k tok": 0.2987012987012987,
-            ">1k tok deep": 0.23178807947019867
-          },
-          "meta prompt-guard (86M)": {
-            "0 (last turn)": 0.6111111111111112,
-            "\u2264256tok deep": 0.5,
-            "256\u2013512tok": 0.5566037735849056,
-            "512\u20131k tok": 0.4329004329004329,
-            ">1k tok deep": 0.4326710816777042
-          },
-          "hlyn judge (70M)": {
-            "0 (last turn)": 0.41414141414141414,
-            "\u2264256tok deep": 0.0,
-            "256\u2013512tok": 0.16981132075471697,
-            "512\u20131k tok": 0.06060606060606061,
-            ">1k tok deep": 0.12582781456953643
-          },
-          "protectai v2 (184M)": {
-            "0 (last turn)": 0.3888888888888889,
-            "\u2264256tok deep": 0.0,
-            "256\u2013512tok": 0.2641509433962264,
-            "512\u20131k tok": 0.11688311688311688,
-            ">1k tok deep": 0.13245033112582782
-          },
-          "meta prompt-guard v2 (86M)": {
-            "0 (last turn)": 0.6464646464646465,
-            "\u2264256tok deep": 1.0,
-            "256\u2013512tok": 0.5849056603773585,
-            "512\u20131k tok": 0.08225108225108226,
-            ">1k tok deep": 0.1545253863134658
-          },
-          "bastion-prompt-protection (70M)": {
-            "0 (last turn)": 0.9747474747474747,
-            "\u2264256tok deep": 1.0,
-            "256\u2013512tok": 0.4716981132075472,
-            "512\u20131k tok": 0.16017316017316016,
-            ">1k tok deep": 0.0772626931567329
-          },
-          "meta prompt-guard v2 (22M)": {
-            "0 (last turn)": 0.020202020202020204,
-            "\u2264256tok deep": 0.0,
-            "256\u2013512tok": 0.05660377358490566,
-            "512\u20131k tok": 0.021645021645021644,
-            ">1k tok deep": 0.0706401766004415
-          },
-          "deepset injection (184M)": {
-            "0 (last turn)": 1.0,
-            "\u2264256tok deep": 1.0,
-            "256\u2013512tok": 1.0,
-            "512\u20131k tok": 1.0,
-            ">1k tok deep": 1.0
-          },
-          "proventra mdeberta (280M)": {
-            "0 (last turn)": 1.0,
-            "\u2264256tok deep": 1.0,
-            "256\u2013512tok": 0.6320754716981132,
-            "512\u20131k tok": 0.06493506493506493,
-            ">1k tok deep": 0.23399558498896247
-          },
-          "fmops distilbert (67M)": {
-            "0 (last turn)": 1.0,
-            "\u2264256tok deep": 1.0,
-            "256\u2013512tok": 1.0,
-            "512\u20131k tok": 1.0,
-            ">1k tok deep": 1.0
-          }
+        "wolf-defender-small (0.1B)": {
+          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
+          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
         }
       }
     },
     "jailbreak": {
-      "headline": [
-        {
-          "model": "wolf-defender (0.3B)",
-          "auc": 0.8711,
-          "fpr_at_95": 0.4125,
-          "eer": 0.1925,
-          "max_len": 8192
+      "headline": [],
+      "pending_rescore": {
+        "bastion-prompt-protection (70M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "sentinel (qualifire, 395M)",
-          "auc": 0.8586,
-          "fpr_at_95": 0.605,
-          "eer": 0.21,
-          "max_len": 8192
+        "deepset injection (184M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "wolf-defender-small (0.1B)",
-          "auc": 0.8291,
-          "fpr_at_95": 0.555,
-          "eer": 0.2562,
-          "max_len": 8192
+        "fmops distilbert (67M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "meta prompt-guard (86M)",
-          "auc": 0.8208,
-          "fpr_at_95": 0.48,
-          "eer": 0.2438,
-          "max_len": 512
+        "hlyn judge (70M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "bastion-prompt-protection (70M)",
-          "auc": 0.8137,
-          "fpr_at_95": 0.6825,
-          "eer": 0.275,
-          "max_len": 512
+        "meta prompt-guard (86M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "proventra mdeberta (280M)",
-          "auc": 0.7891,
-          "fpr_at_95": 0.5325,
-          "eer": 0.2675,
-          "max_len": 512
+        "meta prompt-guard v2 (22M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "deepset injection (184M)",
-          "auc": 0.7606,
-          "fpr_at_95": 0.6675,
-          "eer": 0.3488,
-          "max_len": 512
+        "meta prompt-guard v2 (86M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "fmops distilbert (67M)",
-          "auc": 0.7351,
-          "fpr_at_95": 0.7375,
-          "eer": 0.3325,
-          "max_len": 512
+        "protectai v2 (184M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "protectai v2 (184M)",
-          "auc": 0.6641,
-          "fpr_at_95": 0.7675,
-          "eer": 0.3762,
-          "max_len": 512
+        "proventra mdeberta (280M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "hlyn judge (70M)",
-          "auc": 0.6613,
-          "fpr_at_95": 0.925,
-          "eer": 0.3675,
-          "max_len": 512
+        "sentinel (qualifire, 395M)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "meta prompt-guard v2 (86M)",
-          "auc": 0.5421,
-          "fpr_at_95": 0.9825,
-          "eer": 0.4213,
-          "max_len": 512
+        "wolf-defender (0.3B)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         },
-        {
-          "model": "meta prompt-guard v2 (22M)",
-          "auc": 0.4589,
-          "fpr_at_95": 0.905,
-          "eer": 0.5413,
-          "max_len": 512
-        }
-      ],
-      "stratified": {
-        "axis": "length",
-        "buckets": [
-          "\u2264256tok",
-          "256\u2013512tok",
-          "512\u20131k tok",
-          "1k\u20132k tok"
-        ],
-        "recall": {
-          "wolf-defender (0.3B)": {
-            "\u2264256tok": 0.7582417582417582,
-            "256\u2013512tok": 0.8165137614678899,
-            "512\u20131k tok": 0.8690476190476191,
-            "1k\u20132k tok": 0.84
-          },
-          "sentinel (qualifire, 395M)": {
-            "\u2264256tok": 0.7857142857142857,
-            "256\u2013512tok": 0.8715596330275229,
-            "512\u20131k tok": 0.7976190476190477,
-            "1k\u20132k tok": 0.84
-          },
-          "wolf-defender-small (0.1B)": {
-            "\u2264256tok": 0.7582417582417582,
-            "256\u2013512tok": 0.7155963302752294,
-            "512\u20131k tok": 0.7142857142857143,
-            "1k\u20132k tok": 0.76
-          },
-          "meta prompt-guard (86M)": {
-            "\u2264256tok": 0.9395604395604396,
-            "256\u2013512tok": 0.8899082568807339,
-            "512\u20131k tok": 0.9523809523809523,
-            "1k\u20132k tok": 1.0
-          },
-          "bastion-prompt-protection (70M)": {
-            "\u2264256tok": 0.31868131868131866,
-            "256\u2013512tok": 0.44036697247706424,
-            "512\u20131k tok": 0.7619047619047619,
-            "1k\u20132k tok": 0.72
-          },
-          "proventra mdeberta (280M)": {
-            "\u2264256tok": 0.6758241758241759,
-            "256\u2013512tok": 0.6972477064220184,
-            "512\u20131k tok": 0.8333333333333334,
-            "1k\u20132k tok": 0.92
-          },
-          "deepset injection (184M)": {
-            "\u2264256tok": 1.0,
-            "256\u2013512tok": 1.0,
-            "512\u20131k tok": 1.0,
-            "1k\u20132k tok": 1.0
-          },
-          "fmops distilbert (67M)": {
-            "\u2264256tok": 1.0,
-            "256\u2013512tok": 1.0,
-            "512\u20131k tok": 1.0,
-            "1k\u20132k tok": 1.0
-          },
-          "protectai v2 (184M)": {
-            "\u2264256tok": 0.36813186813186816,
-            "256\u2013512tok": 0.3119266055045872,
-            "512\u20131k tok": 0.32142857142857145,
-            "1k\u20132k tok": 0.44
-          },
-          "hlyn judge (70M)": {
-            "\u2264256tok": 0.25274725274725274,
-            "256\u2013512tok": 0.22935779816513763,
-            "512\u20131k tok": 0.2619047619047619,
-            "1k\u20132k tok": 0.48
-          },
-          "meta prompt-guard v2 (86M)": {
-            "\u2264256tok": 0.27472527472527475,
-            "256\u2013512tok": 0.24770642201834864,
-            "512\u20131k tok": 0.38095238095238093,
-            "1k\u20132k tok": 0.48
-          },
-          "meta prompt-guard v2 (22M)": {
-            "\u2264256tok": 0.0,
-            "256\u2013512tok": 0.0,
-            "512\u20131k tok": 0.0,
-            "1k\u20132k tok": 0.0
-          }
+        "wolf-defender-small (0.1B)": {
+          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
         }
       }
     }
