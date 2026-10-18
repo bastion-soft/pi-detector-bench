@@ -461,10 +461,10 @@ def _benign_multiturn(n: int) -> list[list[tuple[str, str]]]:
 
 
 # =========================================================================== #
-# MHJ — human multi-turn jailbreaks (Scale AI). Parquet shards have ragged
-# message_* columns, so we read the parquet directly with pandas. Attack only;
-# paired with the shared benign pool. Gated (needs accepted HF terms + token).
-# CC-BY-NC → eval only, never training.
+# MHJ — human multi-turn jailbreaks (Scale AI). One CSV with ragged message_*
+# columns, read directly with pandas. Attack only; paired with the shared benign
+# pool, both sides rendered USER TURNS ONLY (2026-11 revision — see load_mhj_mt).
+# Gated (needs accepted HF terms + token). CC-BY-NC → eval only, never training.
 # =========================================================================== #
 def load_mhj_mt(limit: int | None = None):
     m = limit or 400
@@ -503,9 +503,38 @@ def load_mhj_mt(limit: int | None = None):
             (i for i, (rl, _) in enumerate(turns) if rl == "user"), default=len(turns) - 1
         )
         rows.append((turns, 1, "mhj", last_user))  # payload lands on the last user turn
-    for turns in _benign_multiturn(len([x for x in rows if x[1] == 1]) or m):
+    # Same turn structure on both sides (2026-11 revision). MHJ conversations carry
+    # only user turns, while every pooled benign conversation also has assistant
+    # turns — so "has an [ASSISTANT] turn" alone separated the labels perfectly.
+    # Both sides are rendered user-turns-only; benign conversations keep their
+    # first-N order and must still be multi-turn (>= 2 user turns) after the cut.
+    rows = [
+        (user_turns_only(t), y, src, None if inj is None else _user_index(t, inj))
+        for t, y, src, inj in rows
+    ]
+    rows = [r for r in rows if len(r[0]) >= 2]
+    n_needed = min(len(rows) or m, m)
+    benign: list[list[tuple[str, str]]] = []
+    for conv in _benign_multiturn(_BENIGN_MAX):
+        user_only = user_turns_only(conv)
+        if len(user_only) >= 2:
+            benign.append(user_only)
+        if len(benign) >= n_needed:
+            break
+    for turns in benign:
         rows.append((turns, 0, "wildchat_benign", None))
     return _mt("mhj_mt", rows, FAMILY_JAILBREAK, max_per_class=m)
+
+
+def user_turns_only(turns: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """The user turns of a conversation, in order (a new list; never mutates the
+    shared benign cache, which the cross-step depth expansion reads unchanged)."""
+    return [(role, content) for role, content in turns if role == "user"]
+
+
+def _user_index(turns: list[tuple[str, str]], idx: int) -> int:
+    """Map a turn index in ``turns`` to its index among the user-only turns."""
+    return max(0, sum(1 for role, _ in turns[: idx + 1] if role == "user") - 1)
 
 
 def _nonempty(v) -> bool:
