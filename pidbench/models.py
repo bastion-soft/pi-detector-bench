@@ -78,6 +78,7 @@ def run_provenance(args) -> dict:
             if getattr(args, "chunk", False)
             else None
         ),
+        "chunk_unit": getattr(args, "chunk_unit", "tokens") if getattr(args, "chunk", False) else None,
         "models_filter": list(getattr(args, "model", []) or []) or None,
         "threshold": getattr(args, "threshold", None),
     }

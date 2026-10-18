@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import re
 import time
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -39,6 +40,7 @@ class TransformersRunner:
         chunk: bool = False,
         chunk_temperature: float = 0.1,
         chunk_max_windows: int = 32,
+        chunk_unit: str = "tokens",
     ) -> None:
         """``max_length=None`` auto-detects the model's own context window from
         ``config.max_position_embeddings`` (clamped to a sane range) — so a
@@ -109,6 +111,11 @@ class TransformersRunner:
         self.chunk = bool(chunk)
         self.chunk_temperature = float(chunk_temperature)
         self.chunk_max_windows = int(chunk_max_windows)
+        # "tokens": plain overlapping token windows (documents). "turns": windows
+        # cut at conversation-turn boundaries (multi-turn sets); see _turn_window_ids.
+        if chunk_unit not in ("tokens", "turns"):
+            raise ValueError(f"chunk_unit must be 'tokens' or 'turns', not {chunk_unit!r}")
+        self.chunk_unit = chunk_unit
         # Overlap exists so a payload straddling a boundary lands wholly inside
         # some window, so it scales with the PAYLOAD, not the window — hence a
         # floor rather than a pure ratio.
@@ -150,6 +157,11 @@ class TransformersRunner:
         return RunnerOutput(scores=scores, latencies_ms=latencies)
 
     def _window_ids(self, text: str) -> list[list[int]]:
+        if getattr(self, "chunk_unit", "tokens") == "turns":
+            return self._turn_window_ids(text)
+        return self._token_window_ids(text)
+
+    def _token_window_ids(self, text: str) -> list[list[int]]:
         """Token-id windows for one text, with special tokens applied per model.
 
         ``build_inputs_with_special_tokens`` is used rather than hardcoding
@@ -170,10 +182,14 @@ class TransformersRunner:
                 if i + body >= len(ids):
                     break
                 i += stride
-        # Bound worst-case latency on pathological inputs. Keep the FIRST and LAST
-        # windows and sample the middle evenly: dropping the tail would recreate
-        # the head-truncation bias this path exists to remove, and payloads
-        # concentrate at the extremes.
+        windows = self._cap_windows(windows)
+        return [prefix + w + suffix for w in windows]
+
+    def _cap_windows(self, windows: list[list[int]]) -> list[list[int]]:
+        """Bound worst-case latency on pathological inputs. Keep the FIRST and LAST
+        windows and sample the middle evenly: dropping the tail would recreate
+        the head-truncation bias this path exists to remove, and payloads
+        concentrate at the extremes."""
         if len(windows) > self.chunk_max_windows:
             keep = {0, len(windows) - 1}
             n_mid = self.chunk_max_windows - 2
@@ -181,8 +197,62 @@ class TransformersRunner:
                 step = (len(windows) - 2) / n_mid
                 keep |= {1 + int(i * step) for i in range(n_mid)}
             windows = [windows[i] for i in sorted(keep)]
+        return windows
+
+    def _turn_window_ids(self, text: str) -> list[list[int]]:
+        """Windows cut at conversation-turn boundaries (``[ROLE] content`` lines).
+
+        Plain token windows start mid-turn, so a window can open on tool output
+        with no ``[TOOL]`` tag in sight and the detector reads it as the user's
+        words. Here:
+
+        - a conversation that fits the window is ONE window, token-identical to
+          the token path, so short conversations score exactly as before;
+        - whole turns are packed greedily; each window repeats the previous
+          window's last turn, so a request and the output answering it are
+          always seen together once;
+        - a turn longer than the window is split with the usual stride, and each
+          continuation is re-prefixed with its role tag.
+
+        Role tags are part of the rendered text every model receives, so this is
+        generic inference, applied identically to every entry.
+        """
         prefix, suffix = self._special_affixes()
-        return [prefix + w + suffix for w in windows]
+        body = max(1, self.max_length - len(prefix) - len(suffix))
+        tok = lambda t: list(self.tokenizer(t, add_special_tokens=False)["input_ids"])  # noqa: E731
+        full = tok(text)
+        if len(full) <= body:
+            return [prefix + full + suffix]
+
+        pieces: list[list[int]] = []
+        for k, turn in enumerate(_TURN_SPLIT.split(text)):
+            ids = tok(("\n" if k else "") + turn)
+            if len(ids) <= body:
+                pieces.append(ids)
+                continue
+            m = _ROLE_TAG.match(turn)
+            tag = tok("\n" + m.group(0)) if m else []
+            inner = max(1, body - len(tag))
+            # same payload-sized overlap as the token path
+            overlap = max(0, inner - max(1, min(self.chunk_stride, inner)))
+            pieces.append(ids[:body])
+            end = body
+            while end < len(ids):
+                start = max(0, end - overlap)
+                pieces.append(tag + ids[start : start + inner])
+                end = start + inner
+
+        windows: list[list[int]] = []
+        cur: list[list[int]] = []
+        for piece in pieces:
+            if cur and sum(map(len, cur)) + len(piece) > body:
+                windows.append([t for p in cur for t in p])
+                last = cur[-1]
+                cur = [last] if len(last) + len(piece) <= body else []
+            cur.append(piece)
+        if cur:
+            windows.append([t for p in cur for t in p])
+        return [prefix + w + suffix for w in self._cap_windows(windows)]
 
     def _special_affixes(self) -> tuple[list[int], list[int]]:
         """The special tokens this tokenizer wraps a sequence in, as (prefix, suffix).
@@ -246,6 +316,11 @@ class TransformersRunner:
             latencies.extend([elapsed_ms / max(len(batch), 1)] * len(batch))
 
         return RunnerOutput(scores=scores, latencies_ms=latencies)
+
+
+# A turn starts on a new line with a role tag (pidbench.multiturn_data.render_turns).
+_TURN_SPLIT = re.compile(r"\n(?=\[(?:USER|ASSISTANT|TOOL|SYSTEM)\] )")
+_ROLE_TAG = re.compile(r"\[(?:USER|ASSISTANT|TOOL|SYSTEM)\] ")
 
 
 def _smooth_max(scores: list[float], temperature: float = 0.1) -> float:

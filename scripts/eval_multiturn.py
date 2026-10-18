@@ -95,6 +95,9 @@ def main() -> int:
                 batch_size=args.batch_size,
                 name=spec.name,
                 truncation_side="left",  # keep the most recent turns (deployment-faithful)
+                chunk=args.chunk,
+                chunk_temperature=args.chunk_temperature,
+                chunk_unit=args.chunk_unit,
             )
         except Exception as exc:
             level = "commercial/gated — need a license + token" if spec.gated else str(exc)
@@ -112,7 +115,12 @@ def main() -> int:
             scores = np.asarray(out.scores, dtype=float)
             labels = np.asarray(eval_set.labels, dtype=int)
             # tag each row with the scoring model's window for offline analysis
-            meta_out = [{**m.as_dict(), "model_max_length": model_window} for m in meta]
+            # ...and how long inputs were read: a chunked score is not comparable to a
+            # truncated one, so every row says which it is.
+            scoring = f"chunked_{args.chunk_unit}" if args.chunk else "left_truncated"
+            meta_out = [
+                {**m.as_dict(), "model_max_length": model_window, "scoring": scoring} for m in meta
+            ]
             if dump_dir:
                 dump_scores(
                     dump_dir, spec.name, eval_set.name, "attack", scores, labels, meta=meta_out
@@ -128,6 +136,7 @@ def main() -> int:
                     "f1": round(m.f1, 4),
                     "fpr_at_95": round(m.fpr_at_tpr_95, 4),
                     "model_max_length": model_window,
+                    "scoring": scoring,
                 }
             )
             logger.info(
@@ -163,6 +172,29 @@ def _parse_args() -> argparse.Namespace:
         default=None,
         help="force a fixed token window for every model; default None = each model's "
         "own window (config.max_position_embeddings, or its models.yaml override)",
+    )
+    p.add_argument(
+        "--chunk",
+        action="store_true",
+        help="score conversations longer than a model's window as overlapping windows "
+        "(smooth-max), for EVERY model at its own window, instead of left-truncating. "
+        "Off by default so published numbers stay comparable.",
+    )
+    p.add_argument(
+        "--chunk-unit",
+        choices=("tokens", "turns"),
+        default="tokens",
+        help="window boundaries for --chunk. 'tokens' (default) is the same windowing as "
+        "the direct/indirect harnesses. 'turns' cuts at [ROLE] boundaries with a one-turn "
+        "overlap; measured on bastion v1 @512 (200 rows/set) it did not beat 'tokens' "
+        "(AUC InjecAgent 0.936 vs 0.939, ASB 0.632 vs 0.602, AgentDojo 0.974 vs 0.990) "
+        "and raised benign FPR on AgentDojo (0.38 vs 0.25), so it stays opt-in.",
+    )
+    p.add_argument(
+        "--chunk-temperature",
+        type=float,
+        default=0.1,
+        help="smooth-max temperature for --chunk (default 0.1 ~= max).",
     )
     p.add_argument(
         "--dump-scores",
