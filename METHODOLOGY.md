@@ -310,9 +310,10 @@ Label noise found while auditing; recorded here so readers can weigh the affecte
   times in the LMSYS sample (≈3.9% of it); detectors that flag it carry that whole share as
   false positives, and it drives several competitors' LMSYS FPR.
 - **wolf-defender** — the current checkpoint on the Hub no longer reproduces its committed
-  scores. The committed scores are what the direct and indirect tables show; the 2026-11
-  multi-turn re-score necessarily uses the current checkpoint, so wolf-defender's
-  multi-turn numbers and its direct/indirect numbers come from different checkpoints.
+  scores. `models.yaml` pins no revisions, so the 2026-11 re-score (2026-10-19) used the
+  current checkpoint for every set it re-ran: all multi-turn sets and BIPIA. wolf-defender's
+  direct table and its five other indirect sets come from the older committed scores, so its
+  rows mix two checkpoints.
 
 ## Changing the methodology
 
