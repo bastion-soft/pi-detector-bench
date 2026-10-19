@@ -29,7 +29,7 @@ An [article on Medium](https://medium.com/@mantas.urbonas/measuring-prompt-injec
 
 Twelve detectors, three held-out adversarial benchmarks. Full tables + latency in [`results/leaderboard.md`](results/leaderboard.md); these are **seed results** — [add your model](CONTRIBUTING.md).
 
-> **Revision 2026-11** (details: [`METHODOLOGY.md`](METHODOLOGY.md#benchmark-revision-2026-11)). Scope is now explicitly injection and jailbreak *techniques*: JailbreakBench, CoSafe and AgentHarm — harmful-intent sets with no injection mechanism — were removed (this also removes the maintainer's own top JailbreakBench score, 0.986). MHJ is rendered with the same turn structure on both sides, multi-turn sets are scored chunked, loaders are deterministic, and tables gain a declared-threshold column. Cells whose rows changed read **pending re-score** until the GPU re-score ([`notebooks/rescore_revision_2026_11.ipynb`](notebooks/rescore_revision_2026_11.ipynb)) lands. Known label-noise issues are listed in the same section.
+> **Revision 2026-11** (details: [`METHODOLOGY.md`](METHODOLOGY.md#benchmark-revision-2026-11)). Scope is now explicitly injection and jailbreak *techniques*: JailbreakBench, CoSafe and AgentHarm — harmful-intent sets with no injection mechanism — were removed (this also removes the maintainer's own top JailbreakBench score, 0.986). MHJ is rendered with the same turn structure on both sides, multi-turn sets are scored chunked, loaders are deterministic, and tables gain a declared-threshold column. Every set whose rows or protocol changed (BIPIA and all multi-turn sets) was re-scored for all twelve detectors on 2026-10-19 with [`notebooks/rescore_revision_2026_11.ipynb`](notebooks/rescore_revision_2026_11.ipynb); no score was carried over from the old rows. Known label-noise issues are listed in the same section.
 
 | Detector | Params | Detection (avg AUC) | False positives (real traffic, @0.5) | FPR @ 95% catch |
 |---|---:|---:|---:|---:|
@@ -56,7 +56,13 @@ What this table is *for*: notice that detectors close on AUC are nowhere close o
 
 A separate axis for the attacks a single-turn classifier structurally can't see: **multi-turn jailbreak** conversations (MHJ, human red-team tactics) and **cross-step** injection where a poisoned tool output corrupts a later step. Whole conversations are scored at their natural length; every detector reads them through its own context window, chunked into overlapping windows so a payload past the window is still read.
 
-**Pending re-score.** The 2026-11 revision changed the multi-turn rows and scoring protocol (MHJ turn structure, deterministic InjecAgent order, chunked scoring), so the earlier multi-turn numbers and depth plots were withdrawn; [`results/multiturn.md`](results/multiturn.md) shows every cell as *pending re-score* until the re-score notebook has run.
+![Cross-step detection vs injection depth](results/multiturn_cross_step.png)
+
+*Cross-step (poisoned tool output), recall @0.5 by how deeply the poison is buried. Scored chunked, so a drop with depth is a detection limit, not a window limit. wolf-defender (0.3B) leads cross-step AUC (0.859), then wolf-defender-small (0.848) and Bastion (0.845). Bastion's recall stays high at depth (0.79 at >1k tok deep) while wolf-defender's falls (0.40); Bastion pays for it with a higher FPR @0.5 (31.0% vs 8.5%). deepset and fmops sit flat at 1.00 because they flag every conversation (FPR @0.5 = 100%).*
+
+![Multi-turn jailbreak detection vs conversation length](results/multiturn_jailbreak.png)
+
+*Multi-turn jailbreak (MHJ), recall @0.5 by conversation length. Bastion leads AUC (0.865, next wolf-defender 0.806) and has the lowest FPR @ 95% catch (42.5%), but at 0.5 it catches only 46.0% of attacks (FPR 9.5%). Full tables: [`results/multiturn.md`](results/multiturn.md); interpretation: [`results/FINDINGS.md`](results/FINDINGS.md) §6.*
 
 ## Why this benchmark exists
 

@@ -15,8 +15,8 @@ with no GPU — see [METHODOLOGY.md](../METHODOLOGY.md) and [CONTRIBUTING.md](..
 > **Revision 2026-11.** JailbreakBench, CoSafe and AgentHarm were removed (harmful-intent sets
 > with no injection mechanism — out of scope); this removed Bastion's own top JailbreakBench
 > result (0.986 AUC) from its average. MHJ now has the same turn structure on both sides,
-> multi-turn is scored chunked, and loaders are deterministic, so the multi-turn section and
-> any indirect set whose rows changed are **pending re-score**. See
+> multi-turn is scored chunked, and loaders are deterministic. The multi-turn sets and BIPIA,
+> whose rows or protocol changed, were re-scored for all twelve detectors on 2026-10-19. See
 > [METHODOLOGY.md → Benchmark revision 2026-11](../METHODOLOGY.md#benchmark-revision-2026-11),
 > including the *Known issues* (label noise in rogue, S-Labs and the FP samples) that affect
 > the numbers below.
@@ -28,8 +28,8 @@ with no GPU — see [METHODOLOGY.md](../METHODOLOGY.md) and [CONTRIBUTING.md](..
 - **Detection:** Bastion leads average ROC-AUC (**0.993**) and F1@0.5 (**0.937**) across the three held-out adversarial benchmarks, but narrowly — wolf-defender is at 0.990 / 0.927. It does **not** win every column (sentinel and wolf-defender beat it on `rogue` AUC; wolf-defender and sentinel beat it on `rogue` F1, wolf-defender on `xTRam1` F1).
 - **False positives on real traffic:** **1.24%** at the default threshold — lowest of every detector measured, by a wide margin. This is the axis that breaks detectors in production.
 - **The fair, threshold-agnostic comparison** (hold catch-rate constant, compare false alarms): forcing every detector to catch 95% of attacks, Bastion flags **7.81%** of real benign traffic; the next-lowest is meta prompt-guard v2 (86M) at **24.22%**, then wolf-defender at 34.56%.
-- **Indirect / structured injection:** over the five sets not pending re-score, Bastion leads average AUC (**0.968** vs next-best 0.917) **and** the within-set false-alarm rate at 95% catch (**10.71%** vs next-lowest 35.52%) — but it has a **real weak spot** on AgentDojo, and BIPIA (previously its other weak spot, 46.0%) is pending re-score (see below).
-- **Multi-turn / cross-step:** **pending re-score** under the 2026-11 protocol (chunked scoring, MHJ turn-structure fix). The earlier numbers were withdrawn rather than carried over (§6).
+- **Indirect / structured injection:** over all six sets, Bastion leads average AUC (**0.945** vs next-best 0.855, wolf-defender) **and** the within-set false-alarm rate at 95% catch (**20.34%** vs next-lowest 44.68%, meta prompt-guard v2 86M) — but it has **real weak spots**: BIPIA (**68.50%**, now its weakest set, worse than the 46.0% before the revision) and AgentDojo (43.30%) (§5).
+- **Multi-turn / cross-step** (re-scored chunked under the 2026-11 protocol): on **cross-step** injection Bastion is **third** on AUC (0.845) behind wolf-defender 0.3B (0.859) and wolf-defender-small (0.848), though its recall holds better at depth. On the **multi-turn jailbreak** set (MHJ) Bastion leads AUC (**0.865**) but catches only 46.0% of attacks at 0.5 (§6).
 - **What no classifier here can do:** catch domain-specific abuse or tool misuse. A detector is one layer, not the whole defense.
 
 ---
@@ -132,51 +132,70 @@ Injection hidden inside the *data* an app trusts — JSON tool results, document
 
 | | Avg AUC | Avg FPR @ 95% catch |
 |---|---|---|
-| **bastion (70M)** | **0.968** | **10.71%** |
-| wolf-defender (0.3B) | 0.917 | 37.53% |
-| meta prompt-guard v2 (86M) | 0.813 | 35.52% |
+| **bastion (70M)** | **0.945** | **20.34%** |
+| wolf-defender (0.3B) | 0.855 | 47.95% |
+| meta prompt-guard v2 (86M) | 0.788 | 44.68% |
 | … | … | … |
 
-Averages are over five sets: **BIPIA is pending re-score** (its loader read files in filesystem order; the committed scores were computed on table → email → code order, the now-sorted loader yields code → email → table, and attacks are assigned by row index, so the rows themselves changed). Before the revision BIPIA was one of Bastion's two weakest indirect sets (46.0% FPR at 95% catch), so dropping it from the average flatters Bastion until the re-score lands — read the averages with that in mind.
+Averages are over all six sets, BIPIA included. BIPIA was re-scored for every detector on 2026-10-19: its loader used to read files in filesystem order, and the sorted loader changed which rows carry the attack, so no old BIPIA score was carried over.
 
-Bastion leads both axes here. **But this is genuinely uneven, and the average hides it** — per set, Bastion's false-alarm rate at 95% catch is:
-
-| zedgar | injecagent | hackaprompt | tensortrust | **agentdojo** | bipia |
-|---|---|---|---|---|---|
-| 0.00% | 0.00% | 0.00% | 10.25% | **43.30%** | pending re-score |
-
-On Z-Edgar, InjecAgent, and HackAPrompt it catches the injection essentially without touching benign structured data. On **AgentDojo (43.3%)** it cannot cleanly separate injected from benign structured records at a high catch rate — a real limitation worth naming. It is still the best of the field on that set, but "best" here is not "solved."
-
----|---|---|
-| **bastion (70M)** | **0.952** | **16.59%** |
-| wolf-defender (0.3B) | 0.865 | 45.78% |
-| deepset injection (184M) | 0.787 | 49.05% |
-| … | … | … |
-
-Bastion leads both axes here. **But this is genuinely uneven, and the average hides it** — per set, Bastion's false-alarm rate at 95% catch is:
+Bastion leads both averages. **But this is genuinely uneven, and the average hides it** — per set, Bastion's false-alarm rate at 95% catch is:
 
 | zedgar | injecagent | hackaprompt | tensortrust | **agentdojo** | **bipia** |
 |---|---|---|---|---|---|
-| 0.00% | 0.00% | 0.00% | 10.25% | **43.30%** | **46.00%** |
+| 0.00% | 0.00% | 0.00% | 10.25% | **43.30%** | **68.50%** |
 
-On Z-Edgar, InjecAgent, and HackAPrompt it catches the injection essentially without touching benign structured data. On **BIPIA (46.0%)** and **AgentDojo (43.3%)** it cannot cleanly separate injected from benign structured records at a high catch rate — a real limitation worth naming. It is still the best of the field on these sets, but "best" here is not "solved."
+On Z-Edgar, InjecAgent, and HackAPrompt it catches the injection essentially without touching benign structured data. On **BIPIA (68.5%)** and **AgentDojo (43.3%)** it cannot cleanly separate injected from benign structured records at a high catch rate — a real limitation worth naming. **BIPIA is now Bastion's weakest indirect set, and worse than before the revision (46.0%).** It is not the best detector there either: meta prompt-guard (86M, v1) has the higher BIPIA AUC (0.910 vs 0.830) and the lower false-alarm rate at 95% catch (28.50%). On AgentDojo Bastion is still the best of the field (next-lowest 73.20%, wolf-defender-small), but "best" here is not "solved."
 
 ---
 
 ## 6. Multi-turn / cross-step injection
 
-**Pending re-score.** The 2026-11 revision changed this axis in three ways at once: CoSafe and
-the agent-jailbreak family (AgentHarm) were removed as out of scope; MHJ is now rendered with
-the same turn structure on both sides (its attacks have no assistant turns, the benign pool
-did, so "has an assistant turn" alone separated the labels perfectly); and every set is scored
-with `--chunk`, so a detector reads the whole conversation instead of only the most recent
-window. The InjecAgent multi-turn loader also became deterministic. The previous numbers —
-including the cross-step depth cliff for 512-token detectors such as Bastion and the MHJ +
-CoSafe jailbreak ranking Bastion led — were measured under the old rows and protocol and are
-withdrawn rather than carried over. [`multiturn.md`](multiturn.md) shows every cell as
-*pending re-score* until
-[`notebooks/rescore_revision_2026_11.ipynb`](../notebooks/rescore_revision_2026_11.ipynb) has
-re-scored all twelve detectors; this section is rewritten from those results.
+Re-scored on 2026-10-19 for all twelve detectors under the 2026-11 protocol: CoSafe and the
+agent-jailbreak family (AgentHarm) were removed as out of scope; MHJ is rendered with the same
+turn structure on both sides (its attacks have no assistant turns, the benign pool did, so "has
+an assistant turn" alone separated the labels perfectly); every set is scored with `--chunk`,
+so a detector reads the whole conversation instead of only the most recent window; and the
+InjecAgent multi-turn loader is deterministic. The pre-revision numbers were withdrawn, not
+carried over. Full tables: [`multiturn.md`](multiturn.md).
+
+**Cross-step agent injection (poisoned tool output).**
+
+| | AUC | FPR @ 95% catch | EER | FPR @0.5 | recall @0.5 |
+|---|---|---|---|---|---|
+| wolf-defender (0.3B) | **0.859** | 0.579 | 0.195 | 0.085 | 0.622 |
+| wolf-defender-small (0.1B) | 0.848 | 0.447 | 0.200 | 0.127 | 0.686 |
+| bastion (70M) | 0.845 | 0.467 | **0.193** | 0.310 | 0.842 |
+| meta prompt-guard v2 (86M) | 0.770 | **0.434** | 0.267 | 0.422 | 0.848 |
+| … | … | … | … | … | … |
+
+**Bastion does not lead this family.** wolf-defender 0.3B has the best AUC (0.859), then
+wolf-defender-small (0.848), then Bastion (0.845) — close, but third. Bastion has the lowest
+EER (0.193); meta prompt-guard v2 (86M) has the lowest FPR at 95% catch (0.434). At 0.5 the
+models trade off differently: Bastion catches more (recall 0.842) but flags 31.0% of benign
+conversations, while wolf-defender flags 8.5% and catches 0.622.
+
+By injection depth (recall @0.5), Bastion's recall stays high when the poison is buried:
+0.79 at >1k tokens deep, against 0.40 for wolf-defender (0.3B), 0.49 for wolf-defender-small
+and 0.23 for sentinel. Because scoring is chunked, every model reads the poison wherever it
+sits, so these drops are detection limits rather than window limits. Flat 1.00 rows
+(deepset, fmops) are not strength: those detectors flag every conversation (FPR @0.5 = 1.000).
+
+**Multi-turn jailbreak (conversational; MHJ).**
+
+| | AUC | FPR @ 95% catch | EER | FPR @0.5 | recall @0.5 |
+|---|---|---|---|---|---|
+| **bastion (70M)** | **0.865** | **0.425** | **0.209** | 0.095 | 0.460 |
+| wolf-defender (0.3B) | 0.806 | 0.665 | 0.246 | 0.145 | 0.640 |
+| wolf-defender-small (0.1B) | 0.801 | 0.645 | 0.240 | 0.205 | 0.705 |
+| sentinel (395M) | 0.781 | 0.718 | 0.284 | 0.412 | 0.815 |
+| … | … | … | … | … | … |
+
+Bastion leads AUC (0.865), EER and FPR at 95% catch (0.425) here. Its weakness is the 0.5
+operating point: it catches only 46.0% of MHJ attacks there (wolf-defender 64.0%, sentinel
+81.5%), and its recall rises with conversation length (0.32 at ≤256 tokens, 0.84 at 1k–2k),
+so short red-team conversations are the ones it misses. Ranking well and catching at the
+default threshold are different things; read the @0.5 columns alongside the AUC.
 
 What carries over is the design: two families (jailbreak, cross-step) reported separately;
 matched injected/benign pairs; recall stratified by injection depth (cross-step) and
@@ -204,6 +223,6 @@ Treat a detector as defense-in-depth, alongside schema validation, authorization
 - **Competitor numbers are not bit-stable across GPU runs.** The torch baselines vary slightly run-to-run (most visibly on small sets and on models sitting near AUC 0.5); Bastion's quantized ONNX path is deterministic. To remove any ambiguity, **every number in this folder is recomputed offline from the committed per-prompt scores** (`scores/`, `scores_indirect/`) via `python -m scripts.rebuild_results_from_scores` and `scripts.analyze_operating_points` — so the leaderboard, FPR, indirect, and operating-point tables are mutually consistent and reproducible by anyone, no GPU required. Re-running the Colab regenerates the scores (to within that run-to-run noise) and the rankings/story are unchanged; the exact published decimals are pinned by the committed scores, not by trusting a GPU run.
 - **meta prompt-guard** (0.301 AUC / 88% FPR) is kept in for completeness. It is not a harness error — its attack recall is 95.8%, so the polarity is correct; it simply flags almost everything. It is Meta's deprecated v1 model (replaced by Prompt-Guard-2) and over-fires by design; read it as "wrong tool, shown for context," not a fair head-to-head.
 - **Held out from training.** Every set scored here is held out from Bastion's training data — that's the contract behind the numbers, and why they reproduce from public weights. For the multi-turn sets (which share behavior seeds with common training corpora), Bastion self-audited its own corpus for overlap and found **≈0% verbatim** contamination; the rendered conversations are novel text even where a seed behavior overlaps.
-- **Multi-turn reproduces the same way.** Per-conversation scores + metadata are committed (`scores_multiturn/`); `python -m scripts.analyze_multiturn` rebuilds the family tables and depth/length cuts with no GPU. Score files are checked against their rows (revision stamp + row fingerprint); files that predate the 2026-11 loader changes are shown as pending, never re-aligned.
+- **Multi-turn reproduces the same way.** Per-conversation scores + metadata are committed (`scores_multiturn/`); `python -m scripts.analyze_multiturn` rebuilds the family tables and depth/length cuts with no GPU. Score files are checked against their rows (revision stamp + row fingerprint); files that predate a loader change for their set are shown as pending, never re-aligned. The multi-turn sets were re-scored on 2026-10-19, so none is pending.
 
-_Direct/indirect numbers regenerated from committed scores; multi-turn generated 2026-07-03. Rerun any table from `scores/`, `scores_indirect/`, or `scores_multiturn/` — no GPU._
+_All numbers regenerated from committed scores on 2026-10-19 (BIPIA and multi-turn re-scored that day). Rerun any table from `scores/`, `scores_indirect/`, or `scores_multiturn/` — no GPU._

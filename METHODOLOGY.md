@@ -204,9 +204,10 @@ _Decided by the maintainer and written up 2026-10-19._ This revision narrows the
 to its stated scope, removes a label shortcut, and tightens reproducibility. Every model is
 re-scored in the same change: tables whose rows did not change are rebuilt from the committed
 per-prompt scores for all twelve detectors at once, and every set whose rows or scoring
-protocol changed is re-scored for all twelve detectors in one run
+protocol changed (BIPIA and all multi-turn sets) was re-scored for all twelve detectors in one
+run on 2026-10-19
 ([`notebooks/rescore_revision_2026_11.ipynb`](notebooks/rescore_revision_2026_11.ipynb)).
-Until that run lands, those cells read **pending re-score**; no score is carried over from a
+Until that run landed those cells read *pending re-score*; no score was carried over from a
 row order it was not computed on.
 
 ### Scope: three sets removed
@@ -284,9 +285,9 @@ against the committed per-prompt scores:
   ds), so they stay valid and the table is rebuilt from them.
 - **BIPIA (indirect)** — the committed scores match *table → email → code*; the sorted order is
   *code → email → table*. Attacks are assigned by row index, so the injected rows themselves
-  change. BIPIA is **pending re-score** for every detector; indirect averages are over the
-  remaining five sets until then (this removes one of Bastion's two weakest indirect sets from
-  its average in the meantime).
+  change. BIPIA was therefore re-scored for every detector on 2026-10-19 with the notebook;
+  until then indirect averages were over the remaining five sets (which had removed one of
+  Bastion's two weakest indirect sets from its average). The averages are now over all six.
 - **InjecAgent (multi-turn)** — re-scored anyway with the chunked harness.
 
 Score files now carry the loader revision and a row fingerprint, and the offline rebuild

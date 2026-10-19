@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "run": {},
-  "generated_at": "2026-10-18T22:19:19Z",
+  "generated_at": "2026-10-19T12:07:25Z",
   "declared_thresholds": {
     "bastion-prompt-protection (70M)": 0.5,
     "wolf-defender (0.3B)": 0.5,

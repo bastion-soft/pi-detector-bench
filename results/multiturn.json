@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-18T22:19:23Z",
+  "generated_at": "2026-10-19T12:07:30Z",
   "declared_thresholds": {
     "bastion-prompt-protection (70M)": 0.5,
     "deepset injection (184M)": 0.5,
@@ -16,108 +16,501 @@
   },
   "families": {
     "cross_step": {
-      "headline": [],
-      "pending_rescore": {
-        "bastion-prompt-protection (70M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+      "headline": [
+        {
+          "model": "wolf-defender (0.3B)",
+          "auc": 0.8589,
+          "fpr_at_95": 0.579,
+          "eer": 0.1955,
+          "fpr_at_0.5": 0.0846,
+          "recall_at_0.5": 0.6218,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.0846,
+          "recall_at_declared": 0.6218,
+          "max_len": 8192,
+          "scoring": "chunked_tokens"
         },
-        "deepset injection (184M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "wolf-defender-small (0.1B)",
+          "auc": 0.8475,
+          "fpr_at_95": 0.4472,
+          "eer": 0.2004,
+          "fpr_at_0.5": 0.1269,
+          "recall_at_0.5": 0.6859,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.1269,
+          "recall_at_declared": 0.6859,
+          "max_len": 8192,
+          "scoring": "chunked_tokens"
         },
-        "fmops distilbert (67M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "bastion-prompt-protection (70M)",
+          "auc": 0.8448,
+          "fpr_at_95": 0.4666,
+          "eer": 0.193,
+          "fpr_at_0.5": 0.3103,
+          "recall_at_0.5": 0.8417,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.3103,
+          "recall_at_declared": 0.8417,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "hlyn judge (70M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "meta prompt-guard v2 (86M)",
+          "auc": 0.7705,
+          "fpr_at_95": 0.4338,
+          "eer": 0.2665,
+          "fpr_at_0.5": 0.4219,
+          "recall_at_0.5": 0.8475,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.4219,
+          "recall_at_declared": 0.8475,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "meta prompt-guard (86M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "proventra mdeberta (280M)",
+          "auc": 0.7539,
+          "fpr_at_95": 0.6171,
+          "eer": 0.2886,
+          "fpr_at_0.5": 0.7886,
+          "recall_at_0.5": 0.995,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.7886,
+          "recall_at_declared": 0.995,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "meta prompt-guard v2 (22M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "meta prompt-guard (86M)",
+          "auc": 0.7278,
+          "fpr_at_95": 0.6586,
+          "eer": 0.3346,
+          "fpr_at_0.5": 0.7739,
+          "recall_at_0.5": 0.9042,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.7739,
+          "recall_at_declared": 0.9042,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "meta prompt-guard v2 (86M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "sentinel (qualifire, 395M)",
+          "auc": 0.6884,
+          "fpr_at_95": 0.8713,
+          "eer": 0.3641,
+          "fpr_at_0.5": 0.18,
+          "recall_at_0.5": 0.4078,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.18,
+          "recall_at_declared": 0.4078,
+          "max_len": 8192,
+          "scoring": "chunked_tokens"
         },
-        "protectai v2 (184M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "hlyn judge (70M)",
+          "auc": 0.6616,
+          "fpr_at_95": 0.8055,
+          "eer": 0.3759,
+          "fpr_at_0.5": 0.1034,
+          "recall_at_0.5": 0.1805,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.1034,
+          "recall_at_declared": 0.1805,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "proventra mdeberta (280M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "protectai v2 (184M)",
+          "auc": 0.6362,
+          "fpr_at_95": 0.8329,
+          "eer": 0.4084,
+          "fpr_at_0.5": 0.172,
+          "recall_at_0.5": 0.3802,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.172,
+          "recall_at_declared": 0.3802,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "sentinel (qualifire, 395M)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "deepset injection (184M)",
+          "auc": 0.5539,
+          "fpr_at_95": 0.9493,
+          "eer": 0.4641,
+          "fpr_at_0.5": 1.0,
+          "recall_at_0.5": 1.0,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 1.0,
+          "recall_at_declared": 1.0,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "wolf-defender (0.3B)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "meta prompt-guard v2 (22M)",
+          "auc": 0.5501,
+          "fpr_at_95": 0.8508,
+          "eer": 0.4678,
+          "fpr_at_0.5": 0.0568,
+          "recall_at_0.5": 0.0847,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.0568,
+          "recall_at_declared": 0.0847,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "wolf-defender-small (0.1B)": {
-          "agentdojo_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "asb_mt": "scored before loader revision 2026-11 (scoring now --chunk (rows unchanged))",
-          "injecagent_mt/all_enhanced": "scored before loader revision 2026-11 (file order now sorted (was filesystem glob order); scoring now --chunk)"
+        {
+          "model": "fmops distilbert (67M)",
+          "auc": 0.5179,
+          "fpr_at_95": 0.9517,
+          "eer": 0.4819,
+          "fpr_at_0.5": 1.0,
+          "recall_at_0.5": 1.0,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 1.0,
+          "recall_at_declared": 1.0,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
+        }
+      ],
+      "stratified": {
+        "axis": "depth",
+        "buckets": [
+          "0 (last turn)",
+          "\u2264256tok deep",
+          "256\u2013512tok",
+          "512\u20131k tok",
+          ">1k tok deep"
+        ],
+        "recall": {
+          "wolf-defender (0.3B)": {
+            "0 (last turn)": 0.8737373737373737,
+            "\u2264256tok deep": 1.0,
+            "256\u2013512tok": 0.7641509433962265,
+            "512\u20131k tok": 0.5974025974025974,
+            ">1k tok deep": 0.40397350993377484
+          },
+          "wolf-defender-small (0.1B)": {
+            "0 (last turn)": 0.8636363636363636,
+            "\u2264256tok deep": 1.0,
+            "256\u2013512tok": 0.7924528301886793,
+            "512\u20131k tok": 0.670995670995671,
+            ">1k tok deep": 0.4878587196467991
+          },
+          "bastion-prompt-protection (70M)": {
+            "0 (last turn)": 0.9747474747474747,
+            "\u2264256tok deep": 1.0,
+            "256\u2013512tok": 0.7547169811320755,
+            "512\u20131k tok": 0.7316017316017316,
+            ">1k tok deep": 0.7858719646799117
+          },
+          "meta prompt-guard v2 (86M)": {
+            "0 (last turn)": 0.6464646464646465,
+            "\u2264256tok deep": 1.0,
+            "256\u2013512tok": 0.8490566037735849,
+            "512\u20131k tok": 0.8181818181818182,
+            ">1k tok deep": 0.8785871964679912
+          },
+          "proventra mdeberta (280M)": {
+            "0 (last turn)": 1.0,
+            "\u2264256tok deep": 1.0,
+            "256\u2013512tok": 1.0,
+            "512\u20131k tok": 0.987012987012987,
+            ">1k tok deep": 0.9933774834437086
+          },
+          "meta prompt-guard (86M)": {
+            "0 (last turn)": 0.6111111111111112,
+            "\u2264256tok deep": 0.5,
+            "256\u2013512tok": 0.8773584905660378,
+            "512\u20131k tok": 0.9047619047619048,
+            ">1k tok deep": 0.9955849889624724
+          },
+          "sentinel (qualifire, 395M)": {
+            "0 (last turn)": 0.803030303030303,
+            "\u2264256tok deep": 1.0,
+            "256\u2013512tok": 0.4339622641509434,
+            "512\u20131k tok": 0.2987012987012987,
+            ">1k tok deep": 0.23178807947019867
+          },
+          "hlyn judge (70M)": {
+            "0 (last turn)": 0.42424242424242425,
+            "\u2264256tok deep": 0.0,
+            "256\u2013512tok": 0.08490566037735849,
+            "512\u20131k tok": 0.06060606060606061,
+            ">1k tok deep": 0.15894039735099338
+          },
+          "protectai v2 (184M)": {
+            "0 (last turn)": 0.3787878787878788,
+            "\u2264256tok deep": 0.0,
+            "256\u2013512tok": 0.24528301886792453,
+            "512\u20131k tok": 0.24675324675324675,
+            ">1k tok deep": 0.4216335540838852
+          },
+          "deepset injection (184M)": {
+            "0 (last turn)": 1.0,
+            "\u2264256tok deep": 1.0,
+            "256\u2013512tok": 1.0,
+            "512\u20131k tok": 1.0,
+            ">1k tok deep": 1.0
+          },
+          "meta prompt-guard v2 (22M)": {
+            "0 (last turn)": 0.020202020202020204,
+            "\u2264256tok deep": 0.0,
+            "256\u2013512tok": 0.07547169811320754,
+            "512\u20131k tok": 0.05627705627705628,
+            ">1k tok deep": 0.13024282560706402
+          },
+          "fmops distilbert (67M)": {
+            "0 (last turn)": 1.0,
+            "\u2264256tok deep": 1.0,
+            "256\u2013512tok": 1.0,
+            "512\u20131k tok": 1.0,
+            ">1k tok deep": 1.0
+          }
         }
       }
     },
     "jailbreak": {
-      "headline": [],
-      "pending_rescore": {
-        "bastion-prompt-protection (70M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+      "headline": [
+        {
+          "model": "bastion-prompt-protection (70M)",
+          "auc": 0.865,
+          "fpr_at_95": 0.425,
+          "eer": 0.2087,
+          "fpr_at_0.5": 0.095,
+          "recall_at_0.5": 0.46,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.095,
+          "recall_at_declared": 0.46,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "deepset injection (184M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "wolf-defender (0.3B)",
+          "auc": 0.8065,
+          "fpr_at_95": 0.665,
+          "eer": 0.2463,
+          "fpr_at_0.5": 0.145,
+          "recall_at_0.5": 0.64,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.145,
+          "recall_at_declared": 0.64,
+          "max_len": 8192,
+          "scoring": "chunked_tokens"
         },
-        "fmops distilbert (67M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "wolf-defender-small (0.1B)",
+          "auc": 0.8006,
+          "fpr_at_95": 0.645,
+          "eer": 0.24,
+          "fpr_at_0.5": 0.205,
+          "recall_at_0.5": 0.705,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.205,
+          "recall_at_declared": 0.705,
+          "max_len": 8192,
+          "scoring": "chunked_tokens"
         },
-        "hlyn judge (70M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "sentinel (qualifire, 395M)",
+          "auc": 0.7806,
+          "fpr_at_95": 0.7175,
+          "eer": 0.2838,
+          "fpr_at_0.5": 0.4125,
+          "recall_at_0.5": 0.815,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.4125,
+          "recall_at_declared": 0.815,
+          "max_len": 8192,
+          "scoring": "chunked_tokens"
         },
-        "meta prompt-guard (86M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "fmops distilbert (67M)",
+          "auc": 0.7697,
+          "fpr_at_95": 0.645,
+          "eer": 0.2975,
+          "fpr_at_0.5": 1.0,
+          "recall_at_0.5": 1.0,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 1.0,
+          "recall_at_declared": 1.0,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "meta prompt-guard v2 (22M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "meta prompt-guard v2 (22M)",
+          "auc": 0.7225,
+          "fpr_at_95": 0.64,
+          "eer": 0.32,
+          "fpr_at_0.5": 0.065,
+          "recall_at_0.5": 0.0,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.065,
+          "recall_at_declared": 0.0,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "meta prompt-guard v2 (86M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "proventra mdeberta (280M)",
+          "auc": 0.7061,
+          "fpr_at_95": 0.685,
+          "eer": 0.35,
+          "fpr_at_0.5": 0.43,
+          "recall_at_0.5": 0.7475,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.43,
+          "recall_at_declared": 0.7475,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "protectai v2 (184M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "meta prompt-guard v2 (86M)",
+          "auc": 0.6432,
+          "fpr_at_95": 0.7725,
+          "eer": 0.3862,
+          "fpr_at_0.5": 0.215,
+          "recall_at_0.5": 0.3175,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.215,
+          "recall_at_declared": 0.3175,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "proventra mdeberta (280M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "deepset injection (184M)",
+          "auc": 0.5763,
+          "fpr_at_95": 0.8475,
+          "eer": 0.4513,
+          "fpr_at_0.5": 0.9975,
+          "recall_at_0.5": 1.0,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.9975,
+          "recall_at_declared": 1.0,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "sentinel (qualifire, 395M)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "meta prompt-guard (86M)",
+          "auc": 0.5713,
+          "fpr_at_95": 0.8225,
+          "eer": 0.465,
+          "fpr_at_0.5": 0.8,
+          "recall_at_0.5": 0.93,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.8,
+          "recall_at_declared": 0.93,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "wolf-defender (0.3B)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "hlyn judge (70M)",
+          "auc": 0.5531,
+          "fpr_at_95": 0.91,
+          "eer": 0.4575,
+          "fpr_at_0.5": 0.1875,
+          "recall_at_0.5": 0.26,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.1875,
+          "recall_at_declared": 0.26,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
         },
-        "wolf-defender-small (0.1B)": {
-          "mhj_mt": "scored before loader revision 2026-11 (benign negatives re-rendered user-turns-only; scoring now --chunk)"
+        {
+          "model": "protectai v2 (184M)",
+          "auc": 0.4773,
+          "fpr_at_95": 0.8625,
+          "eer": 0.51,
+          "fpr_at_0.5": 0.4475,
+          "recall_at_0.5": 0.3925,
+          "declared_threshold": 0.5,
+          "fpr_at_declared": 0.4475,
+          "recall_at_declared": 0.3925,
+          "max_len": 512,
+          "scoring": "chunked_tokens"
+        }
+      ],
+      "stratified": {
+        "axis": "length",
+        "buckets": [
+          "\u2264256tok",
+          "256\u2013512tok",
+          "512\u20131k tok",
+          "1k\u20132k tok"
+        ],
+        "recall": {
+          "bastion-prompt-protection (70M)": {
+            "\u2264256tok": 0.31868131868131866,
+            "256\u2013512tok": 0.44036697247706424,
+            "512\u20131k tok": 0.6785714285714286,
+            "1k\u20132k tok": 0.84
+          },
+          "wolf-defender (0.3B)": {
+            "\u2264256tok": 0.5824175824175825,
+            "256\u2013512tok": 0.6697247706422018,
+            "512\u20131k tok": 0.7023809523809523,
+            "1k\u20132k tok": 0.72
+          },
+          "wolf-defender-small (0.1B)": {
+            "\u2264256tok": 0.6593406593406593,
+            "256\u2013512tok": 0.7064220183486238,
+            "512\u20131k tok": 0.75,
+            "1k\u20132k tok": 0.88
+          },
+          "sentinel (qualifire, 395M)": {
+            "\u2264256tok": 0.7857142857142857,
+            "256\u2013512tok": 0.8715596330275229,
+            "512\u20131k tok": 0.7976190476190477,
+            "1k\u20132k tok": 0.84
+          },
+          "fmops distilbert (67M)": {
+            "\u2264256tok": 1.0,
+            "256\u2013512tok": 1.0,
+            "512\u20131k tok": 1.0,
+            "1k\u20132k tok": 1.0
+          },
+          "meta prompt-guard v2 (22M)": {
+            "\u2264256tok": 0.0,
+            "256\u2013512tok": 0.0,
+            "512\u20131k tok": 0.0,
+            "1k\u20132k tok": 0.0
+          },
+          "proventra mdeberta (280M)": {
+            "\u2264256tok": 0.6758241758241759,
+            "256\u2013512tok": 0.7155963302752294,
+            "512\u20131k tok": 0.8928571428571429,
+            "1k\u20132k tok": 0.92
+          },
+          "meta prompt-guard v2 (86M)": {
+            "\u2264256tok": 0.27472527472527475,
+            "256\u2013512tok": 0.25688073394495414,
+            "512\u20131k tok": 0.39285714285714285,
+            "1k\u20132k tok": 0.64
+          },
+          "deepset injection (184M)": {
+            "\u2264256tok": 1.0,
+            "256\u2013512tok": 1.0,
+            "512\u20131k tok": 1.0,
+            "1k\u20132k tok": 1.0
+          },
+          "meta prompt-guard (86M)": {
+            "\u2264256tok": 0.9395604395604396,
+            "256\u2013512tok": 0.8899082568807339,
+            "512\u20131k tok": 0.9523809523809523,
+            "1k\u20132k tok": 0.96
+          },
+          "hlyn judge (70M)": {
+            "\u2264256tok": 0.25274725274725274,
+            "256\u2013512tok": 0.22935779816513763,
+            "512\u20131k tok": 0.23809523809523808,
+            "1k\u20132k tok": 0.52
+          },
+          "protectai v2 (184M)": {
+            "\u2264256tok": 0.36813186813186816,
+            "256\u2013512tok": 0.3119266055045872,
+            "512\u20131k tok": 0.5119047619047619,
+            "1k\u20132k tok": 0.52
+          }
         }
       }
     }
